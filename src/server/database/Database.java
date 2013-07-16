@@ -24,8 +24,16 @@ public class Database {
 	private String connectionURL;
 	private static String driver = "com.mysql.jdbc.Driver";
 	
-	public Database() {
-		
+	public Database(String env) {
+		if (env.equalsIgnoreCase("test")) {
+			this.dbFile = null;
+			this.dbName = null;
+			this.connectionURL = null;
+		} else if (env.equalsIgnoreCase("prod")) {
+			
+		} else {
+			
+		}
 	}
 	
 	public static void initialize() {
