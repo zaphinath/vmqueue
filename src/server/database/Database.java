@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import model.VirtualMachine;
+
 /**
  * @author Derek Carr
  *
@@ -52,11 +54,36 @@ public class Database {
   	return this.connection;
   }
   
+  /**
+   * 
+   * @return
+   */
+  public BrowserDB getBrowser() {
+  	return this.browser;
+  }
+  
+  /**
+   * 
+   * @return
+   */
+  public VirtualMachineDB getVirtualMachine() {
+  	return this.virtualMachine;
+  }
+  
+  /**
+   * 
+   * @throws SQLException
+   */
   public void startTransaction() throws SQLException {
   	connection = DriverManager.getConnection(connectionURL);
 		connection.setAutoCommit(false);
   }
   
+  /**
+   * 
+   * @param commit
+   * @throws SQLException
+   */
   public void endTransaction(boolean commit) throws SQLException {
   	try {
 			if (commit == true) {

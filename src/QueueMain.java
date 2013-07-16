@@ -1,19 +1,24 @@
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import server.NamedPipe;
 import server.VMQueue;
 import java.io.RandomAccessFile;
 
+import model.NamedPipeStream;
+
 public class QueueMain {
 
-  public static void main(String[] args) {
-    VMQueue queue = new VMQueue();
-    File pipe = new File("/var/www/insidesales/pipefile");
-    RandomAccessFile rafile = new RandomAccessFile(pipe, "rw");
-    
-    while(1) {
-
-
-    }
+  public static void main(String[] args) throws InterruptedException, IOException {
+    //VMQueue queue = new VMQueue();
+    //File pipe = new File("/var/www/insidesales/pipefile");
+  	NamedPipe pipe = new NamedPipe();
+  	while(true) {
+  		NamedPipeStream stream = pipe.readPipe();
+  		Thread.sleep(1000);
+  	}
   }
 }
