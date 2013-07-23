@@ -84,11 +84,11 @@ public class VMQueue {
   	// Build Socket String
   	// Build and return job
   
-  	int result = determineQueue(stream.getBrowser(), stream.getBrowserVersion());
+  	int queueNumber = determineQueue(stream.getBrowser(), stream.getBrowserVersion());
 
   	//TODO: Need to get a new time based on the browser time estimates?
   	String socketString = buildSocketString();
-  	Job job = new Job(jobNumber++, socketString, stream.getTime(), queueNumber, hostIP);
+  	Job job = new Job(jobNumber++, socketString, stream.getTime(), queueNumber, vms.get(queueNumber).getIP());
   }
 
 	/**
@@ -101,9 +101,7 @@ public class VMQueue {
 	 */
 	private int determineQueue(String browser, String browserVersion) throws SQLException {
 		assert !browser.equalsIgnoreCase("any");
-		// TODO Auto-generated method stub
 		assert browser != null && browserVersion != null;
-		String[] results = new String[3];
 		List<VirtualMachine> limitedVms = null;
 		if (!browser.equalsIgnoreCase("any") && browserVersion.equalsIgnoreCase("any")) {
 			// BUILD LIST OF ONLY MACHINES THIS WILL RUN ON
@@ -126,11 +124,7 @@ public class VMQueue {
 				}
 			}
 		}
-		
-	// build list of vm_queue_times that match previous list
-				// find shortest vm_queue_time
-		
-		//
+		assert vmId > 0;
 		return vmId;
 	}
 }
