@@ -10,7 +10,6 @@ import server.database.Database;
 
 import model.Job;
 import model.NamedPipeStream;
-import model.VMQueueTime;
 import model.VirtualMachine;
 
 
@@ -73,17 +72,21 @@ public class VMQueue {
   	return jobs.get(queue).size();
   }
 
+  /**
+   * This determines the most available queued machine
+   * returns a job with an estimated time for the job to 
+   * complete
+   * @param stream
+   * @return a job
+   */
   private Job buildJob(NamedPipeStream stream) {
   	// Determine Queue
   	// Build Socket String
   	// Build and return job
   
-  	String[] result = determineQueue(stream.getBrowser(), stream.getBrowserVersion());
-  	assert result.length == 3;
-  	int queueNumber = Integer.parseInt(result[0]);
-  	String hostIP = result[1];
-  	String browser = result[2];
-  	
+  	int result = determineQueue(stream.getBrowser(), stream.getBrowserVersion());
+
+  	//TODO: Need to get a new time based on the browser time estimates?
   	String socketString = buildSocketString();
   	Job job = new Job(jobNumber++, socketString, stream.getTime(), queueNumber, hostIP);
   }
@@ -93,18 +96,16 @@ public class VMQueue {
 	 * @param subTest
 	 * @param browser
 	 * @param browserVersion
-	 * @return
+	 * @return int of vm_cloud id 
 	 * @throws SQLException 
 	 */
-	private String[] determineQueue(String browser, String browserVersion) throws SQLException {
+	private int determineQueue(String browser, String browserVersion) throws SQLException {
+		assert !browser.equalsIgnoreCase("any");
 		// TODO Auto-generated method stub
 		assert browser != null && browserVersion != null;
+		String[] results = new String[3];
 		List<VirtualMachine> limitedVms = null;
-		if (browser.equalsIgnoreCase("any")) {
-			//list vms = all
-			limitedVms = vms;
-			// find shortest vm_queue_time
-		} else if (!browser.equalsIgnoreCase("any") && browserVersion.equalsIgnoreCase("any")) {
+		if (!browser.equalsIgnoreCase("any") && browserVersion.equalsIgnoreCase("any")) {
 			// BUILD LIST OF ONLY MACHINES THIS WILL RUN ON
 			db.startTransaction();
 			limitedVms = db.getVirtualMachineDB().getByBrowser(browser);
@@ -114,14 +115,22 @@ public class VMQueue {
 			limitedVms = db.getVirtualMachineDB().getByBrowserAndVersion(browser, browserVersion);
 			db.endTransaction(true);
 		}
-		for (int i = 0; i < limitedVms.size(); i++) {
-			limitedVms.get(i)
+		// This filters the lowest of the queue to be the one the job gets submited too
+		double shortestTime = limitedVms.get(0).getCurrentQueueTime();
+		int vmId = 1;
+		for (int i = 1; i < limitedVms.size(); i++) {
+			if (limitedVms.get(i).isAvailable() == true && limitedVms.get(i).isInQueue() == true) {
+				if (limitedVms.get(i).getCurrentQueueTime() < shortestTime) {
+					shortestTime = limitedVms.get(i).getCurrentQueueTime();
+					vmId = limitedVms.get(i).getId();
+				}
+			}
 		}
 		
 	// build list of vm_queue_times that match previous list
 				// find shortest vm_queue_time
 		
 		//
-		return null;
+		return vmId;
 	}
 }

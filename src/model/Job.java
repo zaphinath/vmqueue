@@ -12,7 +12,7 @@ public class Job {
 
 	private int id;
 	private String message;
-	private long time;
+	private double time;
 	private int queue;
 	private String hostIP;
 	
@@ -74,14 +74,14 @@ public class Job {
 	/**
 	 * @return the time
 	 */
-	public long getTime() {
+	public double getTime() {
 		return time;
 	}
 
 	/**
 	 * @param time the time to set
 	 */
-	public void setTime(long time) {
+	public void setTime(double time) {
 		this.time = time;
 	}
 
