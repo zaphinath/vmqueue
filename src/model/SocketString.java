@@ -66,13 +66,13 @@ public class SocketString {
 	 * @param testPackage
 	 * @param testClass
 	 */
-	public SocketString(String handlerKey, String antCommand, String os,
+	public SocketString(String handlerKey, String os,
 			String browser, String browserVersion, URL url, String lmpUser,
 			String lmpPass, String sfUser, String sfPass, String email,
 			int queueNumber, double time, String testPackage, String testClass) {
 		super();
 		this.handlerKey = handlerKey;
-		this.antCommand = antCommand;
+		this.antCommand = buildAntCommand(testPackage, testClass);
 		this.os = os;
 		this.browser = browser;
 		this.browserVersion = browserVersion;
@@ -108,12 +108,20 @@ public class SocketString {
 	public String getAntCommand() {
 		return antCommand;
 	}
+	
+	/**
+	 * 
+	 * @param antCommand
+	 */
+	public void setAntCommand(String antCommand) {
+		this.antCommand = antCommand;
+	}
 
 	/**
 	 * @param antCommand the antCommand to set
 	 */
-	public void setAntCommand(String antCommand) {
-		this.antCommand = antCommand;
+	public String buildAntCommand(String testPackage, String testClass) {
+		return "ant -f build"+testPackage+".xml "+testPackage.toLowerCase()+"."+testClass;
 	}
 
 	/**
