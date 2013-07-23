@@ -306,6 +306,9 @@ public class SocketString {
 		this.testClass = testClass;
 	}
 
+	/**
+	 * Overrides to String - this is the string that gets serialized to send across the network
+	 */
 	@Override
 	public String toString() {
 		assert handlerKey != null;

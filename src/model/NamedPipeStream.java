@@ -8,8 +8,8 @@ package model;
  *
  */
 public class NamedPipeStream {
-	private String testCase;
-	private String subTest;
+	private String testPackage;
+	private String testClass;
 	private String os;
 	private String browser;
 	private String browserVersion;
@@ -34,8 +34,8 @@ public class NamedPipeStream {
 	 * @param input
 	 */
 	public NamedPipeStream(String[] input) {
-		this.testCase = input[0];
-		this.subTest = input[1];
+		this.testPackage = input[0];
+		this.testClass = input[1];
 		this.os = input[2];
 		this.browser = input[3];
 		this.browserVersion = input[4];
@@ -49,31 +49,31 @@ public class NamedPipeStream {
 	}
 
 	/**
-	 * @return the testCase
+	 * @return the testPackage
 	 */
-	public String getTestCase() {
-		return testCase;
+	public String getTestPackage() {
+		return testPackage;
 	}
 
 	/**
-	 * @param testCase the testCase to set
+	 * @param testPackage the testPackage to set
 	 */
-	public void setTestCase(String testCase) {
-		this.testCase = testCase;
+	public void setTestPackage(String testPackage) {
+		this.testPackage = testPackage;
 	}
 
 	/**
-	 * @return the subTest
+	 * @return the testClass
 	 */
-	public String getSubTest() {
-		return subTest;
+	public String getTestClass() {
+		return testClass;
 	}
 
 	/**
-	 * @param subTest the subTest to set
+	 * @param testClass the testClass to set
 	 */
-	public void setSubTest(String subTest) {
-		this.subTest = subTest;
+	public void setTestClass(String testClass) {
+		this.testClass = testClass;
 	}
 
 	/**

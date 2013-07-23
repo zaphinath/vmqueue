@@ -90,6 +90,10 @@ public class VMQueue {
 
   	//TODO: Need to get a new time based on the browser time estimates?
   	SocketString socketString = new SocketString();
+  	
+  	socketString.setAntCommand(socketString.buildAntCommand(stream.getTestPackage(), stream.getTestClass()));
+  	socketString.setOs(stream.getOs());
+  	socketString.setBrowser(stream.getBrowser());
   	Job job = new Job(jobNumber++, socketString.toString(), stream.getTime(), queueNumber, vms.get(queueNumber).getIP());
   	return job;
   }
