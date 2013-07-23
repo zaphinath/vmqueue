@@ -67,6 +67,7 @@ public class VMQueue {
    * @return
    */
   private int addToQueue(Job job) {
+  	//TODO: Need to update vm_queue_time as these add
   	int queue = job.getQueue();
   	jobs.get(queue).add(job);
   	return jobs.get(queue).size();
@@ -77,7 +78,7 @@ public class VMQueue {
   	// Build Socket String
   	// Build and return job
   
-  	String[] result = determineQueue(stream.getTestCase(), stream.getSubTest(), stream.getBrowser(), stream.getBrowserVersion());
+  	String[] result = determineQueue(stream.getBrowser(), stream.getBrowserVersion());
   	assert result.length == 3;
   	int queueNumber = Integer.parseInt(result[0]);
   	String hostIP = result[1];
@@ -94,9 +95,24 @@ public class VMQueue {
 	 * @param browserVersion
 	 * @return
 	 */
-	private String[] determineQueue(String testCase, String subTest,
-			String browser, String browserVersion) {
+	private String[] determineQueue(String browser, String browserVersion) {
 		// TODO Auto-generated method stub
+		// if browser = any (default bversion == any)
+		if (browser.equalsIgnoreCase("any")) {
+			// BUILD LIST OF ONLY MACHINES THIS WILL RUN ON
+			// build list of vm_queue_times that match previous list
+			// find shortest vm_queue_time
+		} else if (!browser.equalsIgnoreCase("any") && browserVersion.equalsIgnoreCase("any")) {
+			
+		} else {
+			//browser versions selected
+			
+		}
+		
+		
+		
+		
+		//
 		return null;
 	}
 }
