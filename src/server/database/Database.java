@@ -7,8 +7,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import model.VirtualMachine;
-
 /**
  * @author Derek Carr
  *
@@ -58,7 +56,7 @@ public class Database {
    * 
    * @return
    */
-  public BrowserDB getBrowser() {
+  public BrowserDB getBrowserDB() {
   	return this.browser;
   }
   
@@ -66,7 +64,7 @@ public class Database {
    * 
    * @return
    */
-  public VirtualMachineDB getVirtualMachine() {
+  public VirtualMachineDB getVirtualMachineDB() {
   	return this.virtualMachine;
   }
   

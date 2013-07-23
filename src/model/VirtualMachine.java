@@ -13,7 +13,7 @@ public class VirtualMachine {
 	
 	private int id;
 	private String hostname;
-	private String os;
+	private int osId;
 	private String IP;
 	private int height;
 	private boolean available;
@@ -27,7 +27,7 @@ public class VirtualMachine {
 	public VirtualMachine(){
 		this.id = -1;
 		this.hostname = null;
-		this.os = null;
+		this.osId = -1;
 		this.IP = null;
 		this.height = -1;
 		this.available = false;
@@ -46,13 +46,12 @@ public class VirtualMachine {
 	 * @param availabe
 	 * @param inQueue
 	 */
-	public VirtualMachine(int id, String hostname, String os, String IP, int height, 
-												boolean available, boolean inQueue, Date modifiedDate, Date createdDate) {
+	public VirtualMachine(int id, String hostname, String IP, int osId, boolean available, boolean inQueue, Date modifiedDate, Date createdDate) {
 		this.id = id;
 		this.hostname = hostname;
-		this.os = os;
+		this.osId = osId;
 		this.IP = IP;
-		this.height = height;
+		this.height = 0;
 		this.available = available;
 		this.inQueue = inQueue;
 		this.modifiedDate = modifiedDate;
@@ -118,15 +117,15 @@ public class VirtualMachine {
 	/**
 	 * @return the os
 	 */
-	public String getOs() {
-		return os;
+	public int getOs() {
+		return osId;
 	}
 
 	/**
 	 * @param os the os to set
 	 */
-	public void setOs(String os) {
-		this.os = os;
+	public void setOs(int osId) {
+		this.osId = osId;
 	}
 
 	/**
