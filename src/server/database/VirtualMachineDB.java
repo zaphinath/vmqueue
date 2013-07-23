@@ -85,5 +85,47 @@ public class VirtualMachineDB {
     }
     return vm;
 	}
+	
+	public boolean getVMAvailable(int id) throws SQLException {
+		PreparedStatement stmt = null;
+    ResultSet rs = null;
+    boolean available = false;
+    try {
+    	String sql = "SELECT * FROM vm_cloud where id = ?";
+    	stmt = db.getConnection().prepareStatement(sql);
+    	stmt.setInt(1, id);
+    	rs = stmt.executeQuery();
+    	while (rs.next())	{
+    		available = rs.getBoolean(5);
+    	}
+    } catch (SQLException e) {
+    	
+    } finally {
+    	if (rs != null) rs.close();
+    	if (stmt != null) stmt.close();
+    }
+    return available;
+	}
+	
+	public boolean getInQueue(int id) throws SQLException {
+		PreparedStatement stmt = null;
+    ResultSet rs = null;
+    boolean inQueue = false;
+    try {
+    	String sql = "SELECT * FROM vm_cloud where id = ?";
+    	stmt = db.getConnection().prepareStatement(sql);
+    	stmt.setInt(1, id);
+    	rs = stmt.executeQuery();
+    	while (rs.next())	{
+    		inQueue = rs.getBoolean(6);
+    	}
+    } catch (SQLException e) {
+    	
+    } finally {
+    	if (rs != null) rs.close();
+    	if (stmt != null) stmt.close();
+    }
+    return inQueue;
+	}
 
 }

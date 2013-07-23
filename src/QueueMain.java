@@ -19,6 +19,7 @@ public class QueueMain {
   	while(true) {
   		NamedPipeStream stream = pipe.readPipe();
   		Thread.sleep(1000);
+  		// Loop through queue and process jobs
   	}
   }
 }
