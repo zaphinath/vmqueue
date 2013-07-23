@@ -276,6 +276,8 @@ CREATE TABLE `vm_cloud` (
   `vm_os_id` int(11) DEFAULT NULL,
   `available` tinyint(1) DEFAULT '0',
   `inQueue` tinyint(1) DEFAULT '0',
+  `time` decimal(60,2) DEFAULT '0.00',
+  `num_jobs` int(11) DEFAULT '0',
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modified_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)

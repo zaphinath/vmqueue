@@ -6,7 +6,7 @@ package model;
 import java.net.URL;
 
 /**
- * @author Bryce
+ * @author Derek Carr
  *
  */
 public class SocketString {

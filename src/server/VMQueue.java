@@ -10,6 +10,7 @@ import server.database.Database;
 
 import model.Job;
 import model.NamedPipeStream;
+import model.SocketString;
 import model.VirtualMachine;
 
 
@@ -78,8 +79,9 @@ public class VMQueue {
    * complete
    * @param stream
    * @return a job
+   * @throws SQLException 
    */
-  private Job buildJob(NamedPipeStream stream) {
+  private Job buildJob(NamedPipeStream stream) throws SQLException {
   	// Determine Queue
   	// Build Socket String
   	// Build and return job
@@ -87,8 +89,9 @@ public class VMQueue {
   	int queueNumber = determineQueue(stream.getBrowser(), stream.getBrowserVersion());
 
   	//TODO: Need to get a new time based on the browser time estimates?
-  	String socketString = buildSocketString();
-  	Job job = new Job(jobNumber++, socketString, stream.getTime(), queueNumber, vms.get(queueNumber).getIP());
+  	SocketString socketString = new SocketString();
+  	Job job = new Job(jobNumber++, socketString.toString(), stream.getTime(), queueNumber, vms.get(queueNumber).getIP());
+  	return job;
   }
 
 	/**
@@ -96,7 +99,7 @@ public class VMQueue {
 	 * @param subTest
 	 * @param browser
 	 * @param browserVersion
-	 * @return int of vm_cloud id 
+	 * @return integer of vm_cloud id 
 	 * @throws SQLException 
 	 */
 	private int determineQueue(String browser, String browserVersion) throws SQLException {
