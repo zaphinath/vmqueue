@@ -55,5 +55,35 @@ public class VirtualMachineDB {
     }
 		return VMList;
 	}
+	
+	public VirtualMachine getVirtualMachine(int id) throws SQLException {
+		PreparedStatement stmt = null;
+    ResultSet rs = null;
+    VirtualMachine vm = null;
+    try {
+    	String sql = "SELECT * FROM vm_cloud where id = ?";
+    	stmt = db.getConnection().prepareStatement(sql);
+    	stmt.setInt(1, id);
+    	rs = stmt.executeQuery();
+    	while (rs.next()) {
+    		int vid = rs.getInt(1);
+    		String hostname = rs.getString(2);
+    		String ip = rs.getString(3);
+    		int osId = rs.getInt(4);
+    		boolean available = rs.getBoolean(5);
+    		boolean inQueue = rs.getBoolean(6);
+    		Date createdDate = rs.getDate(7);
+    		Date modifiedDate = rs.getDate(8);
+    		
+    		vm = new VirtualMachine(vid, hostname, ip, osId, available, inQueue, modifiedDate, createdDate);
+    	}
+    } catch (SQLException e) {
+    	
+    } finally {
+    	if (rs != null) rs.close();
+    	if (stmt != null) stmt.close();
+    }
+    return vm;
+	}
 
 }

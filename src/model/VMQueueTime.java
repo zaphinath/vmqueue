@@ -6,7 +6,7 @@ package model;
 import java.util.Date;
 
 /**
- * @author Bryce
+ * @author Derek Carr
  *
  */
 public class VMQueueTime {
