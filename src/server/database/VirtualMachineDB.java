@@ -41,10 +41,11 @@ public class VirtualMachineDB {
     		int osId = rs.getInt(4);
     		boolean available = rs.getBoolean(5);
     		boolean inQueue = rs.getBoolean(6);
-    		Date createdDate = rs.getDate(7);
-    		Date modifiedDate = rs.getDate(8);
-    		
-    		VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue, modifiedDate, createdDate);
+    		double qTime = rs.getDouble(7);
+    		int numJobs = rs.getInt(8);
+    		Date createdDate = rs.getDate(9);
+    		Date modifiedDate = rs.getDate(10);
+    		VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue, qTime, numJobs, modifiedDate, createdDate);
     		VMList.add(vm);
     	}
     } catch (SQLException e) {
@@ -56,7 +57,9 @@ public class VirtualMachineDB {
 		return VMList;
 	}
 	
+	@SuppressWarnings("null")
 	public List<VirtualMachine> getByBrowser(String browser) throws SQLException {
+		assert browser != null;
 		ArrayList<VirtualMachine> VMList = new ArrayList<VirtualMachine>();
 		PreparedStatement stmt = null;
     ResultSet rs = null;
@@ -76,10 +79,54 @@ public class VirtualMachineDB {
     		int osId = rs.getInt(4);
     		boolean available = rs.getBoolean(5);
     		boolean inQueue = rs.getBoolean(6);
-    		Date createdDate = rs.getDate(7);
-    		Date modifiedDate = rs.getDate(8);
+    		double qTime = rs.getDouble(7);
+    		int numJobs = rs.getInt(8);
+    		Date createdDate = rs.getDate(9);
+    		Date modifiedDate = rs.getDate(10);
     		
-    		VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue, modifiedDate, createdDate);
+    		VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue,
+    				qTime, numJobs, modifiedDate, createdDate);
+    		VMList.add(vm);
+    	}
+    } catch (SQLException e) {
+    	
+    } finally {
+    	if (rs != null) rs.close();
+    	if (stmt != null) stmt.close();
+    }
+		return VMList;
+	}
+	
+	@SuppressWarnings("null")
+	public List<VirtualMachine> getByBrowserAndVersion(String browser, String version) throws SQLException {
+		assert browser!=null && version!=null;
+		ArrayList<VirtualMachine> VMList = new ArrayList<VirtualMachine>();
+		PreparedStatement stmt = null;
+    ResultSet rs = null;
+    try {
+    	String sql = "SELECT * FROM vm_cloud a " +
+    							 "INNER JOIN vm_cloud2browser b ON b.vm_cloud_id = a.id " +
+    							 "INNER JOIN vm_browsers c ON b.vm_browser_id = c.id " +
+    							 "WHERE c.name = ? and c.version = ?";
+    	stmt.setString(1, browser);
+    	stmt.setString(2, version);
+    	stmt = db.getConnection().prepareStatement(sql);
+    	
+    	rs = stmt.executeQuery();
+    	while (rs.next()) {
+    		int id = rs.getInt(1);
+    		String hostname = rs.getString(2);
+    		String ip = rs.getString(3);
+    		int osId = rs.getInt(4);
+    		boolean available = rs.getBoolean(5);
+    		boolean inQueue = rs.getBoolean(6);
+    		double qTime = rs.getDouble(7);
+    		int numJobs = rs.getInt(8);
+    		Date createdDate = rs.getDate(9);
+    		Date modifiedDate = rs.getDate(10);
+    		
+    		VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue, 
+    				qTime, numJobs, modifiedDate, createdDate);
     		VMList.add(vm);
     	}
     } catch (SQLException e) {
@@ -107,10 +154,13 @@ public class VirtualMachineDB {
     		int osId = rs.getInt(4);
     		boolean available = rs.getBoolean(5);
     		boolean inQueue = rs.getBoolean(6);
-    		Date createdDate = rs.getDate(7);
-    		Date modifiedDate = rs.getDate(8);
+    		double qTime = rs.getDouble(7);
+    		int numJobs = rs.getInt(8);
+    		Date createdDate = rs.getDate(9);
+    		Date modifiedDate = rs.getDate(10);
     		
-    		vm = new VirtualMachine(vid, hostname, ip, osId, available, inQueue, modifiedDate, createdDate);
+    		vm = new VirtualMachine(vid, hostname, ip, osId, available, inQueue, 
+    				qTime, numJobs, modifiedDate, createdDate);
     	}
     } catch (SQLException e) {
     	

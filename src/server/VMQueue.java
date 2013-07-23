@@ -3,6 +3,7 @@ package server;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import server.database.Database;
@@ -18,7 +19,6 @@ public class VMQueue {
 	
 	private ArrayList<Queue<Job>> jobs;
 	private ArrayList<VirtualMachine> vms;
-	private ArrayList<VMQueueTime> queueTimes;
 	
 	private Database db;
 	
@@ -94,23 +94,32 @@ public class VMQueue {
 	 * @param browser
 	 * @param browserVersion
 	 * @return
+	 * @throws SQLException 
 	 */
-	private String[] determineQueue(String browser, String browserVersion) {
+	private String[] determineQueue(String browser, String browserVersion) throws SQLException {
 		// TODO Auto-generated method stub
-		// if browser = any (default bversion == any)
+		assert browser != null && browserVersion != null;
+		List<VirtualMachine> limitedVms = null;
 		if (browser.equalsIgnoreCase("any")) {
-			// BUILD LIST OF ONLY MACHINES THIS WILL RUN ON
-			// build list of vm_queue_times that match previous list
+			//list vms = all
+			limitedVms = vms;
 			// find shortest vm_queue_time
 		} else if (!browser.equalsIgnoreCase("any") && browserVersion.equalsIgnoreCase("any")) {
-			
+			// BUILD LIST OF ONLY MACHINES THIS WILL RUN ON
+			db.startTransaction();
+			limitedVms = db.getVirtualMachineDB().getByBrowser(browser);
+			db.endTransaction(true);
 		} else {
-			//browser versions selected
-			
+			db.startTransaction();
+			limitedVms = db.getVirtualMachineDB().getByBrowserAndVersion(browser, browserVersion);
+			db.endTransaction(true);
+		}
+		for (int i = 0; i < limitedVms.size(); i++) {
+			limitedVms.get(i)
 		}
 		
-		
-		
+	// build list of vm_queue_times that match previous list
+				// find shortest vm_queue_time
 		
 		//
 		return null;

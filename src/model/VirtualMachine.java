@@ -3,6 +3,7 @@
  */
 package model;
 
+import java.sql.Time;
 import java.util.Date;
 
 /**
@@ -18,6 +19,8 @@ public class VirtualMachine {
 	private int height;
 	private boolean available;
 	private boolean inQueue;
+	private double currentQueueTime;
+	private int numberQueueJobs;
 	private Date modifiedDate;
 	private Date createdDate;
 	
@@ -32,6 +35,8 @@ public class VirtualMachine {
 		this.height = -1;
 		this.available = false;
 		this.inQueue = false;
+		this.currentQueueTime = 0;
+		this.numberQueueJobs = 0;
 		this.modifiedDate = null;
 		this.createdDate = null;
 	}
@@ -46,7 +51,8 @@ public class VirtualMachine {
 	 * @param availabe
 	 * @param inQueue
 	 */
-	public VirtualMachine(int id, String hostname, String IP, int osId, boolean available, boolean inQueue, Date modifiedDate, Date createdDate) {
+	public VirtualMachine(int id, String hostname, String IP, int osId, boolean available, boolean inQueue,
+			double curTime, int numJobs, Date modifiedDate, Date createdDate) {
 		this.id = id;
 		this.hostname = hostname;
 		this.osId = osId;
@@ -54,6 +60,8 @@ public class VirtualMachine {
 		this.height = 0;
 		this.available = available;
 		this.inQueue = inQueue;
+		this.currentQueueTime = curTime;
+		this.numberQueueJobs = numJobs;
 		this.modifiedDate = modifiedDate;
 		this.createdDate = createdDate;
 	}
@@ -182,6 +190,48 @@ public class VirtualMachine {
 	 */
 	public void setInQueue(boolean inQueue) {
 		this.inQueue = inQueue;
+	}
+
+	/**
+	 * @return the osId
+	 */
+	public int getOsId() {
+		return osId;
+	}
+
+	/**
+	 * @param osId the osId to set
+	 */
+	public void setOsId(int osId) {
+		this.osId = osId;
+	}
+
+	/**
+	 * @return the currentQueueTime
+	 */
+	public double getCurrentQueueTime() {
+		return currentQueueTime;
+	}
+
+	/**
+	 * @param currentQueueTime the currentQueueTime to set
+	 */
+	public void setCurrentQueueTime(double currentQueueTime) {
+		this.currentQueueTime = currentQueueTime;
+	}
+
+	/**
+	 * @return the numberQueueJobs
+	 */
+	public int getNumberQueueJobs() {
+		return numberQueueJobs;
+	}
+
+	/**
+	 * @param numberQueueJobs the numberQueueJobs to set
+	 */
+	public void setNumberQueueJobs(int numberQueueJobs) {
+		this.numberQueueJobs = numberQueueJobs;
 	}
 
 	
