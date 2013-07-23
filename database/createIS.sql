@@ -318,23 +318,6 @@ CREATE TABLE `vm_os` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `vm_queue_time`
---
-
-DROP TABLE IF EXISTS `vm_queue_time`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `vm_queue_time` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `time` decimal(60,2) DEFAULT '0.00',
-  `num_jobs` int(11) DEFAULT '0',
-  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `modified_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `vm_subtests`
 --
 
