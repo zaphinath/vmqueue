@@ -1,5 +1,11 @@
 package server;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.Socket;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -8,6 +14,7 @@ import java.util.Queue;
 
 import server.database.Database;
 
+import model.Browser;
 import model.Job;
 import model.NamedPipeStream;
 import model.SocketString;
@@ -23,6 +30,7 @@ public class VMQueue {
 	private Database db;
 	
 	private int jobNumber;
+	private static int PORT = 4445;
 
   public VMQueue() {
   	Database.initialize();
@@ -42,8 +50,16 @@ public class VMQueue {
   }
 
   
-  public void sendSocketStream(String message, String hostIP) {
-  	
+  public void processQueue() throws SQLException {
+  	for (int i = 0; i < jobs.size(); i++){
+  		db.startTransaction();
+  		VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(jobs.get(i).peek().getQueue());
+  		db.endTransaction(true);
+  		if (vm.isAvailable() && vm.isInQueue()) {
+  			Job job = jobs.get(i).remove();
+  			sendSocketStream(job);
+  		}
+  	}
   }
   
   public boolean isAvailable(int id) throws SQLException {
@@ -66,7 +82,7 @@ public class VMQueue {
    * @param job
    * @return
    */
-  private int addToQueue(Job job) {
+  public int addToQueue(Job job) {
   	//TODO: Need to update vm_queue_time as these add
   	int queue = job.getQueue();
   	jobs.get(queue).add(job);
@@ -81,7 +97,7 @@ public class VMQueue {
    * @return a job
    * @throws SQLException 
    */
-  private Job buildJob(NamedPipeStream stream) throws SQLException {
+  public Job buildJob(NamedPipeStream stream) throws SQLException {
   	// Determine Queue
   	// Build Socket String
   	// Build and return job
@@ -89,7 +105,7 @@ public class VMQueue {
   	int queueNumber = determineQueue(stream.getBrowser(), stream.getBrowserVersion());
 
   	//TODO: Need to get a new time based on the browser time estimates?
-  	SocketString socketString = new SocketString();
+  	SocketString socketString = buildSocketString(queueNumber, stream);
   	
   	socketString.setAntCommand(socketString.buildAntCommand(stream.getTestPackage(), stream.getTestClass()));
   	socketString.setOs(stream.getOs());
@@ -97,6 +113,67 @@ public class VMQueue {
   	Job job = new Job(jobNumber++, socketString.toString(), stream.getTime(), queueNumber, vms.get(queueNumber).getIP());
   	return job;
   }
+
+	/**
+	 * @param queueNumber
+	 * @param stream
+	 * @return
+	 */
+	private SocketString buildSocketString(int queueNumber, NamedPipeStream stream) {
+		SocketString socketString = new SocketString();
+		
+  	try {
+  		socketString.setAntCommand(socketString.buildAntCommand(stream.getTestPackage(), stream.getTestClass()));
+  		socketString.setOs(stream.getOs());
+  		
+  		db.startTransaction();
+  		Browser browser = db.getBrowserDB().getBrowserVersionById(queueNumber, stream.getBrowser());
+  		db.endTransaction(true);
+  		
+  		socketString.setBrowser(browser.getBrowserName());
+  		socketString.setBrowserVersion(browser.getBrowserVersion());
+			socketString.setUrl(new URL(stream.getUrl()));
+			socketString.setLmpUser(stream.getLmpUsername());
+			socketString.setLmpPass(stream.getLmpPassword());
+			socketString.setSfUser(stream.getSfUsername());
+			socketString.setSfPass(stream.getSfPassword());
+			
+			socketString.setEmail(stream.getEmail());
+			socketString.setQueueNumber(queueNumber);
+			socketString.setTime(stream.getTime());
+			socketString.setTestPackage(stream.getTestPackage());
+			socketString.setTestClass(stream.getTestClass());
+			
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+  	
+
+		return socketString;
+	}
+
+	
+	private void sendSocketStream(Job job) {
+		Socket socket = null;
+		PrintWriter out = null;
+		try {
+			socket = new Socket(job.getHostIP(), PORT);
+			out = new PrintWriter(socket.getOutputStream(), true);
+			out.print(job.getMessage());
+			System.out.println(job.getMessage());
+		} catch (Exception e) {
+			
+		} finally {
+			try {socket.close();} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 
 	/**
 	 * @param testCase
