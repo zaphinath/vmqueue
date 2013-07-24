@@ -35,7 +35,7 @@ public class Job {
 	 * @param queue
 	 * @param hostIP
 	 */
-	public Job(int id, String message, long time, int queue, String hostIP) {
+	public Job(int id, String message, double time, int queue, String hostIP) {
 		this.id = id;
 		this.message = message;
 		this.time = time;

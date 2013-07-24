@@ -68,9 +68,9 @@ public class VirtualMachineDB {
     							 "INNER JOIN vm_cloud2browser b ON b.vm_cloud_id = a.id " +
     							 "INNER JOIN vm_browsers c ON b.vm_browser_id = c.id " +
     							 "WHERE c.name = ?";
-    	stmt.setString(1, browser);
     	stmt = db.getConnection().prepareStatement(sql);
-    	
+    	stmt.setString(1, browser);
+
     	rs = stmt.executeQuery();
     	while (rs.next()) {
     		int id = rs.getInt(1);

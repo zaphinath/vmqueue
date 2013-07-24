@@ -194,11 +194,13 @@ public class VMQueue {
 			System.out.println("browser: "+browser);
       limitedVms = db.getVirtualMachineDB().getByBrowser(browser);
 			db.endTransaction(true);
+			System.out.println("FOO FIGHT" + limitedVms.size());
 		} else {
 			db.startTransaction();
 			limitedVms = db.getVirtualMachineDB().getByBrowserAndVersion(browser, browserVersion);
 			db.endTransaction(true);
 		}
+		assert limitedVms != null && limitedVms.size() > 0;
 		// This filters the lowest of the queue to be the one the job gets submited too
 		double shortestTime = limitedVms.get(0).getCurrentQueueTime();
 		int vmId = 1;
