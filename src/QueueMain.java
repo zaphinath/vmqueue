@@ -22,9 +22,11 @@ public class QueueMain {
   	
   	while(true) {
   		NamedPipeStream stream = pipe.readPipe();
-  		Job job = queue.buildJob(stream);
-  		queue.addToQueue(job);
-  		queue.processQueue();
+  		if (stream != null) {
+        Job job = queue.buildJob(stream);
+    		queue.addToQueue(job);
+  		}
+      queue.processQueue();
   		Thread.sleep(1000);
   		// Loop through queue and process jobs
   	}

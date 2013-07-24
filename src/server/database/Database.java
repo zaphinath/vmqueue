@@ -24,6 +24,8 @@ public class Database {
 	private String connectionURL;
 	private String dbUser = "root";
 	private String dbPass = "plopper2";
+  private String serverName;
+  private String databaseName;
 	private static String driver = "com.mysql.jdbc.Driver";
 	
 	public Database(String env) {
@@ -35,7 +37,9 @@ public class Database {
 			this.dbName = null;
 			this.connectionURL = null;
 		} else if (env.equalsIgnoreCase("prod")) {
-			this.connectionURL = "jdbc:mysql//localhost/insidesales";
+      this.serverName = "10.0.10.53";
+      this.databaseName = "insidesales";
+			this.connectionURL = "jdbc:mysql://"+serverName+"/"+databaseName;
 		} else {
 			
 		}
@@ -78,7 +82,8 @@ public class Database {
    * @throws SQLException
    */
   public void startTransaction() throws SQLException {
-  	connection = DriverManager.getConnection(connectionURL);
+  	System.out.println(connectionURL);
+    connection = DriverManager.getConnection(connectionURL, dbUser, dbPass);
 		connection.setAutoCommit(false);
   }
   

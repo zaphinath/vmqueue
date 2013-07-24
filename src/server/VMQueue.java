@@ -98,7 +98,8 @@ public class VMQueue {
    * @throws SQLException 
    */
   public Job buildJob(NamedPipeStream stream) throws SQLException {
-  	// Determine Queue
+  	assert stream != null;
+    // Determine Queue
   	// Build Socket String
   	// Build and return job
   
