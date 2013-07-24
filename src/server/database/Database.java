@@ -22,6 +22,8 @@ public class Database {
 	private String dbFile;
 	private String dbName;
 	private String connectionURL;
+	private String dbUser = "root";
+	private String dbPass = "plopper2";
 	private static String driver = "com.mysql.jdbc.Driver";
 	
 	public Database(String env) {
@@ -30,7 +32,13 @@ public class Database {
 			this.dbName = null;
 			this.connectionURL = null;
 		} else if (env.equalsIgnoreCase("prod")) {
-			
+			try {
+				this.connectionURL = "jdbc:mysql//localhost/insidesales";
+				connection = DriverManager.getConnection(connectionURL, dbUser, dbPass);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 			
 		}
