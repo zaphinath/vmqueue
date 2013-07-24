@@ -191,7 +191,8 @@ public class VMQueue {
 		if (!browser.equalsIgnoreCase("any") && browserVersion.equalsIgnoreCase("any")) {
 			// BUILD LIST OF ONLY MACHINES THIS WILL RUN ON
 			db.startTransaction();
-			limitedVms = db.getVirtualMachineDB().getByBrowser(browser);
+			System.out.println("browser: "+browser);
+      limitedVms = db.getVirtualMachineDB().getByBrowser(browser);
 			db.endTransaction(true);
 		} else {
 			db.startTransaction();

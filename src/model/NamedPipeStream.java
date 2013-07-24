@@ -19,7 +19,7 @@ public class NamedPipeStream {
 	private String sfUsername;
 	private String sfPassword;
 	private String email;
-	private long time;
+	private double time;
 	
 	/**
 	 * Class Constructor
@@ -48,7 +48,7 @@ public class NamedPipeStream {
 		this.sfUsername = input[8];
 		this.sfPassword = input[9];
 		this.email = input[10];
-		this.time = Long.parseLong(input[11]);
+		this.time = Double.parseDouble(input[11]);
 	}
 
 	/**
@@ -208,14 +208,14 @@ public class NamedPipeStream {
 	/**
 	 * @return the time
 	 */
-	public long getTime() {
+	public double getTime() {
 		return time;
 	}
 
 	/**
 	 * @param time the time to set
 	 */
-	public void setTime(long time) {
+	public void setTime(double time) {
 		this.time = time;
 	}
 	

@@ -18,7 +18,9 @@ public class NamedPipe {
 	
 	public NamedPipe() throws FileNotFoundException {
 		try {
-			Runtime.getRuntime().exec("rm pipe && mkfifo pipe");
+			Runtime.getRuntime().exec("rm pipe");
+			Runtime.getRuntime().exec("chmod 666 pipe");
+			Runtime.getRuntime().exec("mkfifo pipe");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
