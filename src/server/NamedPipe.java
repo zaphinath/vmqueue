@@ -17,18 +17,23 @@ public class NamedPipe {
 	private RandomAccessFile pipe;
 	
 	public NamedPipe() throws FileNotFoundException {
+		try {
+			Runtime.getRuntime().exec("rm pipe && mkfifo pipe");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		pipe = new RandomAccessFile("./pipe", "rw");		
 	}
 
 	public NamedPipeStream readPipe() throws IOException {
 		String next =  pipe.readLine();
-		String[] tmpString;
+
 		NamedPipeStream stream;
 		if (next != null) {
-			tmpString = next.split(",");
-			stream = new NamedPipeStream(tmpString);
+
+			stream = new NamedPipeStream(next);
 		} else {
-			tmpString = null;
+			next = null;
 			stream = null;
 		}
 		return stream;

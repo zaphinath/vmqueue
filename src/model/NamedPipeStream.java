@@ -33,7 +33,10 @@ public class NamedPipeStream {
 	 * 
 	 * @param input
 	 */
-	public NamedPipeStream(String[] input) {
+	public NamedPipeStream(String stream) {
+		assert stream != null;
+		System.out.println(stream);
+		String[] input = stream.split(",");
 		this.testPackage = input[0];
 		this.testClass = input[1];
 		this.os = input[2];
