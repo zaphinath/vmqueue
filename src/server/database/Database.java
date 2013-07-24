@@ -27,18 +27,15 @@ public class Database {
 	private static String driver = "com.mysql.jdbc.Driver";
 	
 	public Database(String env) {
+		browser = new BrowserDB(this);
+		virtualMachine = new VirtualMachineDB(this);
+		
 		if (env.equalsIgnoreCase("test")) {
 			this.dbFile = null;
 			this.dbName = null;
 			this.connectionURL = null;
 		} else if (env.equalsIgnoreCase("prod")) {
-			try {
-				this.connectionURL = "jdbc:mysql//localhost/insidesales";
-				connection = DriverManager.getConnection(connectionURL, dbUser, dbPass);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			this.connectionURL = "jdbc:mysql//localhost/insidesales";
 		} else {
 			
 		}
