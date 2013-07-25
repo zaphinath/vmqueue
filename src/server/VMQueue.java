@@ -134,9 +134,7 @@ public class VMQueue {
 	private SocketString buildSocketString(int queueNumber, NamedPipeStream stream) {
 		SocketString socketString = new SocketString();
 		//System.out.println("Queue: " + queueNumber + stream.toString());
-  	try {
-  		socketString.setAntCommand(socketString.buildAntCommand(stream.getTestPackage(), stream.getTestClass()));
-  		
+  	try {  		
   		db.startTransaction();
   		Browser browser = db.getBrowserDB().getBrowserVersionById(queueNumber, stream.getBrowser());
   		VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(queueNumber);
@@ -152,7 +150,7 @@ public class VMQueue {
 			socketString.setLmpPass(stream.getLmpPassword());
 			socketString.setSfUser(stream.getSfUsername());
 			socketString.setSfPass(stream.getSfPassword());
-			
+  		socketString.setAntCommand(socketString.buildAntCommand(stream.getTestPackage(), stream.getTestClass()));
 			socketString.setEmail(stream.getEmail());
 			socketString.setQueueNumber(queueNumber);
 			socketString.setTime(stream.getTime());

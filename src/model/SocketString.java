@@ -118,7 +118,8 @@ public class SocketString {
 	 * @param antCommand the antCommand to set
 	 */
 	public String buildAntCommand(String testPackage, String testClass) {
-		return "ant -f build"+testPackage+".xml "+testPackage.toLowerCase()+"."+testClass;
+		assert this.browser != null;
+		return "ant -DBROWSER="+this.browser.toLowerCase()+" -f build"+testPackage+".xml "+testPackage.toLowerCase()+"."+testClass;
 	}
 
 	/**
