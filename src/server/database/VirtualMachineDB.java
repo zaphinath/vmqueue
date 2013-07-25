@@ -149,7 +149,7 @@ public class VirtualMachineDB {
 		return VMList;
 	}
 	
-	public VirtualMachine getVirtualMachine(int id) throws SQLException {
+	public VirtualMachine getVirtualMachine(int id) {
 		PreparedStatement stmt = null;
     ResultSet rs = null;
     VirtualMachine vm = null;
@@ -176,8 +176,12 @@ public class VirtualMachineDB {
     } catch (SQLException e) {
     	
     } finally {
-    	if (rs != null) rs.close();
-    	if (stmt != null) stmt.close();
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
     }
     return vm;
 	}

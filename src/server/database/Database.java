@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import model.OperatingSystem;
+
 /**
  * @author Derek Carr
  *
@@ -16,6 +18,7 @@ public class Database {
 	private BrowserDB browser;
 	private JobDB job;
 	private VirtualMachineDB virtualMachine;
+	private OperatingSystemDB os;
 	
 	private Connection connection;
 	
@@ -29,8 +32,9 @@ public class Database {
 	private static String driver = "com.mysql.jdbc.Driver";
 	
 	public Database(String env) {
-		browser = new BrowserDB(this);
-		virtualMachine = new VirtualMachineDB(this);
+		this.browser = new BrowserDB(this);
+		this.virtualMachine = new VirtualMachineDB(this);
+		this.os = new OperatingSystemDB(this);
 		
 		if (env.equalsIgnoreCase("test")) {
 			this.dbFile = null;
@@ -76,6 +80,14 @@ public class Database {
    */
   public VirtualMachineDB getVirtualMachineDB() {
   	return this.virtualMachine;
+  }
+  
+  /**
+   * 
+   * @return
+   */
+  public OperatingSystemDB getOSDB() {
+  	return this.os;
   }
   
   /**

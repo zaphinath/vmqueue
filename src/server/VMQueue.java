@@ -1,6 +1,8 @@
 package server;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.Socket;
@@ -17,6 +19,7 @@ import server.database.Database;
 import model.Browser;
 import model.Job;
 import model.NamedPipeStream;
+import model.OperatingSystem;
 import model.SocketString;
 import model.VirtualMachine;
 
@@ -119,8 +122,6 @@ public class VMQueue {
   	SocketString socketString = buildSocketString(queueNumber, stream);
   	
   	socketString.setAntCommand(socketString.buildAntCommand(stream.getTestPackage(), stream.getTestClass()));
-  	socketString.setOs(stream.getOs());
-  	socketString.setBrowser(stream.getBrowser());
   	Job job = new Job(jobNumber++, socketString.toString(), stream.getTime(), queueNumber, vm.getIP());
   	return job;
   }
@@ -135,13 +136,15 @@ public class VMQueue {
 		//System.out.println("Queue: " + queueNumber + stream.toString());
   	try {
   		socketString.setAntCommand(socketString.buildAntCommand(stream.getTestPackage(), stream.getTestClass()));
-  		socketString.setOs(stream.getOs());
   		
   		db.startTransaction();
   		Browser browser = db.getBrowserDB().getBrowserVersionById(queueNumber, stream.getBrowser());
+  		VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(queueNumber);
+  		OperatingSystem os = db.getOSDB().getOSById(vm.getOsId());
   		db.endTransaction(true);
   		
-  		System.out.println(browser.toString());
+  		socketString.setOs(os.getName());
+  		System.out.println(os.toString());
   		socketString.setBrowser(browser.getBrowserName());
   		socketString.setBrowserVersion(browser.getBrowserVersion());
 			socketString.setUrl(new URL(stream.getUrl()));
@@ -167,12 +170,14 @@ public class VMQueue {
 	
 	private void sendSocketStream(Job job) {
 		Socket socket = null;
-		PrintWriter out = null;
+		BufferedWriter bufOut = null;
 		System.out.println(job.toString());
 		try {
 			socket = new Socket(job.getHostIP(), PORT);
-			out = new PrintWriter(socket.getOutputStream(), true);
-			out.print(job.getMessage());
+			bufOut = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			bufOut.write(job.getMessage());
+			bufOut.newLine();
+			bufOut.flush();
 			System.out.println(job.getMessage());
 		} catch (Exception e) {
 			
