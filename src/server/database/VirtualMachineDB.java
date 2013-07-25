@@ -6,8 +6,8 @@ package server.database;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import model.VirtualMachine;
@@ -43,8 +43,8 @@ public class VirtualMachineDB {
     		boolean inQueue = rs.getBoolean(6);
     		double qTime = rs.getDouble(7);
     		int numJobs = rs.getInt(8);
-    		Date createdDate = rs.getDate(9);
-    		Date modifiedDate = rs.getDate(10);
+    		Timestamp createdDate = rs.getTimestamp(9);
+    		Timestamp modifiedDate = rs.getTimestamp(10);
     		VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue, qTime, numJobs, modifiedDate, createdDate);
     		VMList.add(vm);
     	}
@@ -57,8 +57,7 @@ public class VirtualMachineDB {
 		return VMList;
 	}
 	
-	@SuppressWarnings("null")
-	public List<VirtualMachine> getByBrowser(String browser) throws SQLException {
+	public List<VirtualMachine> getByBrowser(String browser, boolean isInQueue) throws SQLException {
 		assert browser != null;
 		ArrayList<VirtualMachine> VMList = new ArrayList<VirtualMachine>();
 		PreparedStatement stmt = null;
@@ -81,12 +80,18 @@ public class VirtualMachineDB {
     		boolean inQueue = rs.getBoolean(6);
     		double qTime = rs.getDouble(7);
     		int numJobs = rs.getInt(8);
-    		Date createdDate = rs.getDate(9);
-    		Date modifiedDate = rs.getDate(10);
+    		Timestamp createdDate = rs.getTimestamp(9);
+    		Timestamp modifiedDate = rs.getTimestamp(10);
     		
     		VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue,
     				qTime, numJobs, modifiedDate, createdDate);
-    		VMList.add(vm);
+    		if (isInQueue) {
+    			if (inQueue) {
+        		VMList.add(vm);
+    			}
+    		} else {
+      		VMList.add(vm);
+    		}
     	}
     } catch (SQLException e) {
     	
@@ -98,7 +103,7 @@ public class VirtualMachineDB {
 	}
 	
 	@SuppressWarnings("null")
-	public List<VirtualMachine> getByBrowserAndVersion(String browser, String version) throws SQLException {
+	public List<VirtualMachine> getByBrowserAndVersion(String browser, String version, boolean isInQueue) throws SQLException {
 		assert browser!=null && version!=null;
 		ArrayList<VirtualMachine> VMList = new ArrayList<VirtualMachine>();
 		PreparedStatement stmt = null;
@@ -122,12 +127,18 @@ public class VirtualMachineDB {
     		boolean inQueue = rs.getBoolean(6);
     		double qTime = rs.getDouble(7);
     		int numJobs = rs.getInt(8);
-    		Date createdDate = rs.getDate(9);
-    		Date modifiedDate = rs.getDate(10);
+    		Timestamp createdDate = rs.getTimestamp(9);
+    		Timestamp modifiedDate = rs.getTimestamp(10);
     		
     		VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue, 
     				qTime, numJobs, modifiedDate, createdDate);
-    		VMList.add(vm);
+    		if (isInQueue) {
+    			if (inQueue) {
+        		VMList.add(vm);
+    			}
+    		} else {
+      		VMList.add(vm);
+    		}
     	}
     } catch (SQLException e) {
     	
@@ -156,8 +167,8 @@ public class VirtualMachineDB {
     		boolean inQueue = rs.getBoolean(6);
     		double qTime = rs.getDouble(7);
     		int numJobs = rs.getInt(8);
-    		Date createdDate = rs.getDate(9);
-    		Date modifiedDate = rs.getDate(10);
+    		Timestamp createdDate = rs.getTimestamp(9);
+    		Timestamp modifiedDate = rs.getTimestamp(10);
     		
     		vm = new VirtualMachine(vid, hostname, ip, osId, available, inQueue, 
     				qTime, numJobs, modifiedDate, createdDate);
@@ -212,5 +223,24 @@ public class VirtualMachineDB {
     }
     return inQueue;
 	}
+	
+	public void updateAvailable() {
+		PreparedStatement stmt = null;
+		try {
+			String sql = "UPDATE vm_cloud SET available=1 WHERE inQueue=1";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.executeUpdate(); 
+		} catch (SQLException e) {
+			e.printStackTrace();
+	  } finally {
+    	if (stmt != null)
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+	  }
+  }
+
 
 }

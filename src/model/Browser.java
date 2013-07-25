@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 
 public class Browser {
@@ -8,8 +8,8 @@ public class Browser {
 	private int id;
   private String browserName;
   private String browserVersion;
-  private Date createdDate;
-  private Date modifiedDate;
+  private Timestamp createdDate;
+  private Timestamp modifiedDate;
   
   /**
    * Class Constructor
@@ -30,7 +30,7 @@ public class Browser {
    * @param createdDate
    * @param modifiedDate
    */
-  public Browser(int id, String browserName, String browserVersion, Date createdDate, Date modifiedDate) {
+  public Browser(int id, String browserName, String browserVersion, Timestamp createdDate, Timestamp modifiedDate) {
   	this.id = id;
   	this.browserName = browserName;
   	this.browserVersion = browserVersion;
@@ -83,29 +83,39 @@ public class Browser {
 	/**
 	 * @return the createdDate
 	 */
-	public Date getCreatedDate() {
+	public Timestamp getCreatedDate() {
 		return createdDate;
 	}
 
 	/**
 	 * @param createdDate the createdDate to set
 	 */
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(Timestamp createdDate) {
 		this.createdDate = createdDate;
 	}
 
 	/**
 	 * @return the modifiedDate
 	 */
-	public Date getModifiedDate() {
+	public Timestamp getModifiedDate() {
 		return modifiedDate;
 	}
 
 	/**
 	 * @param modifiedDate the modifiedDate to set
 	 */
-	public void setModifiedDate(Date modifiedDate) {
+	public void setModifiedDate(Timestamp modifiedDate) {
 		this.modifiedDate = modifiedDate;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Browser [id=" + id + ", browserName=" + browserName
+				+ ", browserVersion=" + browserVersion + ", createdDate=" + createdDate
+				+ ", modifiedDate=" + modifiedDate + "]";
 	}
   
   

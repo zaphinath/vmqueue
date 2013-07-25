@@ -4,7 +4,7 @@
 package model;
 
 import java.sql.Time;
-import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  * @author Derek Carr
@@ -21,8 +21,8 @@ public class VirtualMachine {
 	private boolean inQueue;
 	private double currentQueueTime;
 	private int numberQueueJobs;
-	private Date modifiedDate;
-	private Date createdDate;
+	private Timestamp modifiedDate;
+	private Timestamp createdDate;
 	
 	/**
 	 * Class Constructor
@@ -52,7 +52,7 @@ public class VirtualMachine {
 	 * @param inQueue
 	 */
 	public VirtualMachine(int id, String hostname, String IP, int osId, boolean available, boolean inQueue,
-			double curTime, int numJobs, Date modifiedDate, Date createdDate) {
+			double curTime, int numJobs, Timestamp modifiedDate, Timestamp createdDate) {
 		this.id = id;
 		this.hostname = hostname;
 		this.osId = osId;
@@ -65,32 +65,32 @@ public class VirtualMachine {
 		this.modifiedDate = modifiedDate;
 		this.createdDate = createdDate;
 	}
-
+	
 	/**
 	 * @return the modifiedDate
 	 */
-	public Date getModifiedDate() {
+	public Timestamp getModifiedDate() {
 		return modifiedDate;
 	}
 
 	/**
 	 * @param modifiedDate the modifiedDate to set
 	 */
-	public void setModifiedDate(Date modifiedDate) {
+	public void setModifiedDate(Timestamp modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
 
 	/**
 	 * @return the createdDate
 	 */
-	public Date getCreatedDate() {
+	public Timestamp getCreatedDate() {
 		return createdDate;
 	}
 
 	/**
 	 * @param createdDate the createdDate to set
 	 */
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(Timestamp createdDate) {
 		this.createdDate = createdDate;
 	}
 
@@ -232,6 +232,19 @@ public class VirtualMachine {
 	 */
 	public void setNumberQueueJobs(int numberQueueJobs) {
 		this.numberQueueJobs = numberQueueJobs;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "VirtualMachine [id=" + id + ", hostname=" + hostname + ", osId="
+				+ osId + ", IP=" + IP + ", height=" + height + ", available="
+				+ available + ", inQueue=" + inQueue + ", currentQueueTime="
+				+ currentQueueTime + ", numberQueueJobs=" + numberQueueJobs
+				+ ", modifiedDate=" + modifiedDate + ", createdDate=" + createdDate
+				+ "]";
 	}
 
 	

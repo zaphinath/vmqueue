@@ -23,7 +23,6 @@ public class QueueMain {
   	while(true) {
   		NamedPipeStream stream = pipe.readPipe();
   		if (stream != null) {
-        System.out.println("STREAM NOT NULL");
         Job job = queue.buildJob(stream);
     		queue.addToQueue(job);
   		}

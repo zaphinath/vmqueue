@@ -112,8 +112,15 @@ public class Job {
 	public void setHostIP(String hostIP) {
 		this.hostIP = hostIP;
 	}
-	
-	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Job [id=" + id + ", message=" + message + ", time=" + time
+				+ ", queue=" + queue + ", hostIP=" + hostIP + "]";
+	}
 	
 	
 }

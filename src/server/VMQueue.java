@@ -39,23 +39,31 @@ public class VMQueue {
   	try {
 			db.startTransaction();
 			vms = (ArrayList<VirtualMachine>) db.getVirtualMachineDB().getAll();
+			db.getVirtualMachineDB().updateAvailable();
+			db.endTransaction(true);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
   	jobs = new ArrayList<Queue<Job>>();
-  	for (int i = 0; i < vms.size(); i++) {
-  		jobs.set(i, new LinkedList<Job>());
+  	for (int i = 1; i < vms.size()+1; i++) {
+  		jobs.add(new LinkedList<Job>());
   	}
   }
 
   
   public void processQueue() throws SQLException {
   	for (int i = 0; i < jobs.size(); i++){
+  		Job peekJob = jobs.get(i).peek();
+  		VirtualMachine vm;
   		db.startTransaction();
-  		VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(jobs.get(i).peek().getQueue());
+  		if (peekJob != null) {
+  			vm = db.getVirtualMachineDB().getVirtualMachine(peekJob.getQueue());
+  		} else {
+  			continue;
+  		}
   		db.endTransaction(true);
-  		if (vm.isAvailable() && vm.isInQueue()) {
+  		if (vm.isAvailable()) {
+  			System.out.println("Available");
   			Job job = jobs.get(i).remove();
   			sendSocketStream(job);
   		}
@@ -84,7 +92,7 @@ public class VMQueue {
    */
   public int addToQueue(Job job) {
   	//TODO: Need to update vm_queue_time as these add
-  	int queue = job.getQueue();
+  	int queue = job.getQueue() -1;
   	jobs.get(queue).add(job);
   	return jobs.get(queue).size();
   }
@@ -104,14 +112,16 @@ public class VMQueue {
   	// Build and return job
   
   	int queueNumber = determineQueue(stream.getBrowser(), stream.getBrowserVersion());
-
+  	db.startTransaction();
+  	VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(queueNumber);
+  	db.endTransaction(true);
   	//TODO: Need to get a new time based on the browser time estimates?
   	SocketString socketString = buildSocketString(queueNumber, stream);
   	
   	socketString.setAntCommand(socketString.buildAntCommand(stream.getTestPackage(), stream.getTestClass()));
   	socketString.setOs(stream.getOs());
   	socketString.setBrowser(stream.getBrowser());
-  	Job job = new Job(jobNumber++, socketString.toString(), stream.getTime(), queueNumber, vms.get(queueNumber).getIP());
+  	Job job = new Job(jobNumber++, socketString.toString(), stream.getTime(), queueNumber, vm.getIP());
   	return job;
   }
 
@@ -122,7 +132,7 @@ public class VMQueue {
 	 */
 	private SocketString buildSocketString(int queueNumber, NamedPipeStream stream) {
 		SocketString socketString = new SocketString();
-		
+		//System.out.println("Queue: " + queueNumber + stream.toString());
   	try {
   		socketString.setAntCommand(socketString.buildAntCommand(stream.getTestPackage(), stream.getTestClass()));
   		socketString.setOs(stream.getOs());
@@ -131,6 +141,7 @@ public class VMQueue {
   		Browser browser = db.getBrowserDB().getBrowserVersionById(queueNumber, stream.getBrowser());
   		db.endTransaction(true);
   		
+  		System.out.println(browser.toString());
   		socketString.setBrowser(browser.getBrowserName());
   		socketString.setBrowserVersion(browser.getBrowserVersion());
 			socketString.setUrl(new URL(stream.getUrl()));
@@ -148,11 +159,7 @@ public class VMQueue {
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-  	
 
 		return socketString;
 	}
@@ -161,6 +168,7 @@ public class VMQueue {
 	private void sendSocketStream(Job job) {
 		Socket socket = null;
 		PrintWriter out = null;
+		System.out.println(job.toString());
 		try {
 			socket = new Socket(job.getHostIP(), PORT);
 			out = new PrintWriter(socket.getOutputStream(), true);
@@ -191,25 +199,21 @@ public class VMQueue {
 		if (!browser.equalsIgnoreCase("any") && browserVersion.equalsIgnoreCase("any")) {
 			// BUILD LIST OF ONLY MACHINES THIS WILL RUN ON
 			db.startTransaction();
-			System.out.println("browser: "+browser);
-      limitedVms = db.getVirtualMachineDB().getByBrowser(browser);
+      limitedVms = db.getVirtualMachineDB().getByBrowser(browser, true);
 			db.endTransaction(true);
-			System.out.println("FOO FIGHT" + limitedVms.size());
 		} else {
 			db.startTransaction();
-			limitedVms = db.getVirtualMachineDB().getByBrowserAndVersion(browser, browserVersion);
+			limitedVms = db.getVirtualMachineDB().getByBrowserAndVersion(browser, browserVersion, true);
 			db.endTransaction(true);
 		}
 		assert limitedVms != null && limitedVms.size() > 0;
 		// This filters the lowest of the queue to be the one the job gets submited too
 		double shortestTime = limitedVms.get(0).getCurrentQueueTime();
-		int vmId = 1;
-		for (int i = 1; i < limitedVms.size(); i++) {
-			if (limitedVms.get(i).isAvailable() == true && limitedVms.get(i).isInQueue() == true) {
-				if (limitedVms.get(i).getCurrentQueueTime() < shortestTime) {
-					shortestTime = limitedVms.get(i).getCurrentQueueTime();
-					vmId = limitedVms.get(i).getId();
-				}
+		int vmId = limitedVms.get(0).getId();
+		for (int i = 0; i < limitedVms.size(); i++) {
+			if (limitedVms.get(i).getCurrentQueueTime() < shortestTime) {
+				shortestTime = limitedVms.get(i).getCurrentQueueTime();
+				vmId = limitedVms.get(i).getId();
 			}
 		}
 		assert vmId > 0;

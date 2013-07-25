@@ -6,8 +6,8 @@ package server.database;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import model.Browser;
@@ -38,8 +38,8 @@ public class BrowserDB {
     		System.out.println(id + "HERE FUGLY");
     		String name = rs.getString(2);
     		String version = rs.getString(3);
-    		Date createdDate = rs.getDate(4);
-    		Date modifiedDate = rs.getDate(5);
+    		Timestamp createdDate = rs.getTimestamp(4);
+    		Timestamp modifiedDate = rs.getTimestamp(5);
     		Browser browser = new Browser(id, name, version, createdDate, modifiedDate);
     		
     		browserList.add(browser);
@@ -58,24 +58,27 @@ public class BrowserDB {
 	}
 
 	public Browser getBrowserVersionById(int VMId, String browser) {
+		assert VMId != 0;
+		assert browser != null;
 		PreparedStatement stmt = null;
 	  ResultSet rs = null;
 	  Browser returnBrowser = null;
 	  try {
 	  	String sql = "SELECT * FROM vm_browsers a " +
 	  							 "INNER JOIN vm_cloud2browser b ON a.id = b.vm_browser_id " +
-	  							 "INNER JOIN vm_cloud c ON c.id = b.vm_clould_id " +
+	  							 "INNER JOIN vm_cloud c ON c.id = b.vm_cloud_id " +
 	  							 "WHERE c.id = ? AND a.name = ?";
 	  	stmt = db.getConnection().prepareStatement(sql);
 	  	stmt.setInt(1, VMId);
 	  	stmt.setString(2, browser);
 	  	rs = stmt.executeQuery();
+
 	  	while (rs.next()) {
 	  		int id = rs.getInt(1);
 	  		String name = rs.getString(2);
 	  		String version = rs.getString(3);
-	  		Date createdDate = rs.getDate(4);
-	  		Date modifiedDate = rs.getDate(5);
+	  		Timestamp createdDate = rs.getTimestamp(4);
+	  		Timestamp modifiedDate = rs.getTimestamp(5);
 	  		returnBrowser = new Browser(id, name, version, createdDate, modifiedDate);
 	   	}
 	  } catch (SQLException e) {

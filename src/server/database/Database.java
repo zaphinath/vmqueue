@@ -58,6 +58,7 @@ public class Database {
    * @return this.connection
    */
   public Connection getConnection(){
+  	assert this.connection != null;
   	return this.connection;
   }
   
@@ -81,10 +82,13 @@ public class Database {
    * 
    * @throws SQLException
    */
-  public void startTransaction() throws SQLException {
-  	System.out.println(connectionURL);
-    connection = DriverManager.getConnection(connectionURL, dbUser, dbPass);
-		connection.setAutoCommit(false);
+  public void startTransaction() {
+  	try {
+	    connection = DriverManager.getConnection(connectionURL, dbUser, dbPass);
+			connection.setAutoCommit(false);
+  	} catch(SQLException e) {
+  		e.printStackTrace();
+  	}
   }
   
   /**
@@ -92,7 +96,7 @@ public class Database {
    * @param commit
    * @throws SQLException
    */
-  public void endTransaction(boolean commit) throws SQLException {
+  public void endTransaction(boolean commit) {
   	try {
 			if (commit == true) {
 				connection.commit();
@@ -101,7 +105,12 @@ public class Database {
 			}
 		} 
 		catch (SQLException e) { e.printStackTrace(); }
-		finally { connection.close();}
+		finally { try {
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}}
 		
 		connection = null;
   }

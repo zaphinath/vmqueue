@@ -11,7 +11,7 @@ import java.net.URL;
  */
 public class SocketString {
 
-	private String handlerKey;
+	private String handlerKey = "KEY";
 	private String antCommand;
 	private String os;
 	private String browser;
@@ -31,7 +31,6 @@ public class SocketString {
 	 * Class Constructor
 	 */
 	public SocketString() {
-		this.handlerKey = null;
 		this.antCommand = null;
 		this.os = null;
 		this.browser = null;
@@ -66,12 +65,10 @@ public class SocketString {
 	 * @param testPackage
 	 * @param testClass
 	 */
-	public SocketString(String handlerKey, String os,
-			String browser, String browserVersion, URL url, String lmpUser,
-			String lmpPass, String sfUser, String sfPass, String email,
+	public SocketString(String os, String browser, String browserVersion, URL url, 
+			String lmpUser, String lmpPass, String sfUser, String sfPass, String email,
 			int queueNumber, double time, String testPackage, String testClass) {
 		super();
-		this.handlerKey = handlerKey;
 		this.antCommand = buildAntCommand(testPackage, testClass);
 		this.os = os;
 		this.browser = browser;

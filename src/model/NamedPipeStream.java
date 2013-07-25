@@ -218,5 +218,19 @@ public class NamedPipeStream {
 	public void setTime(double time) {
 		this.time = time;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "NamedPipeStream [testPackage=" + testPackage + ", testClass="
+				+ testClass + ", os=" + os + ", browser=" + browser
+				+ ", browserVersion=" + browserVersion + ", url=" + url
+				+ ", lmpUsername=" + lmpUsername + ", lmpPassword=" + lmpPassword
+				+ ", sfUsername=" + sfUsername + ", sfPassword=" + sfPassword
+				+ ", email=" + email + ", time=" + time + "]";
+	}
+	
 	
 }
