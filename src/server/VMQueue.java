@@ -142,7 +142,7 @@ public class VMQueue {
   		db.endTransaction(true);
   		
   		socketString.setOs(os.getName());
-  		System.out.println(os.toString());
+  		//System.out.println(os.toString());
   		socketString.setBrowser(browser.getBrowserName());
   		socketString.setBrowserVersion(browser.getBrowserVersion());
 			socketString.setUrl(new URL(stream.getUrl()));
@@ -170,7 +170,7 @@ public class VMQueue {
 		//TODO: update vm_clould available to 0;
 		Socket socket = null;
 		BufferedWriter bufOut = null;
-		System.out.println(job.toString());
+		//System.out.println(job.toString());
 		try {
 			db.startTransaction();
 			System.out.println(job.getQueue());
