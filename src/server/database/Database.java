@@ -41,7 +41,7 @@ public class Database {
 			this.dbName = null;
 			this.connectionURL = null;
 		} else if (env.equalsIgnoreCase("prod")) {
-      this.serverName = "10.0.10.53";
+      this.serverName = "qa.test.lan";
       this.databaseName = "insidesales";
 			this.connectionURL = "jdbc:mysql://"+serverName+"/"+databaseName;
 		} else {

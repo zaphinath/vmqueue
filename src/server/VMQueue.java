@@ -167,6 +167,7 @@ public class VMQueue {
 
 	
 	private void sendSocketStream(Job job) {
+		//TODO: update vm_clould available to 0;
 		Socket socket = null;
 		BufferedWriter bufOut = null;
 		System.out.println(job.toString());
@@ -174,7 +175,7 @@ public class VMQueue {
 			socket = new Socket(job.getHostIP(), PORT);
 			bufOut = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			bufOut.write(job.getMessage());
-			bufOut.newLine();
+//			bufOut.newLine();
 			bufOut.flush();
 			System.out.println(job.getMessage());
 		} catch (Exception e) {
