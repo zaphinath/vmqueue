@@ -245,6 +245,25 @@ public class VirtualMachineDB {
 				}
 	  }
   }
+	
+	public void setAvailable(int id) {
+		PreparedStatement stmt = null;
+		try {
+			String sql = "UPDATE vm_cloud SET available=1 WHERE id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, id);
+			stmt.executeUpdate(); 
+		} catch (SQLException e) {
+			e.printStackTrace();
+	  } finally {
+    	if (stmt != null)
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+	  }
+  }
 
 
 }

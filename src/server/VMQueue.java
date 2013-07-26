@@ -172,6 +172,11 @@ public class VMQueue {
 		BufferedWriter bufOut = null;
 		System.out.println(job.toString());
 		try {
+			db.startTransaction();
+			System.out.println(job.getQueue());
+			db.getVirtualMachineDB().setAvailable(job.getQueue());
+			db.endTransaction(true);
+			
 			socket = new Socket(job.getHostIP(), PORT);
 			bufOut = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			bufOut.write(job.getMessage());
