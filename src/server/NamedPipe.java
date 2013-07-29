@@ -26,7 +26,7 @@ public class NamedPipe {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		pipe = new RandomAccessFile("./pipe", "rw");
+		//pipe = new RandomAccessFile("./pipe", "rw");
 	}
 
 	public NamedPipeStream readPipe() throws IOException {

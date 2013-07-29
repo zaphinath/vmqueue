@@ -10,6 +10,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -27,7 +28,7 @@ import model.VirtualMachine;
 
 public class VMQueue {
 	
-	private ArrayList<Queue<Job>> jobs;
+	private List<Queue<Job>> jobs;
 	private ArrayList<VirtualMachine> vms;
 	
 	private Database db;
@@ -47,7 +48,7 @@ public class VMQueue {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-  	jobs = new ArrayList<Queue<Job>>();
+  	jobs = Collections.synchronizedList(new ArrayList<Queue<Job>>());
   	for (int i = 1; i < vms.size()+1; i++) {
   		jobs.add(new LinkedList<Job>());
   	}
@@ -57,14 +58,15 @@ public class VMQueue {
   public void processQueue() throws SQLException {
   	for (int i = 0; i < jobs.size(); i++){
   		Job peekJob = jobs.get(i).peek();
+  		System.out.println("Queue: "+i + " Size: " +jobs.get(i).size());
   		VirtualMachine vm;
-  		db.startTransaction();
   		if (peekJob != null) {
+  			db.startTransaction();
   			vm = db.getVirtualMachineDB().getVirtualMachine(peekJob.getQueue());
+  			db.endTransaction(true);
   		} else {
   			continue;
   		}
-  		db.endTransaction(true);
   		if (vm.isAvailable()) {
   			System.out.println("Available");
   			Job job = jobs.get(i).remove();
