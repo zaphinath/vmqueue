@@ -228,6 +228,38 @@ public class VirtualMachineDB {
     return inQueue;
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 */
+	public void updateVM(VirtualMachine vm) {
+		PreparedStatement stmt = null;
+		try {
+			String sql = "UPDATE vm_cloud SET hostname = ?, ip_address = ?, vm_os_id = ?, " +
+									 "available = ?, inQueue = ?, time = ?, num_jobs = ?, modified_date = now() " +
+									 "WHERE id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setString(1, vm.getHostname());
+			stmt.setString(2, vm.getIP());
+			stmt.setInt(3, vm.getOsId());
+			stmt.setBoolean(4, vm.isAvailable());
+			stmt.setBoolean(5, vm.isInQueue());
+			stmt.setDouble(6, vm.getCurrentQueueTime());
+			stmt.setInt(7, vm.getHeight());
+			stmt.setInt(8, vm.getId());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		 } finally {
+	    	if (stmt != null)
+					try {
+						stmt.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+		  }
+	}
+	
 	public void updateAvailable() {
 		PreparedStatement stmt = null;
 		try {
@@ -249,7 +281,7 @@ public class VirtualMachineDB {
 	public void setAvailable(int id) {
 		PreparedStatement stmt = null;
 		try {
-			String sql = "UPDATE vm_cloud SET available=0 WHERE id = ?";
+			String sql = "UPDATE vm_cloud SET available=0, time=0.00, num_jobs = 0 WHERE id = ?";
 			stmt = db.getConnection().prepareStatement(sql);
 			stmt.setInt(1, id);
 			stmt.executeUpdate(); 

@@ -2,14 +2,10 @@
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 
-import server.NamedPipe;
 import server.VMQueue;
-//import java.io.RandomAccessFile;
 import java.sql.SQLException;
 
 import model.Job;
@@ -22,11 +18,6 @@ public class QueueMain {
 	
   public static void main(String[] args) throws InterruptedException, IOException, SQLException {
   	VMQueue queue = new VMQueue();
-  	/*if (!fPipe.exists()) {
-  		fPipe.createNewFile();
-  		fPipe.setReadable(true);
-  		fPipe.setWritable(true);
-  	}*/
   	while(true) {
   		try {
 	  		queue.processQueue();
@@ -47,12 +38,11 @@ public class QueueMain {
 		  			}
 		  			in.close();
 		  			fPipe.delete();
-		  			//fPipe.createNewFile();
 		  			fLock.delete();
 		  			isLocked = false;
 		  		} 
 	  		}
-	  		Thread.sleep(2000);
+	  		Thread.sleep(800);
   		} finally {
   			if (isLocked) {
   				fLock.delete();

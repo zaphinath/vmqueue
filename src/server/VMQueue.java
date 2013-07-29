@@ -58,7 +58,7 @@ public class VMQueue {
   public void processQueue() throws SQLException {
   	for (int i = 0; i < jobs.size(); i++){
   		Job peekJob = jobs.get(i).peek();
-  		System.out.println("Queue: "+i + " Size: " +jobs.get(i).size());
+  		//System.out.println("Queue: "+i + " Size: " +jobs.get(i).size());
   		VirtualMachine vm;
   		if (peekJob != null) {
   			db.startTransaction();
@@ -68,7 +68,7 @@ public class VMQueue {
   			continue;
   		}
   		if (vm.isAvailable()) {
-  			System.out.println("Available");
+  			//System.out.println("Available");
   			Job job = jobs.get(i).remove();
   			sendSocketStream(job);
   		}
@@ -97,6 +97,12 @@ public class VMQueue {
    */
   public int addToQueue(Job job) {
   	//TODO: Need to update vm_queue_time as these add
+  	db.startTransaction();
+  	VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(job.getQueue());
+  	vm.setHeight(vm.getHeight() + 1);
+  	vm.setCurrentQueueTime(vm.getCurrentQueueTime() + job.getTime());
+  	db.getVirtualMachineDB().updateVM(vm);
+  	db.endTransaction(true);
   	int queue = job.getQueue() -1;
   	jobs.get(queue).add(job);
   	return jobs.get(queue).size();
