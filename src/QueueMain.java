@@ -24,6 +24,8 @@ public class QueueMain {
   	VMQueue queue = new VMQueue();
   	if (!fPipe.exists()) {
   		fPipe.createNewFile();
+  		fPipe.setReadable(true);
+  		fPipe.setWritable(true);
   	}
   	while(true) {
   		try {
