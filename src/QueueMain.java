@@ -30,13 +30,14 @@ public class QueueMain {
 	  		queue.processQueue();
 	  		// Read file - if null continue
 	  		// Else make lock file and read contents, remove contents, write file, remove lock
-	  		if (fPipe.length() != 0) {
-	  			if (!fLock.exists()) {
+        if (fPipe.length() != 0) {
+          if (!fLock.exists()) {
 		  			fLock.createNewFile();
 		  			isLocked = true;
 		  			String line;
 		  			BufferedReader in = new BufferedReader(new FileReader(fPipe));
-		  			while((line = in.readLine()) != null) {
+		  			System.out.println("READING FILE");
+            while((line = in.readLine()) != null) {
 		  				NamedPipeStream stream = new NamedPipeStream(line);
 		  				Job job = queue.buildJob(stream);
 		  				int queueNum = queue.addToQueue(job);
@@ -49,7 +50,7 @@ public class QueueMain {
 		  			isLocked = false;
 		  		} 
 	  		}
-	  		Thread.sleep(1000);
+	  		Thread.sleep(2000);
   		} finally {
   			if (isLocked) {
   				fLock.delete();

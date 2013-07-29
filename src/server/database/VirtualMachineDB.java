@@ -105,7 +105,7 @@ public class VirtualMachineDB {
 	@SuppressWarnings("null")
 	public List<VirtualMachine> getByBrowserAndVersion(String browser, String version, boolean isInQueue) throws SQLException {
 		assert browser!=null && version!=null;
-		ArrayList<VirtualMachine> VMList = new ArrayList<VirtualMachine>();
+    ArrayList<VirtualMachine> VMList = new ArrayList<VirtualMachine>();
 		PreparedStatement stmt = null;
     ResultSet rs = null;
     try {
@@ -113,9 +113,9 @@ public class VirtualMachineDB {
     							 "INNER JOIN vm_cloud2browser b ON b.vm_cloud_id = a.id " +
     							 "INNER JOIN vm_browsers c ON b.vm_browser_id = c.id " +
     							 "WHERE c.name = ? and c.version = ?";
+    	stmt = db.getConnection().prepareStatement(sql);
     	stmt.setString(1, browser);
     	stmt.setString(2, version);
-    	stmt = db.getConnection().prepareStatement(sql);
     	
     	rs = stmt.executeQuery();
     	while (rs.next()) {

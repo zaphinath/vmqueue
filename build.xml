@@ -29,6 +29,9 @@
   <target name="compile" depends="init" description="compile the source code">
     <javac srcdir="${src}" classpathref="lib-classpath" destdir="${bin}" debug="true" includeantruntime="true" />
     <javac srcdir="${test}" classpathref="lib-classpath" destdir="${bin}" debug="true" includeantruntime="true" />
+    <assertions>
+      <enable />
+    </assertions>
   </target>
 
   <!-- ant server {-Dport=<SERVER_PORT_NUMBER>} -->
