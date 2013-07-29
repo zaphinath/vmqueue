@@ -22,11 +22,11 @@ public class QueueMain {
 	
   public static void main(String[] args) throws InterruptedException, IOException, SQLException {
   	VMQueue queue = new VMQueue();
-  	if (!fPipe.exists()) {
+  	/*if (!fPipe.exists()) {
   		fPipe.createNewFile();
   		fPipe.setReadable(true);
   		fPipe.setWritable(true);
-  	}
+  	}*/
   	while(true) {
   		try {
 	  		queue.processQueue();
@@ -47,7 +47,7 @@ public class QueueMain {
 		  			}
 		  			in.close();
 		  			fPipe.delete();
-		  			fPipe.createNewFile();
+		  			//fPipe.createNewFile();
 		  			fLock.delete();
 		  			isLocked = false;
 		  		} 
