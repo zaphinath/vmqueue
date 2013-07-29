@@ -175,7 +175,7 @@ public class VMQueue {
 		//System.out.println(job.toString());
 		try {
 			db.startTransaction();
-			System.out.println(job.getQueue());
+			//System.out.println(job.getQueue());
 			db.getVirtualMachineDB().setAvailable(job.getQueue());
 			db.endTransaction(true);
 			
@@ -184,7 +184,7 @@ public class VMQueue {
 			bufOut.write(job.getMessage());
 //			bufOut.newLine();
 			bufOut.flush();
-			System.out.println(job.getMessage());
+			//System.out.println(job.getMessage());
 		} catch (Exception e) {
 			
 		} finally {
