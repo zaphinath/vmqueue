@@ -130,7 +130,8 @@ public class VMQueue {
   	SocketString socketString = buildSocketString(queueNumber, stream);
   	
   	socketString.setAntCommand(socketString.buildAntCommand(stream.getTestPackage(), stream.getTestClass()));
-  	Job job = new Job(jobNumber++, socketString.toString(), stream.getTime(), queueNumber, vm.getIP());
+  	//TODO: need to update to reflect batch changes
+  	Job job = new Job(jobNumber++, queueNumber, socketString.toString(), stream.getTime(), queueNumber, vm.getIP());
   	return job;
   }
 
