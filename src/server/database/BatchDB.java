@@ -7,13 +7,14 @@ package server.database;
  * @author Derek Carr
  *
  */
-public class JobDB {
+public class BatchDB {
 	private Database db;
+	
 	/**
-	 * @param database
+	 * 
+	 * @param db
 	 */
-	public JobDB(Database database) {
-		this.db = database;
+	public BatchDB(Database db) {
+		this.db = db;
 	}
-
 }

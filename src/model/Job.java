@@ -11,6 +11,7 @@ package model;
 public class Job {
 
 	private int id;
+	private int batchId;
 	private String message;
 	private double time;
 	private int queue;
@@ -35,12 +36,27 @@ public class Job {
 	 * @param queue
 	 * @param hostIP
 	 */
-	public Job(int id, String message, double time, int queue, String hostIP) {
+	public Job(int id, int batchId, String message, double time, int queue, String hostIP) {
 		this.id = id;
+		this.batchId = batchId;
 		this.message = message;
 		this.time = time;
 		this.queue = queue;
 		this.hostIP = hostIP;
+	}
+
+	/**
+	 * @return the batchId
+	 */
+	public int getBatchId() {
+		return batchId;
+	}
+
+	/**
+	 * @param batchId the batchId to set
+	 */
+	public void setBatchId(int batchId) {
+		this.batchId = batchId;
 	}
 
 	/**

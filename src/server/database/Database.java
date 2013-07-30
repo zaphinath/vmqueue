@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import model.OperatingSystem;
 
 /**
  * @author Derek Carr
@@ -19,6 +18,7 @@ public class Database {
 	private JobDB job;
 	private VirtualMachineDB virtualMachine;
 	private OperatingSystemDB os;
+	private BatchDB batch;
 	
 	private Connection connection;
 	
@@ -34,6 +34,8 @@ public class Database {
 	public Database(String env) {
 		this.browser = new BrowserDB(this);
 		this.virtualMachine = new VirtualMachineDB(this);
+		this.job = new JobDB(this);
+		this.batch = new BatchDB(this);
 		this.os = new OperatingSystemDB(this);
 		
 		if (env.equalsIgnoreCase("test")) {
@@ -88,6 +90,22 @@ public class Database {
    */
   public OperatingSystemDB getOSDB() {
   	return this.os;
+  }
+  
+  /**
+   * 
+   * @return
+   */
+  public BatchDB getBatchDB() {
+  	return this.batch;
+  }
+  
+  /**
+   * 
+   * @return
+   */
+  public JobDB getJobDB() {
+  	return this.job;
   }
   
   /**
