@@ -120,7 +120,7 @@ public class SocketString {
 	public String buildAntCommand(String testPackage, String testClass) {
 		assert this.browser != null;
 		if (this.browser.toLowerCase().contains("explore")) {
-			this.browser = "iexplorer";
+			this.browser = "iexplore";
 		}
 		return "ant -DBROWSER="+this.browser.toLowerCase()+" -f build"+testPackage+".xml "+testPackage.toLowerCase()+"."+testClass;
 	}
