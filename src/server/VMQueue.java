@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -99,7 +100,7 @@ public class VMQueue {
   	//TODO: Need to update vm_queue_time as these add
   	db.startTransaction();
   	VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(job.getQueue());
-  	vm.setHeight(vm.getHeight() + 1);
+  	vm.setHeight(vm.getHeight() + 1);	
   	vm.setCurrentQueueTime(vm.getCurrentQueueTime() + job.getTime());
   	db.getVirtualMachineDB().updateVM(vm);
   	db.endTransaction(true);
@@ -131,7 +132,8 @@ public class VMQueue {
   	
   	socketString.setAntCommand(socketString.buildAntCommand(stream.getTestPackage(), stream.getTestClass()));
   	//TODO: need to update to reflect batch changes
-  	Job job = new Job(jobNumber++, queueNumber, socketString.toString(), stream.getTime(), queueNumber, vm.getIP());
+  	Timestamp now = new Timestamp(new java.util.Date().getTime());
+  	Job job = new Job(jobNumber++, queueNumber, socketString.toString(), stream.getTime(), queueNumber, vm.getIP(), false, now, now);
   	return job;
   }
 

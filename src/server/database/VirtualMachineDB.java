@@ -102,7 +102,6 @@ public class VirtualMachineDB {
 		return VMList;
 	}
 	
-	@SuppressWarnings("null")
 	public List<VirtualMachine> getByBrowserAndVersion(String browser, String version, boolean isInQueue) throws SQLException {
 		assert browser!=null && version!=null;
     ArrayList<VirtualMachine> VMList = new ArrayList<VirtualMachine>();
