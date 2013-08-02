@@ -70,7 +70,8 @@ public class VMQueue {
   		if (vm.isAvailable()) {
   			//System.out.println("Available");
   			Job job = jobs.get(i).remove();
-  			sendSocketStream(job);
+  			System.out.println(job.getMessage());
+        sendSocketStream(job);
   		}
   	}
   }

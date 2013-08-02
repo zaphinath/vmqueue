@@ -263,7 +263,7 @@ public class VirtualMachineDB {
 	public void updateAvailable() {
 		PreparedStatement stmt = null;
 		try {
-			String sql = "UPDATE vm_cloud SET available=1 WHERE inQueue=1";
+			String sql = "UPDATE vm_cloud SET available=1, time=0.00, num_jobs=0 WHERE inQueue=1";
 			stmt = db.getConnection().prepareStatement(sql);
 			stmt.executeUpdate(); 
 		} catch (SQLException e) {
@@ -281,7 +281,7 @@ public class VirtualMachineDB {
 	public void setAvailable(int id) {
 		PreparedStatement stmt = null;
 		try {
-			String sql = "UPDATE vm_cloud SET available=0, time=0.00, num_jobs = 0 WHERE id = ?";
+			String sql = "UPDATE vm_cloud SET available=0 WHERE id = ?";
 			stmt = db.getConnection().prepareStatement(sql);
 			stmt.setInt(1, id);
 			stmt.executeUpdate(); 
