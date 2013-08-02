@@ -3,6 +3,8 @@
  */
 package model;
 
+import java.sql.Timestamp;
+
 /**
  * @author Derek Carr
  * @email zaphinath@gmail.com
@@ -16,6 +18,9 @@ public class Job {
 	private double time;
 	private int queue;
 	private String hostIP;
+	private boolean completed;
+	private Timestamp createdDate;
+	private Timestamp modifiedDate;
 	
 	/**
 	 * Class Constructor
@@ -28,22 +33,33 @@ public class Job {
 		this.hostIP = null;
 	}
 	
+
 	/**
-	 * Class Constructor with params
 	 * @param id
+	 * @param batchId
 	 * @param message
 	 * @param time
 	 * @param queue
 	 * @param hostIP
+	 * @param completed
+	 * @param createdDate
+	 * @param modifiedDate
 	 */
-	public Job(int id, int batchId, String message, double time, int queue, String hostIP) {
+	public Job(int id, int batchId, String message, double time, int queue,
+			String hostIP, boolean completed, Timestamp createdDate,
+			Timestamp modifiedDate) {
+		super();
 		this.id = id;
 		this.batchId = batchId;
 		this.message = message;
 		this.time = time;
 		this.queue = queue;
 		this.hostIP = hostIP;
+		this.completed = completed;
+		this.createdDate = createdDate;
+		this.modifiedDate = modifiedDate;
 	}
+
 
 	/**
 	 * @return the batchId
@@ -128,6 +144,54 @@ public class Job {
 	public void setHostIP(String hostIP) {
 		this.hostIP = hostIP;
 	}
+
+	/**
+	 * @return the completed
+	 */
+	public boolean isCompleted() {
+		return completed;
+	}
+
+
+	/**
+	 * @param completed the completed to set
+	 */
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
+	}
+
+
+	/**
+	 * @return the createdDate
+	 */
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+
+
+	/**
+	 * @param createdDate the createdDate to set
+	 */
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+
+
+	/**
+	 * @return the modifiedDate
+	 */
+	public Timestamp getModifiedDate() {
+		return modifiedDate;
+	}
+
+
+	/**
+	 * @param modifiedDate the modifiedDate to set
+	 */
+	public void setModifiedDate(Timestamp modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
+
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
