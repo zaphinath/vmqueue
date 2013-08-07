@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  * @author Derek Carr
  *
  */
-public class Queue {
+public class Result {
 
 	private int id;
 	private int testCaseId;
@@ -37,7 +37,7 @@ public class Queue {
 	/**
 	 * 
 	 */
-	public Queue() {
+	public Result() {
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class Queue {
 	 * @param time
 	 * @param createdDate
 	 */
-	public Queue(int id, int testCaseId, int subTestId, int cloudId,
+	public Result(int id, int testCaseId, int subTestId, int cloudId,
 			int browserId, int osId, int batchId, String hostname, int numTests,
 			int numFailures, int numErrors, String username, URL url,
 			String environment, double gitCommitVersion, double time, Timestamp createdDate) {
