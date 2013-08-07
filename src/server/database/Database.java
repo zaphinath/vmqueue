@@ -19,6 +19,9 @@ public class Database {
 	private VirtualMachineDB virtualMachine;
 	private OperatingSystemDB os;
 	private BatchDB batch;
+	private ResultDB result;
+	private FailureDB failure;
+	private ErrorDB error;
 	
 	private Connection connection;
 	
@@ -37,6 +40,9 @@ public class Database {
 		this.job = new JobDB(this);
 		this.batch = new BatchDB(this);
 		this.os = new OperatingSystemDB(this);
+		this.result = new ResultDB(this);
+		this.failure = new FailureDB(this);
+		this.error = new ErrorDB(this);
 		
 		if (env.equalsIgnoreCase("test")) {
 			this.dbFile = null;
@@ -108,6 +114,21 @@ public class Database {
   	return this.job;
   }
   
+  /**
+   * Returns the ResultDB Object created
+   * @return 
+   */
+  public ResultDB getResultDB() {
+  	return this.result;
+  }
+  
+  /**
+   * 
+   * @return
+   */
+  public FailureDB getFailureDB() {
+  	return this.failure;
+  }
   /**
    * 
    * @throws SQLException
