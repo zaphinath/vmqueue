@@ -4,10 +4,10 @@
   <property name="test" location="test" />
   <property name="lib" location="lib" />
   <property name="bin" location="bin" />
-  <property name="database" location="database" />
   <property name="doc" location="doc" />
 
   <property name="port" value="4445" />
+  <property name="database" value="omega" />
 
   <path id="lib-classpath">
     <fileset dir="${lib}">
@@ -36,6 +36,7 @@
 
   <!-- ant server {-Dport=<SERVER_PORT_NUMBER>} -->
   <!-- EXAMPLE: ant server -Dport=39640 -->
+  <!-- EXAMPLE: ant server -Ddatabase=prod -->
   <!-- If port number is omitted, run on default port. -->
   <!-- EXAMPLE: ant server -->
   <target name="server" depends="compile" description="run server on specified port">
@@ -44,6 +45,7 @@
         <path refid="all-classpath"/>
       </classpath>
       <arg value="${port}"/>
+      <arg value="${database}" />
       <assertions>
         <enable/>
       </assertions>

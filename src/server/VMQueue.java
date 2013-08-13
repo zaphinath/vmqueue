@@ -37,10 +37,11 @@ public class VMQueue {
 	private int jobNumber;
 	private static int PORT = 4445;
 
-  public VMQueue() {
+  public VMQueue(int port, String database) {
+  	PORT = port;
   	Database.initialize();
   	jobNumber = 0;
-  	db = new Database("prod");
+  	db = new Database(database);
   	try {
 			db.startTransaction();
 			vms = (ArrayList<VirtualMachine>) db.getVirtualMachineDB().getAll();

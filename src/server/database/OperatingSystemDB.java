@@ -3,9 +3,12 @@
  */
 package server.database;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,4 +92,29 @@ public class OperatingSystemDB {
 		return os;
 	}
 	
+	public int getOSID(String os) {
+    PreparedStatement stmt = null;
+    int OSID = 0;
+    try {
+    	String sql = "SELECT id FROM vm_os WHERE name = ?";
+    	stmt = db.getConnection().prepareStatement(sql);
+    	stmt.setString(1, os);
+    
+      ResultSet rs = stmt.executeQuery();
+      while(rs.next()) {
+        OSID = rs.getInt("id");
+      }
+    } catch (SQLException e) {
+    	e.printStackTrace();
+    } finally {
+    	if (stmt != null) {
+    		try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+    	}
+    }
+    return OSID;
+  }
 }

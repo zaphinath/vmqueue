@@ -17,7 +17,9 @@ public class QueueMain {
 	private static boolean isLocked = false;
 	
   public static void main(String[] args) throws InterruptedException, IOException, SQLException {
-  	VMQueue queue = new VMQueue();
+  	int port = Integer.parseInt(args[0]);
+  	String database = args[1];
+  	VMQueue queue = new VMQueue(port, database);
   	while(true) {
   		try {
 	  		queue.processQueue();
