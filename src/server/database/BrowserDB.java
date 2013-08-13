@@ -94,6 +94,41 @@ public class BrowserDB {
 		return returnBrowser;
 	}
 	
-	
+	public int getBrowserID(String browser, String version) {
+		assert browser != null;
+		assert version != null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		int id = 0;
+		try {
+			String sql = "SELECT id FROM vm_browsers WHERE name = ? AND version = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setString(1, browser);
+			stmt.setString(2, version);
+			
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("id");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return id;
+	}
 	
 }
