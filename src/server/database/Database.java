@@ -22,11 +22,10 @@ public class Database {
 	private LogQueueDB logQueue;
 	private LogFailureDB logFailure;
 	private LogErrorDB logError;
+	private TestCaseDB testCase;
 	
 	private Connection connection;
 	
-	private String dbFile;
-	private String dbName;
 	private String connectionURL;
 	private String dbUser = "root";
 	private String dbPass = "plopper2";
@@ -43,18 +42,17 @@ public class Database {
 		this.logQueue = new LogQueueDB(this);
 		this.logFailure = new LogFailureDB(this);
 		this.logError = new LogErrorDB(this);
+		this.testCase = new TestCaseDB(this);
 		
-		if (env.equalsIgnoreCase("test")) {
-			this.dbFile = null;
-			this.dbName = null;
-			this.connectionURL = null;
-		} else if (env.equalsIgnoreCase("prod")) {
-      this.serverName = "qa.test.lan";
+		this.serverName = "qa.test.lan";
+		if (env.equalsIgnoreCase("dev")) {
+			this.databaseName = "square_dev";
+		} else if (env.equalsIgnoreCase("master")) {
+			this.databaseName = "square_master";
+		} else if (env.equalsIgnoreCase("omega")) {
       this.databaseName = "insidesales";
-			this.connectionURL = "jdbc:mysql://"+serverName+"/"+databaseName;
-		} else {
-			
-		}
+		} 
+		this.connectionURL = "jdbc:mysql://"+serverName+"/"+databaseName;
 	}
 	
 	public static void initialize() {
@@ -136,6 +134,14 @@ public class Database {
    */
   public LogQueueDB getLogQueueDB() {
   	return this.logQueue;
+  }
+  
+  /**
+   * 
+   * @return
+   */
+  public TestCaseDB getTestCaseDB() {
+  	return this.testCase;
   }
   
   /**
