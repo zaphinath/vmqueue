@@ -22,6 +22,7 @@ public class Database {
 	private ResultDB result;
 	private FailureDB failure;
 	private ErrorDB error;
+	private LogQueueDB logQueue;
 	
 	private Connection connection;
 	
@@ -43,6 +44,7 @@ public class Database {
 		this.result = new ResultDB(this);
 		this.failure = new FailureDB(this);
 		this.error = new ErrorDB(this);
+		this.logQueue = new LogQueueDB(this);
 		
 		if (env.equalsIgnoreCase("test")) {
 			this.dbFile = null;
@@ -129,6 +131,23 @@ public class Database {
   public FailureDB getFailureDB() {
   	return this.failure;
   }
+  
+  /**
+   * 
+   * @return Returns ErrorDB object
+   */
+  public ErrorDB getErrorDB() {
+  	return this.error;
+  }
+  
+  /**
+   * 
+   * @return Return LogQueueDB object
+   */
+  public LogQueueDB getLogQueueDB() {
+  	return this.logQueue;
+  }
+  
   /**
    * 
    * @throws SQLException
