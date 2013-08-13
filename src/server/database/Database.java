@@ -19,10 +19,9 @@ public class Database {
 	private VirtualMachineDB virtualMachine;
 	private OperatingSystemDB os;
 	private BatchDB batch;
-	private ResultDB result;
-	private FailureDB failure;
-	private ErrorDB error;
 	private LogQueueDB logQueue;
+	private LogFailureDB logFailure;
+	private LogErrorDB logError;
 	
 	private Connection connection;
 	
@@ -41,10 +40,9 @@ public class Database {
 		this.job = new JobDB(this);
 		this.batch = new BatchDB(this);
 		this.os = new OperatingSystemDB(this);
-		this.result = new ResultDB(this);
-		this.failure = new FailureDB(this);
-		this.error = new ErrorDB(this);
 		this.logQueue = new LogQueueDB(this);
+		this.logFailure = new LogFailureDB(this);
+		this.logError = new LogErrorDB(this);
 		
 		if (env.equalsIgnoreCase("test")) {
 			this.dbFile = null;
@@ -117,27 +115,19 @@ public class Database {
   }
   
   /**
-   * Returns the ResultDB Object created
-   * @return 
-   */
-  public ResultDB getResultDB() {
-  	return this.result;
-  }
-  
-  /**
    * 
    * @return
    */
-  public FailureDB getFailureDB() {
-  	return this.failure;
+  public LogFailureDB getFailureDB() {
+  	return this.logFailure;
   }
   
   /**
    * 
    * @return Returns ErrorDB object
    */
-  public ErrorDB getErrorDB() {
-  	return this.error;
+  public LogErrorDB getErrorDB() {
+  	return this.logError;
   }
   
   /**
