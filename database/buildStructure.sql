@@ -52,7 +52,7 @@ CREATE TABLE `daily_tracking` (
   `bug_returned` int(11) DEFAULT NULL,
   `date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=161 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=190 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,7 +71,7 @@ CREATE TABLE `external_links` (
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modified_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,7 +104,7 @@ DROP TABLE IF EXISTS `log_errors`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `log_errors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `job_id` int(11) NOT NULL,
+  `log_queue_id` int(11) DEFAULT NULL,
   `test_classname` varchar(256) DEFAULT NULL,
   `test_name` varchar(256) DEFAULT NULL,
   `test_time` decimal(60,2) DEFAULT '0.00',
@@ -112,7 +112,7 @@ CREATE TABLE `log_errors` (
   `error_message` text,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=166 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,7 +124,7 @@ DROP TABLE IF EXISTS `log_failures`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `log_failures` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `job_id` int(11) NOT NULL,
+  `log_queue_id` int(11) DEFAULT NULL,
   `test_classname` varchar(256) DEFAULT NULL,
   `test_name` varchar(256) DEFAULT NULL,
   `test_time` decimal(60,2) DEFAULT '0.00',
@@ -132,7 +132,7 @@ CREATE TABLE `log_failures` (
   `failure_message` text,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=129 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,11 +156,12 @@ CREATE TABLE `log_queue` (
   `username` varchar(256) DEFAULT NULL,
   `url` varchar(256) DEFAULT NULL,
   `environment` varchar(256) DEFAULT NULL,
+  `git_branch` varchar(256) DEFAULT NULL,
   `git_commit_version` varchar(256) DEFAULT NULL,
   `time` decimal(60,2) DEFAULT '0.00',
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`job_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1570 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -226,7 +227,7 @@ CREATE TABLE `selenium_failures` (
   `created_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -246,6 +247,26 @@ CREATE TABLE `site_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `vm_batch`
+--
+
+DROP TABLE IF EXISTS `vm_batch`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `vm_batch` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `number_jobs` int(11) DEFAULT '1',
+  `email` varchar(255) DEFAULT NULL,
+  `time_estimate` decimal(30,2) DEFAULT '0.00',
+  `time_actual` decimal(30,2) DEFAULT '0.00',
+  `completed` tinyint(4) DEFAULT '0',
+  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `vm_browsers`
 --
 
@@ -259,7 +280,7 @@ CREATE TABLE `vm_browsers` (
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modified_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -301,6 +322,27 @@ CREATE TABLE `vm_cloud2browser` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `vm_job`
+--
+
+DROP TABLE IF EXISTS `vm_job`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `vm_job` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `vm_batch_id` int(11) NOT NULL,
+  `message` varchar(512) NOT NULL,
+  `time` decimal(30,2) DEFAULT NULL,
+  `queue_number` int(11) DEFAULT NULL,
+  `ip_address` varchar(256) DEFAULT NULL,
+  `completed` tinyint(4) DEFAULT '0',
+  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `vm_os`
 --
 
@@ -328,6 +370,9 @@ CREATE TABLE `vm_subtests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `vm_testcase_id` int(11) DEFAULT NULL,
   `name` varchar(256) DEFAULT NULL,
+  `time_d_firefox` decimal(30,2) NOT NULL DEFAULT '1.00',
+  `time_d_chrome` decimal(30,2) NOT NULL DEFAULT '1.00',
+  `time_d_ie` decimal(30,2) NOT NULL DEFAULT '1.00',
   `time_t_firefox` decimal(30,2) NOT NULL DEFAULT '1.00',
   `time_t_chrome` decimal(30,2) NOT NULL DEFAULT '1.00',
   `time_t_ie` decimal(30,2) NOT NULL DEFAULT '1.00',
@@ -337,6 +382,9 @@ CREATE TABLE `vm_subtests` (
   `time_p_firefox` decimal(30,2) NOT NULL DEFAULT '1.00',
   `time_p_chrome` decimal(30,2) NOT NULL DEFAULT '1.00',
   `time_p_ie` decimal(30,2) NOT NULL DEFAULT '1.00',
+  `error_d_firefox` int(11) NOT NULL DEFAULT '0',
+  `error_d_chrome` int(11) NOT NULL DEFAULT '0',
+  `error_d_ie` int(11) NOT NULL DEFAULT '0',
   `error_t_firefox` int(11) NOT NULL DEFAULT '0',
   `error_t_chrome` int(11) NOT NULL DEFAULT '0',
   `error_t_ie` int(11) NOT NULL DEFAULT '0',
@@ -346,6 +394,9 @@ CREATE TABLE `vm_subtests` (
   `error_p_firefox` int(11) NOT NULL DEFAULT '0',
   `error_p_chrome` int(11) NOT NULL DEFAULT '0',
   `error_p_ie` int(11) NOT NULL DEFAULT '0',
+  `failure_d_firefox` int(11) NOT NULL DEFAULT '0',
+  `failure_d_chrome` int(11) NOT NULL DEFAULT '0',
+  `failure_d_ie` int(11) NOT NULL DEFAULT '0',
   `failure_t_firefox` int(11) NOT NULL DEFAULT '0',
   `failure_t_chrome` int(11) NOT NULL DEFAULT '0',
   `failure_t_ie` int(11) NOT NULL DEFAULT '0',
@@ -359,7 +410,7 @@ CREATE TABLE `vm_subtests` (
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modified_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=77 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=81 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -376,7 +427,7 @@ CREATE TABLE `vm_testcases` (
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modified_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -388,4 +439,4 @@ CREATE TABLE `vm_testcases` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-07-16 15:53:41
+-- Dump completed on 2013-08-14 15:31:27
