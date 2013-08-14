@@ -3,6 +3,10 @@
 
 #Save Mysql
 
+mysqldump insidesales | bzip2 -c > ../backups/square$(date +%Y-%m-%d-%H.%M.%S).sql.bz2
+#mysqldump -t -T../backups insidesales --fields-terminated-by=,
+
 #Truncate Mysql
 
+mysql insidesales < mysql_data_load
 
