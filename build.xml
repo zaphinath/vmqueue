@@ -23,7 +23,6 @@
   <target name="init" description="create build directories">
     <tstamp/>
     <mkdir dir="${bin}"/>
-    <mkdir dir="${passoff}"/>
   </target>
   
   <target name="compile" depends="init" description="compile the source code">
