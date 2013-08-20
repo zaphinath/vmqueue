@@ -8,5 +8,5 @@ mysqldump insidesales | bzip2 -c > ../backups/square$(date +%Y-%m-%d-%H.%M.%S).s
 
 #Truncate Mysql
 
-mysql insidesales < mysql_data_load
+mysql insidesales < mysql_data_load.sql
 
