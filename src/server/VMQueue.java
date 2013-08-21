@@ -99,17 +99,16 @@ public class VMQueue {
    * @return
    */
   public int addToQueue(Job job) {
+  	int queue = job.getQueue() -1;
+
   	//TODO: Need to update vm_queue_time as these add
   	db.startTransaction();
   	VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(job.getQueue());
-  	vm.setHeight(vm.getHeight() + 1);	
   	vm.setCurrentQueueTime(vm.getCurrentQueueTime() + job.getTime());
-  	System.out.println("VM HEIGHT BEFORE = "+vm.getHeight());
-  	vm.setHeight(vm.getHeight() + 1);
+  	vm.setHeight(jobs.get(queue).size() + 1);
   	db.getVirtualMachineDB().updateVM(vm);
   	db.endTransaction(true);
   	
-  	int queue = job.getQueue() -1;
   	jobs.get(queue).add(job);
   	return jobs.get(queue).size();
   }
