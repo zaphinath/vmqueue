@@ -24,7 +24,7 @@ insert into vm_testcases (name, platform) values ('Tasks', 'lmp');
 /* vm_testcases sf */
 insert into vm_testcases (name, platform) values ('AdditionalSettings', 'sf');
 insert into vm_testcases (name, platform) values ('CallMonitoring', 'sf');
-insert into vm_testcases (name, platform) values ('Console', 'sf');
+insert into vm_testcases (name, platform) values ('SFConsole', 'sf');
 insert into vm_testcases (name, platform) values ('InboundCallSettings', 'sf');
 insert into vm_testcases (name, platform) values ('InsideSales', 'sf');
 insert into vm_testcases (name, platform) values ('Lists', 'sf');
@@ -40,7 +40,7 @@ insert into vm_subtests (vm_testcase_id, name) values ('1','MassUpdates');
 insert into vm_subtests (vm_testcase_id, name) values ('1','Modifications');
 insert into vm_subtests (vm_testcase_id, name) values ('1','SubTasks');
 /* Admin */
-insert into vm_subtests (vm_testcase_id, name) values ('2','AutoIt');
+/*insert into vm_subtests (vm_testcase_id, name) values ('2','AutoIt');*/
 /* ***** companySettings ***** */
 insert into vm_subtests (vm_testcase_id, name) values ('2','ManageEmployees');
 insert into vm_subtests (vm_testcase_id, name) values ('2','ManageProducts');
@@ -145,6 +145,3 @@ insert into vm_subtests (vm_testcase_id, name) values ('19','SupportOps');
 insert into vm_subtests (vm_testcase_id, name) values ('20','ManageUsers');
 
 
-
-
-EOF
