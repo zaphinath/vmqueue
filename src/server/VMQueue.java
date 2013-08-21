@@ -104,6 +104,7 @@ public class VMQueue {
   	VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(job.getQueue());
   	vm.setHeight(vm.getHeight() + 1);	
   	vm.setCurrentQueueTime(vm.getCurrentQueueTime() + job.getTime());
+  	System.out.println("VM HEIGHT BEFORE = "+vm.getHeight());
   	vm.setHeight(vm.getHeight() + 1);
   	db.getVirtualMachineDB().updateVM(vm);
   	db.endTransaction(true);
