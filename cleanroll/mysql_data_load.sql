@@ -5,6 +5,9 @@ truncate log_errors;
 truncate log_failures;
 truncate vm_batch;
 
+truncate selenium_failures
+truncate sel_fail2os
+truncate sel_fail2browser
 
 
 /* vm_testcases lmp */
