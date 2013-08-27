@@ -20,6 +20,7 @@ public class NamedPipeStream {
 	private String sfPassword;
 	private String email;
 	private double time;
+	private int batchId;
 	
 	/**
 	 * Class Constructor
@@ -49,6 +50,7 @@ public class NamedPipeStream {
 		this.sfPassword = input[9];
 		this.email = input[10];
 		this.time = Double.parseDouble(input[11]);
+		this.batchId = Integer.parseInt(input[12]);
 	}
 
 	/**
@@ -219,6 +221,20 @@ public class NamedPipeStream {
 		this.time = time;
 	}
 
+	/**
+	 * @return the batchId
+	 */
+	public int getBatchId() {
+		return batchId;
+	}
+
+	/**
+	 * @param batchId the batchId to set
+	 */
+	public void setBatchId(int batchId) {
+		this.batchId = batchId;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -229,8 +245,9 @@ public class NamedPipeStream {
 				+ ", browserVersion=" + browserVersion + ", url=" + url
 				+ ", lmpUsername=" + lmpUsername + ", lmpPassword=" + lmpPassword
 				+ ", sfUsername=" + sfUsername + ", sfPassword=" + sfPassword
-				+ ", email=" + email + ", time=" + time + "]";
+				+ ", email=" + email + ", time=" + time + ", batchId=" + batchId + "]";
 	}
+
 	
 	
 }

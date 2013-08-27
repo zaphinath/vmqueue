@@ -171,6 +171,7 @@ public class VMQueue {
 			socketString.setTime(stream.getTime());
 			socketString.setTestPackage(stream.getTestPackage());
 			socketString.setTestClass(stream.getTestClass());
+			socketString.setBatchId(stream.getBatchId());
 			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block

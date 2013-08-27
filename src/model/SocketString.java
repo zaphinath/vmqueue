@@ -26,6 +26,7 @@ public class SocketString {
 	private double time;
 	private String testPackage;
 	private String testClass;
+	private int batchId;
 	
 	/**
 	 * Class Constructor
@@ -45,6 +46,7 @@ public class SocketString {
 		this.time = 0.00;
 		this.testPackage = null;
 		this.testClass = null;
+		this.batchId = 0;
 	}
 	
 	
@@ -64,10 +66,11 @@ public class SocketString {
 	 * @param time
 	 * @param testPackage
 	 * @param testClass
+	 * @param batchId
 	 */
 	public SocketString(String os, String browser, String browserVersion, URL url, 
 			String lmpUser, String lmpPass, String sfUser, String sfPass, String email,
-			int queueNumber, double time, String testPackage, String testClass) {
+			int queueNumber, double time, String testPackage, String testClass, int batchId) {
 		super();
 		this.antCommand = buildAntCommand(testPackage, testClass);
 		this.os = os;
@@ -83,6 +86,7 @@ public class SocketString {
 		this.time = time;
 		this.testPackage = testPackage;
 		this.testClass = testClass;
+		this.batchId = batchId;
 	}
 
 	/**
@@ -309,6 +313,22 @@ public class SocketString {
 	}
 
 	/**
+	 * @return the batchId
+	 */
+	public int getBatchId() {
+		return batchId;
+	}
+
+
+	/**
+	 * @param batchId the batchId to set
+	 */
+	public void setBatchId(int batchId) {
+		this.batchId = batchId;
+	}
+
+
+	/**
 	 * Overrides to String - this is the string that gets serialized to send across the network
 	 */
 	@Override
@@ -327,10 +347,12 @@ public class SocketString {
 		assert queueNumber > 0;
 		assert testPackage != null;
 		assert testClass != null;
+		assert batchId > 0;
 	
 		String delim = ";";
 		return handlerKey + delim + antCommand + delim + os + delim + browser + delim + browserVersion +
 				delim + url.toString() + delim + lmpUser + delim + lmpPass + delim + sfUser + delim + sfPass +
-				delim + email + delim + queueNumber + delim + time + delim + testPackage + delim + testClass + "\n";
+				delim + email + delim + queueNumber + delim + time + delim + testPackage + delim + testClass + 
+				delim + batchId + "\n";
 	}
 }
