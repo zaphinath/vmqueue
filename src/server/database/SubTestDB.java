@@ -57,5 +57,26 @@ public class SubTestDB {
 		}
 		return id;
 	}
+	
+	public void updateNumTestCases(int numberCases, int sTestId) {
+		PreparedStatement stmt = null;
+		try { 
+			String sql = "UPDATE vm_subtests SET num_testcases = ? WHERE id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, numberCases);
+			stmt.setInt(2, sTestId);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 
 }
