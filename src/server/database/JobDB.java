@@ -65,17 +65,16 @@ public class JobDB {
 		try {
 			String sql = "INSERT INTO vm_job(vm_batch_id, message, time, queue_number, ip_address, modified_date)" +
 						"VALUES(?, ?, ?, ?, ?, now())";
-			stmt = db.getConnection().prepareStatement(sql);
+			stmt = db.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, job.getBatchId());
 			stmt.setString(2, job.getMessage());
 			stmt.setDouble(3, job.getTime());
 			stmt.setInt(4, job.getQueue());
 			stmt.setString(5, job.getHostIP());
 			
-			if (stmt.executeUpdate() == 1) {
-				keyStmt = db.getConnection().createStatement();
-				rs = keyStmt.executeQuery("select last_insert_rowid()");
-				rs.next();
+			stmt.executeUpdate();
+			rs = stmt.getGeneratedKeys();
+			if (rs.next()) {
 				id = rs.getInt(1); 
 			} else {
 				System.out.println("ERROR GETTING ID");
