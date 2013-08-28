@@ -6,6 +6,7 @@ package server.database;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 
 import model.Job;
@@ -56,6 +57,62 @@ public class JobDB {
     return job;
 	}
 	
+	public int insertJob(Job job) {
+		PreparedStatement stmt = null;
+		Statement keyStmt = null;
+		ResultSet rs = null;
+		int id = 0;
+		try {
+			String sql = "INSERT INTO vm_job(vm_batch_id, message, time, queue_number, ip_address, modified_date)" +
+						"VALUES(?, ?, ?, ?, ?, now())";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, job.getBatchId());
+			stmt.setString(2, job.getMessage());
+			stmt.setDouble(3, job.getTime());
+			stmt.setInt(4, job.getQueue());
+			stmt.setString(5, job.getHostIP());
+			
+			if (stmt.executeUpdate() == 1) {
+				keyStmt = db.getConnection().createStatement();
+				rs = keyStmt.executeQuery("select last_insert_rowid()");
+				rs.next();
+				id = rs.getInt(1); 
+			} else {
+				System.out.println("ERROR GETTING ID");
+			}
+		} catch(SQLException e) { 
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (keyStmt != null) {
+				try {
+					keyStmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return id;
+	}
+	
+	
+	/**
+	 * 
+	 * @param job
+	 */
 	public void updateJob(Job job) {
 		PreparedStatement stmt = null;
 		try {

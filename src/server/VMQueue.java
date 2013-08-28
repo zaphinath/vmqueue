@@ -103,10 +103,13 @@ public class VMQueue {
 
   	//TODO: Need to update vm_queue_time as these add
   	db.startTransaction();
+  	
   	VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(job.getQueue());
   	vm.setCurrentQueueTime(vm.getCurrentQueueTime() + job.getTime());
   	vm.setHeight(jobs.get(queue).size() + 1);
   	db.getVirtualMachineDB().updateVM(vm);
+  	db.getJobDB().insertJob(job);
+  	
   	db.endTransaction(true);
   	
   	jobs.get(queue).add(job);
@@ -137,7 +140,7 @@ public class VMQueue {
   	socketString.setAntCommand(socketString.buildAntCommand(stream.getTestPackage(), stream.getTestClass()));
   	//TODO: need to update to reflect batch changes
   	Timestamp now = new Timestamp(new java.util.Date().getTime());
-  	Job job = new Job(jobNumber++, queueNumber, socketString.toString(), stream.getTime(), queueNumber, vm.getIP(), false, now, now);
+  	Job job = new Job(jobNumber++, socketString.getBatchId(), socketString.toString(), stream.getTime(), queueNumber, vm.getIP(), false, now, now);
   	return job;
   }
 
