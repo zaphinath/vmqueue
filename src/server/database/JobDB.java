@@ -9,7 +9,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 
+import com.google.gson.Gson;
+
 import model.Job;
+import model.SocketString;
 
 /**
  * @author Derek Carr
@@ -33,6 +36,8 @@ public class JobDB {
 		PreparedStatement stmt = null;
     ResultSet rs = null;
     Job job = null;
+    SocketString socketString = null;
+    Gson gson = new Gson();
     try {
     	String sql = "SELECT * FROM vm_job where id = ?";
     	stmt = db.getConnection().prepareStatement(sql);
@@ -42,6 +47,7 @@ public class JobDB {
     		int jid = rs.getInt(1);
     		int vmBatchId = rs.getInt(2);
     		String message = rs.getString(3);
+    		socketString = gson.fromJson(message, SocketString.class);
     		double time = rs.getDouble(4);
     		int queueNum = rs.getInt(5);
     		String ipAddress = rs.getString(6);
@@ -49,7 +55,7 @@ public class JobDB {
     		Timestamp createdDate = rs.getTimestamp(8);
     		Timestamp modifiedDate = rs.getTimestamp(9);
     		
-    		job = new Job(jid, vmBatchId, message, time,queueNum,ipAddress, completed, createdDate, modifiedDate);
+    		job = new Job(jid, vmBatchId, socketString, time,queueNum,ipAddress, completed, createdDate, modifiedDate);
     	}
     } catch (SQLException e) {
     	
@@ -61,13 +67,14 @@ public class JobDB {
 		PreparedStatement stmt = null;
 		Statement keyStmt = null;
 		ResultSet rs = null;
+		Gson gson = new Gson();
 		int id = 0;
 		try {
 			String sql = "INSERT INTO vm_job(vm_batch_id, message, time, queue_number, ip_address, modified_date)" +
 						"VALUES(?, ?, ?, ?, ?, now())";
 			stmt = db.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, job.getBatchId());
-			stmt.setString(2, job.getMessage());
+			stmt.setString(2, gson.toJson(job.getMessage()));
 			stmt.setDouble(3, job.getTime());
 			stmt.setInt(4, job.getQueue());
 			stmt.setString(5, job.getHostIP());

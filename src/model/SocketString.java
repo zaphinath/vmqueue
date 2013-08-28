@@ -26,7 +26,7 @@ public class SocketString {
 	private double time;
 	private String testPackage;
 	private String testClass;
-	private int batchId;
+	private int jobId;
 	
 	/**
 	 * Class Constructor
@@ -46,7 +46,7 @@ public class SocketString {
 		this.time = 0.00;
 		this.testPackage = null;
 		this.testClass = null;
-		this.batchId = 0;
+		this.jobId = 0;
 	}
 	
 	
@@ -66,11 +66,11 @@ public class SocketString {
 	 * @param time
 	 * @param testPackage
 	 * @param testClass
-	 * @param batchId
+	 * @param jobId
 	 */
 	public SocketString(String os, String browser, String browserVersion, URL url, 
 			String lmpUser, String lmpPass, String sfUser, String sfPass, String email,
-			int queueNumber, double time, String testPackage, String testClass, int batchId) {
+			int queueNumber, double time, String testPackage, String testClass, int jobId) {
 		super();
 		this.antCommand = buildAntCommand(testPackage, testClass);
 		this.os = os;
@@ -86,7 +86,7 @@ public class SocketString {
 		this.time = time;
 		this.testPackage = testPackage;
 		this.testClass = testClass;
-		this.batchId = batchId;
+		this.jobId = jobId;
 	}
 
 	/**
@@ -313,18 +313,18 @@ public class SocketString {
 	}
 
 	/**
-	 * @return the batchId
+	 * @return the jobId
 	 */
-	public int getBatchId() {
-		return batchId;
+	public int getJobId() {
+		return jobId;
 	}
 
 
 	/**
-	 * @param batchId the batchId to set
+	 * @param jobId the jobId to set
 	 */
-	public void setBatchId(int batchId) {
-		this.batchId = batchId;
+	public void setJobId(int jobId) {
+		this.jobId = jobId;
 	}
 
 
@@ -347,12 +347,12 @@ public class SocketString {
 		assert queueNumber > 0;
 		assert testPackage != null;
 		assert testClass != null;
-		assert batchId > 0;
+		assert jobId > 0;
 	
 		String delim = ";";
 		return handlerKey + delim + antCommand + delim + os + delim + browser + delim + browserVersion +
 				delim + url.toString() + delim + lmpUser + delim + lmpPass + delim + sfUser + delim + sfPass +
 				delim + email + delim + queueNumber + delim + time + delim + testPackage + delim + testClass + 
-				delim + batchId + "\n";
+				delim + jobId + "\n";
 	}
 }

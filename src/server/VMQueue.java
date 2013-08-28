@@ -108,7 +108,8 @@ public class VMQueue {
   	vm.setCurrentQueueTime(vm.getCurrentQueueTime() + job.getTime());
   	vm.setHeight(jobs.get(queue).size() + 1);
   	db.getVirtualMachineDB().updateVM(vm);
-  	db.getJobDB().insertJob(job);
+  	int jobId = db.getJobDB().insertJob(job);
+  	job.setId(jobId);
   	
   	db.endTransaction(true);
   	
@@ -140,7 +141,7 @@ public class VMQueue {
   	socketString.setAntCommand(socketString.buildAntCommand(stream.getTestPackage(), stream.getTestClass()));
   	//TODO: need to update to reflect batch changes
   	Timestamp now = new Timestamp(new java.util.Date().getTime());
-  	Job job = new Job(jobNumber++, socketString.getBatchId(), socketString.toString(), stream.getTime(), queueNumber, vm.getIP(), false, now, now);
+  	Job job = new Job(jobNumber++, stream.getBatchId(), socketString, stream.getTime(), queueNumber, vm.getIP(), false, now, now);
   	return job;
   }
 
@@ -174,7 +175,7 @@ public class VMQueue {
 			socketString.setTime(stream.getTime());
 			socketString.setTestPackage(stream.getTestPackage());
 			socketString.setTestClass(stream.getTestClass());
-			socketString.setBatchId(stream.getBatchId());
+			socketString.setJobId(stream.getBatchId());
 			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -186,6 +187,11 @@ public class VMQueue {
 
 	
 	private void sendSocketStream(Job job) {
+		//TODO: Need to add Job ID to socket message and possibily update db?
+		SocketString tmp = job.getMessage();
+		tmp.setJobId(job.getId());
+		job.setMessage(tmp);
+		
 		//TODO: update vm_clould available to 0;
 		Socket socket = null;
 		BufferedWriter bufOut = null;
@@ -198,7 +204,7 @@ public class VMQueue {
 			
 			socket = new Socket(job.getHostIP(), PORT);
 			bufOut = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-			bufOut.write(job.getMessage());
+			bufOut.write(job.getMessage().toString());
 //			bufOut.newLine();
 			bufOut.flush();
 			//System.out.println(job.getMessage());

@@ -14,7 +14,7 @@ public class Job {
 
 	private int id;
 	private int batchId;
-	private String message;
+	private SocketString message;
 	private double time;
 	private int queue;
 	private String hostIP;
@@ -45,7 +45,7 @@ public class Job {
 	 * @param createdDate
 	 * @param modifiedDate
 	 */
-	public Job(int id, int batchId, String message, double time, int queue,
+	public Job(int id, int batchId, SocketString message, double time, int queue,
 			String hostIP, boolean completed, Timestamp createdDate,
 			Timestamp modifiedDate) {
 		super();
@@ -92,14 +92,14 @@ public class Job {
 	/**
 	 * @return the message
 	 */
-	public String getMessage() {
+	public SocketString getMessage() {
 		return message;
 	}
 
 	/**
 	 * @param message the message to set
 	 */
-	public void setMessage(String message) {
+	public void setMessage(SocketString message) {
 		this.message = message;
 	}
 
@@ -198,7 +198,7 @@ public class Job {
 	 */
 	@Override
 	public String toString() {
-		return "Job [id=" + id + ", message=" + message + ", time=" + time
+		return "Job [id=" + id + ", message=" + message.toString() + ", time=" + time
 				+ ", queue=" + queue + ", hostIP=" + hostIP + "]";
 	}
 	
