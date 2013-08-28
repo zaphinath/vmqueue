@@ -192,6 +192,10 @@ public class VMQueue {
 		tmp.setJobId(job.getId());
 		job.setMessage(tmp);
 		
+		db.startTransaction();
+		db.getJobDB().updateJob(job);
+		db.endTransaction(true);
+		
 		//TODO: update vm_clould available to 0;
 		Socket socket = null;
 		BufferedWriter bufOut = null;

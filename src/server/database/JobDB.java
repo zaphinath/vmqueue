@@ -121,15 +121,17 @@ public class JobDB {
 	 */
 	public void updateJob(Job job) {
 		PreparedStatement stmt = null;
+		Gson gson = new Gson();
 		try {
-			String sql = "UPDATE vm_job SET time = ?, queue_number = ?, ip_address = ?, " +
+			String sql = "UPDATE vm_job SET message = ?, time = ?, queue_number = ?, ip_address = ?, " +
 									 "completed = ?, modified_date = now() WHERE id = ?";
 			stmt = db.getConnection().prepareStatement(sql);
-			stmt.setDouble(1, job.getTime());
-			stmt.setInt(2, job.getQueue());
-			stmt.setString(3, job.getHostIP());
-			stmt.setBoolean(4, job.isCompleted());
-			stmt.setInt(5, job.getId());
+			stmt.setString(1, gson.toJson(job.getMessage()));
+			stmt.setDouble(2, job.getTime());
+			stmt.setInt(3, job.getQueue());
+			stmt.setString(4, job.getHostIP());
+			stmt.setBoolean(5, job.isCompleted());
+			stmt.setInt(6, job.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
