@@ -181,42 +181,6 @@ public class JobDB {
 		}
 	}
 	
-	public boolean isBatchComplete(int jobId) {
-  	PreparedStatement stmt = null;
-  	ResultSet rs = null;
-  	boolean complete = true;
-  	try {
-			String sql = "SET @batchId = (SELECT vm_batch_id FROM vm_job WHERE id = ?); "+
-					" SELECT completed FROM vm_job WHERE vm_batch_id = @batchId;";
-			stmt = db.getConnection().prepareStatement(sql);
-			stmt.setInt(1, jobId);
-			
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				if (!rs.getBoolean("completed")) {
-					complete = false;
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			} 
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-  	return complete;
-  }
 	
 	public int getBatchId(int jobId) {
   	PreparedStatement stmt = null;
@@ -251,5 +215,25 @@ public class JobDB {
 		}
   	return batchId;
   }
+	
+	public void updateCompleted(int jobId) {
+		PreparedStatement stmt = null;
+		try {
+			String sql = "UPDATE vm_job SET completed = 1 WHERE id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, jobId);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 
 }

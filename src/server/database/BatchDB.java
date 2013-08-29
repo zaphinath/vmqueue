@@ -86,4 +86,40 @@ public class BatchDB {
 			}
 		}
 	}
+	
+	public boolean isBatchComplete(int batchId) {
+  	PreparedStatement stmt = null;
+  	ResultSet rs = null;
+  	boolean complete = true;
+  	try {
+			String sql = "SELECT completed FROM vm_batch WHERE id = ?;";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, batchId);
+			
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				if (!rs.getBoolean("completed")) {
+					complete = false;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			} 
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+  	return complete;
+  }
 }
