@@ -33,7 +33,7 @@ public class BatchDB {
 			String sql = "SELECT * FROM vm_batch WHERE id = ?";
 			stmt = db.getConnection().prepareStatement(sql);
 			stmt.setInt(1, id);
-			rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery();
 			while(rs.next()) {
 				int bid = rs.getInt(1);
 				int numJobs = rs.getInt(2);

@@ -235,5 +235,41 @@ public class JobDB {
 			}
 		}
 	}
+	
+	public boolean isBatchCompleted(int batchId) {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		boolean result = true;
+		try {
+			String sql = "SELECT completed FROM vm_job WHERE vm_batch_id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, batchId);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				if (!rs.getBoolean("completed")) {
+					result = false;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return result;
+	}
 
 }
