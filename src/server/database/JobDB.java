@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.Gson;
 
@@ -25,6 +27,39 @@ public class JobDB {
 	 */
 	public JobDB(Database database) {
 		this.db = database;
+	}
+	
+	public List<Job> getJobByBatchId(int batchId) {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<Job> list = new ArrayList<Job>();
+		Gson gson = new Gson();
+		try {
+			String sql = "SELECT * FROM vm_job WHERE vm_batch_id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, batchId);
+			
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				int jobId = rs.getInt(1);
+				int vmBatchId = rs.getInt(2);
+				SocketString socketString = gson.fromJson(rs.getString(3), SocketString.class);
+				double time = rs.getDouble(4);
+    		int queueNum = rs.getInt(5);
+    		String ipAddress = rs.getString(6);
+    		boolean completed = rs.getBoolean(7);
+    		Timestamp createdDate = rs.getTimestamp(8);
+    		Timestamp modifiedDate = rs.getTimestamp(9);
+    		
+    		Job job = new Job(jobId, vmBatchId, socketString, time,queueNum,ipAddress, completed, createdDate, modifiedDate);
+    		list.add(job);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			
+		}
+		return list;
 	}
 	
 	/**
@@ -145,5 +180,76 @@ public class JobDB {
 		 	}
 		}
 	}
+	
+	public boolean isBatchComplete(int jobId) {
+  	PreparedStatement stmt = null;
+  	ResultSet rs = null;
+  	boolean complete = true;
+  	try {
+			String sql = "SET @batchId = (SELECT vm_batch_id FROM vm_job WHERE id = ?); "+
+					" SELECT completed FROM vm_job WHERE vm_batch_id = @batchId;";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, jobId);
+			
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				if (!rs.getBoolean("completed")) {
+					complete = false;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			} 
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+  	return complete;
+  }
+	
+	public int getBatchId(int jobId) {
+  	PreparedStatement stmt = null;
+  	ResultSet rs = null;
+  	int batchId = 0;
+  	try {
+			String sql = "SELECT vm_batch_id FROM vm_job WHERE id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, jobId);
+			
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				batchId = rs.getInt("vm_batch_id");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			} 
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+  	return batchId;
+  }
 
 }

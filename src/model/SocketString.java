@@ -90,6 +90,14 @@ public class SocketString {
 	}
 
 	/**
+	 * @param message
+	 */
+	public SocketString(String message) {
+		
+	}
+
+
+	/**
 	 * @return the handlerKey
 	 */
 	public String getHandlerKey() {
