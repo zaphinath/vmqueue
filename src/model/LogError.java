@@ -4,6 +4,7 @@
 package model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * @author Derek Carr
@@ -20,7 +21,7 @@ public class LogError {
 	private String errorType;
 	private String errorMessage;
 	
-	private Date createdDate;
+	private Timestamp createdDate;
 	
 	/**
 	 * 
@@ -36,11 +37,11 @@ public class LogError {
 	 * @param time
 	 * @param errorType
 	 * @param errorMessage
-	 * @param createdDate
+	 * @param stamp
 	 */
 	public LogError(int id, int logQueueId, String testClassname,
 			String testName, double time, String errorType, String errorMessage,
-			Date createdDate) {
+			Timestamp stamp) {
 		super();
 		this.id = id;
 		this.logQueueId = logQueueId;
@@ -49,7 +50,7 @@ public class LogError {
 		this.time = time;
 		this.errorType = errorType;
 		this.errorMessage = errorMessage;
-		this.createdDate = createdDate;
+		this.createdDate = stamp;
 	}
 
 	/**
@@ -153,14 +154,14 @@ public class LogError {
 	/**
 	 * @return the createdDate
 	 */
-	public Date getCreatedDate() {
+	public Timestamp getCreatedDate() {
 		return createdDate;
 	}
 
 	/**
 	 * @param createdDate the createdDate to set
 	 */
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(Timestamp createdDate) {
 		this.createdDate = createdDate;
 	}
 

@@ -11,6 +11,8 @@ import java.sql.Timestamp;
  */
 public class LogQueue {
 	private int id;
+	private int vmBatchId;
+	private int vmJobId;
 	private int testCaseId;
 	private int subTestId;
 	private int vmCloudId;
@@ -37,8 +39,11 @@ public class LogQueue {
 	public LogQueue() {
 	}
 
+
 	/**
 	 * @param id
+	 * @param vmBatchId
+	 * @param vmJobId
 	 * @param testCaseId
 	 * @param subTestId
 	 * @param vmCloudId
@@ -56,12 +61,15 @@ public class LogQueue {
 	 * @param time
 	 * @param date
 	 */
-	public LogQueue(int id, int testCaseId, int subTestId, int vmCloudId,
-			int browserId, int osId, String hostname, int numTests, int numFailures,
-			int numErrors, String username, String url, String environment,
-			String gitBranch, String gitCommitVersion, double time, Timestamp date) {
+	public LogQueue(int id, int vmBatchId, int vmJobId, int testCaseId,
+			int subTestId, int vmCloudId, int browserId, int osId, String hostname,
+			int numTests, int numFailures, int numErrors, String username,
+			String url, String environment, String gitBranch,
+			String gitCommitVersion, double time, Timestamp date) {
 		super();
 		this.id = id;
+		this.vmBatchId = vmBatchId;
+		this.vmJobId = vmJobId;
 		this.testCaseId = testCaseId;
 		this.subTestId = subTestId;
 		this.vmCloudId = vmCloudId;
@@ -79,6 +87,7 @@ public class LogQueue {
 		this.time = time;
 		this.date = date;
 	}
+
 
 	/**
 	 * @return the id
@@ -318,19 +327,48 @@ public class LogQueue {
 		this.date = date;
 	}
 
+	/**
+	 * @return the vmBatchId
+	 */
+	public int getVmBatchId() {
+		return vmBatchId;
+	}
+
+	/**
+	 * @param vmBatchId the vmBatchId to set
+	 */
+	public void setVmBatchId(int vmBatchId) {
+		this.vmBatchId = vmBatchId;
+	}
+
+	/**
+	 * @return the vmJobId
+	 */
+	public int getVmJobId() {
+		return vmJobId;
+	}
+
+	/**
+	 * @param vmJobId the vmJobId to set
+	 */
+	public void setVmJobId(int vmJobId) {
+		this.vmJobId = vmJobId;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "LogQueue [id=" + id + ", testCaseId=" + testCaseId + ", subTestId="
-				+ subTestId + ", vmCloudId=" + vmCloudId + ", browserId=" + browserId
-				+ ", osId=" + osId + ", hostname=" + hostname + ", numTests="
-				+ numTests + ", numFailures=" + numFailures + ", numErrors="
-				+ numErrors + ", username=" + username + ", environment=" + environment
-				+ ", gitBranch=" + gitBranch + ", gitCommitVersion=" + gitCommitVersion
-				+ ", time=" + time + ", date=" + date + "]";
+		return "LogQueue [id=" + id + ", vmBatchId=" + vmBatchId + ", vmJobId="
+				+ vmJobId + ", testCaseId=" + testCaseId + ", subTestId=" + subTestId
+				+ ", vmCloudId=" + vmCloudId + ", browserId=" + browserId + ", osId="
+				+ osId + ", hostname=" + hostname + ", numTests=" + numTests
+				+ ", numFailures=" + numFailures + ", numErrors=" + numErrors
+				+ ", username=" + username + ", url=" + url + ", environment="
+				+ environment + ", gitBranch=" + gitBranch + ", gitCommitVersion="
+				+ gitCommitVersion + ", time=" + time + ", date=" + date + "]";
 	}
 
-	
+
 }

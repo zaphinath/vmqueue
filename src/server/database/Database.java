@@ -118,7 +118,7 @@ public class Database {
    * 
    * @return
    */
-  public LogFailureDB getFailureDB() {
+  public LogFailureDB getLogFailureDB() {
   	return this.logFailure;
   }
   
@@ -126,7 +126,7 @@ public class Database {
    * 
    * @return Returns ErrorDB object
    */
-  public LogErrorDB getErrorDB() {
+  public LogErrorDB getLogErrorDB() {
   	return this.logError;
   }
   

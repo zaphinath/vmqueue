@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import model.LogQueue;
 
@@ -93,5 +95,141 @@ public class LogQueueDB {
 		return id; 
 	}
 	
+	
+	/**
+	 * 
+	 * @param batchId
+	 * @return
+	 */
+	public int numFailuresPerBatch(int batchId) {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		int numFailures = 0;
+		try {
+			String sql = "SELECT SUM(num_failures) FROM log_queue WHERE vm_batch_id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, batchId);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				numFailures = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) { 
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} 
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return numFailures;
+	}
+	
+	/**
+	 * 
+	 * @param batchId
+	 * @return
+	 */
+	public int numErrorsPerBatch(int batchId) {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		int numErrors = 0;
+		try {
+			String sql = "SELECT SUM(num_errors) FROM log_queue WHERE vm_batch_id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, batchId);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				numErrors = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) { 
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} 
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return numErrors;
+	}
+	
+	/**
+	 * 
+	 * @param batchId
+	 * @return
+	 */
+	public ArrayList<LogQueue> getListByBatch(int batchId) {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		ArrayList<LogQueue> queue = new ArrayList<LogQueue>();
+		try {
+			String sql = "SELECT * FROM log_queue WHERE vm_batch_id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, batchId);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				int vmBatchId = rs.getInt(2);
+				int jobId = rs.getInt(3);
+				int testCaseId = rs.getInt(4);
+				int subtestId = rs.getInt(5);
+				int cloud = rs.getInt(6);
+				int browser = rs.getInt(7);
+				int os = rs.getInt(8);
+				String hostname = rs.getString(9);
+				int numTests = rs.getInt(10);
+				int numErrors = rs.getInt(11);
+				int numFailures = rs.getInt(12);
+				String username = rs.getString(13);
+				String url = rs.getString(14);
+				String env = rs.getString(15);
+				String gitBranch = rs.getString(16);
+				String gitVersion = rs.getString(17);
+				double time = rs.getDouble(18);
+				Timestamp stamp = rs.getTimestamp(19);
+				
+				LogQueue log = new LogQueue(id, vmBatchId, jobId, testCaseId, subtestId, cloud, browser, os, hostname, numTests, 
+						numFailures, numErrors, username, url, env, gitBranch, gitVersion, time, stamp);
+				queue.add(log);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) { 
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} 
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return queue;
+	}
 	
 }

@@ -4,9 +4,10 @@
 package model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
- * @author Bryce
+ * @author Derek
  *
  */
 public class LogFailure {
@@ -20,7 +21,7 @@ public class LogFailure {
 	private String failureType;
 	private String failureMessage;
 	
-	private Date createdDate;
+	private Timestamp createdDate;
 	
 	/**
 	 * 
@@ -36,10 +37,10 @@ public class LogFailure {
 	 * @param time
 	 * @param failureType
 	 * @param failureMessage
-	 * @param createdDate
+	 * @param stamp
 	 */
 	public LogFailure(int id, int logQueueId, String className, String testName,
-			double time, String failureType, String failureMessage, Date createdDate) {
+			double time, String failureType, String failureMessage, Timestamp stamp) {
 		super();
 		this.id = id;
 		this.logQueueId = logQueueId;
@@ -48,7 +49,7 @@ public class LogFailure {
 		this.time = time;
 		this.failureType = failureType;
 		this.failureMessage = failureMessage;
-		this.createdDate = createdDate;
+		this.createdDate = stamp;
 	}
 
 	/**
@@ -152,14 +153,14 @@ public class LogFailure {
 	/**
 	 * @return the createdDate
 	 */
-	public Date getCreatedDate() {
+	public Timestamp getCreatedDate() {
 		return createdDate;
 	}
 
 	/**
 	 * @param createdDate the createdDate to set
 	 */
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(Timestamp createdDate) {
 		this.createdDate = createdDate;
 	}
 
