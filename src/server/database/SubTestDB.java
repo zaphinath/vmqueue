@@ -44,54 +44,58 @@ public class SubTestDB {
 				int id = rs.getInt(1);
 				int vmTestCaseId = rs.getInt(2);
 				String name = rs.getString(3);
+				
 				double timeDevFirefox = rs.getDouble(4);
-				double timeMasterFirefox = rs.getDouble(5);
-				double timeBetaFirefox = rs.getDouble(6);
-				double timeProdFirefox = rs.getDouble(7);
+				double timeDevChrome = rs.getDouble(5);
+				double timeDevIE = rs.getDouble(6);
 				
-				double timeDevChrome = rs.getDouble(8);
-				double timeMasterChrome = rs.getDouble(9);
-				double timeBetaChrome = rs.getDouble(10);
-				double timeProdChrome = rs.getDouble(11);
+				double timeMasterFirefox = rs.getDouble(7);
+				double timeMasterChrome = rs.getDouble(8);
+				double timeMasterIE = rs.getDouble(9);
 				
-				double timeDevIE = rs.getDouble(12);
-				double timeMasterIE = rs.getDouble(13);
-				double timeBetaIE = rs.getDouble(14);
+				double timeBetaFirefox = rs.getDouble(10);
+				double timeBetaChrome = rs.getDouble(11);
+				double timeBetaIE = rs.getDouble(12);
+				
+				double timeProdFirefox = rs.getDouble(13);
+				double timeProdChrome = rs.getDouble(14);
 				double timeProdIE = rs.getDouble(15); 
 				
 				int numErrorDevFirefox = rs.getInt(16);
-				int numErrorMasterFirefox = rs.getInt(17);
-				int numErrorBetaFirefox = rs.getInt(18);
-				int numErrorProdFirefox = rs.getInt(19);
+				int numErrorDevChrome = rs.getInt(17);
+				int numErrorDevIE = rs.getInt(18);
 				
-				int numErrorDevChrome = rs.getInt(20);
-				int numErrorMasterChrome = rs.getInt(21);
-				int numErrorBetaChrome = rs.getInt(21);
-				int numErrorProdChrome = rs.getInt(22);
+				int numErrorMasterFirefox = rs.getInt(19);
+				int numErrorMasterChrome = rs.getInt(20);
+				int numErrorMasterIE = rs.getInt(21);
 				
-				int numErrorDevIE = rs.getInt(23);
-				int numErrorMasterIE = rs.getInt(24);
-				int numErrorBetaIE = rs.getInt(25);
-				int numErrorProdIE = rs.getInt(26);
+				int numErrorBetaFirefox = rs.getInt(22);
+				int numErrorBetaChrome = rs.getInt(23);
+				int numErrorBetaIE = rs.getInt(24);
 				
-				int numFailureDevFirefox = rs.getInt(27);
-				int numFailureMasterFirefox = rs.getInt(28);
-				int numFailureBetaFirefox = rs.getInt(29);
-				int numFailureProdFirefox = rs.getInt(30);
+				int numErrorProdFirefox = rs.getInt(25);				
+				int numErrorProdChrome = rs.getInt(26);
+				int numErrorProdIE = rs.getInt(27);
 				
-				int numFailureDevChrome = rs.getInt(31);
+				int numFailureDevFirefox = rs.getInt(28);
+				int numFailureDevChrome = rs.getInt(29);
+				int numFailureDevIE = rs.getInt(30);
+				
+				int numFailureMasterFirefox = rs.getInt(31);
 				int numFailureMasterChrome = rs.getInt(32);
-				int numFailureBetaChrome = rs.getInt(33);
-				int numFailureProdChrome = rs.getInt(34);
+				int numFailureMasterIE = rs.getInt(33);
+
+				int numFailureBetaFirefox = rs.getInt(34);
+				int numFailureBetaChrome = rs.getInt(35);
+				int numFailureBetaIE = rs.getInt(36);
+
+				int numFailureProdFirefox = rs.getInt(37);				
+				int numFailureProdChrome = rs.getInt(38);
+				int numFailureProdIE = rs.getInt(39);
 				
-				int numFailureDevIE = rs.getInt(35);
-				int numFailureMasterIE = rs.getInt(36);
-				int numFailureBetaIE = rs.getInt(37);
-				int numFailureProdIE = rs.getInt(38);
-				
-				int numberTests = rs.getInt(39);
-				Timestamp createdDate = rs.getTimestamp(40);
-				Timestamp modifiedDate = rs.getTimestamp(41);
+				int numberTests = rs.getInt(40);
+				Timestamp createdDate = rs.getTimestamp(41);
+				Timestamp modifiedDate = rs.getTimestamp(42);
 				
 				subTest = new SubTest(id, vmTestCaseId, name, timeDevFirefox, timeMasterFirefox, timeBetaFirefox, timeProdFirefox,
 						timeDevChrome, timeMasterChrome, timeBetaChrome, timeProdChrome, timeDevIE, timeMasterIE, timeBetaIE, timeProdIE,
