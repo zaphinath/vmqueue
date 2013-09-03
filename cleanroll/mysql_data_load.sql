@@ -147,4 +147,5 @@ insert into vm_subtests (vm_testcase_id, name) values ('19','SupportOps');
 /* UserManagement */
 insert into vm_subtests (vm_testcase_id, name) values ('20','ManageUsers');
 
-
+update vm_subtests set modified_date = now();
+update vm_testcases set modified_date = now();
