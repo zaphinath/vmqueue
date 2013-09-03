@@ -3,7 +3,7 @@
  */
 package model;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * @author Derek Carr
@@ -14,8 +14,8 @@ public class TestCase {
 	private int id;
 	private String name;
 	private String platform;
-	private Date createdDate;
-	private Date modifiedDate;
+	private Timestamp createdDate;
+	private Timestamp modifiedDate;
 	
 	/**
 	 * 
@@ -31,8 +31,8 @@ public class TestCase {
 	 * @param createdDate
 	 * @param modifiedDate
 	 */
-	public TestCase(int id, String name, String platform, Date createdDate,
-			Date modifiedDate) {
+	public TestCase(int id, String name, String platform, Timestamp createdDate,
+			Timestamp modifiedDate) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -86,28 +86,28 @@ public class TestCase {
 	/**
 	 * @return the createdDate
 	 */
-	public Date getCreatedDate() {
+	public Timestamp getCreatedDate() {
 		return createdDate;
 	}
 
 	/**
 	 * @param createdDate the createdDate to set
 	 */
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(Timestamp createdDate) {
 		this.createdDate = createdDate;
 	}
 
 	/**
 	 * @return the modifiedDate
 	 */
-	public Date getModifiedDate() {
+	public Timestamp getModifiedDate() {
 		return modifiedDate;
 	}
 
 	/**
 	 * @param modifiedDate the modifiedDate to set
 	 */
-	public void setModifiedDate(Date modifiedDate) {
+	public void setModifiedDate(Timestamp modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
 

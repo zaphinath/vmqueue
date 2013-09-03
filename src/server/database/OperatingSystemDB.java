@@ -21,10 +21,18 @@ public class OperatingSystemDB {
 	
 	private Database db;
 	
+	/**
+	 * Class Constructor
+	 * @param db
+	 */
 	public OperatingSystemDB(Database db) {
 		this.db = db;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public List<OperatingSystem> getAllOS() {
 		ArrayList<OperatingSystem> osList = new ArrayList<OperatingSystem>();
 		PreparedStatement stmt = null;
@@ -57,6 +65,11 @@ public class OperatingSystemDB {
 		return osList;
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public OperatingSystem getOSById(int id) {
 		assert id > 0;
 		OperatingSystem os = null;
@@ -90,6 +103,11 @@ public class OperatingSystemDB {
 		return os;
 	}
 	
+	/**
+	 * 
+	 * @param os
+	 * @return
+	 */
 	public int getOSID(String os) {
     PreparedStatement stmt = null;
     int OSID = 0;

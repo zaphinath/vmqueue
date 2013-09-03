@@ -3,7 +3,7 @@
  */
 package model;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * @author Derek Carr
@@ -61,15 +61,123 @@ public class SubTest {
 	private int numFailureProdIE;
 	
 	private int numberTests;
-	private Date createdDate;
-	private Date modifiedDate;
+	private Timestamp createdDate;
+	private Timestamp modifiedDate;
 	
 	/**
-	 * 
+	 * Class Constructor 
 	 */
 	public SubTest() {
 
 	}
+
+	
+	
+	/**
+	 * @param id
+	 * @param vmTestCaseId
+	 * @param name
+	 * @param timeDevFirefox
+	 * @param timeMasterFirefox
+	 * @param timeBetaFirefox
+	 * @param timeProdFirefox
+	 * @param timeDevChrome
+	 * @param timeMasterChrome
+	 * @param timeBetaChrome
+	 * @param timeProdChrome
+	 * @param timeDevIE
+	 * @param timeMasterIE
+	 * @param timeBetaIE
+	 * @param timeProdIE
+	 * @param numErrorDevFirefox
+	 * @param numErrorMasterFirefox
+	 * @param numErrorBetaFirefox
+	 * @param numErrorProdFirefox
+	 * @param numErrorDevChrome
+	 * @param numErrorMasterChrome
+	 * @param numErrorBetaChrome
+	 * @param numErrorProdChrome
+	 * @param numErrorDevIE
+	 * @param numErrorMasterIE
+	 * @param numErrorBetaIE
+	 * @param numErrorProdIE
+	 * @param numFailureDevFirefox
+	 * @param numFailureMasterFirefox
+	 * @param numFailureBetaFirefox
+	 * @param numFailureProdFirefox
+	 * @param numFailureDevChrome
+	 * @param numFailureMasterChrome
+	 * @param numFailureBetaChrome
+	 * @param numFailureProdChrome
+	 * @param numFailureDevIE
+	 * @param numFailureMasterIE
+	 * @param numFailureBetaIE
+	 * @param numFailureProdIE
+	 * @param numberTests
+	 * @param createdDate
+	 * @param modifiedDate
+	 */
+	public SubTest(int id, int vmTestCaseId, String name, double timeDevFirefox,
+			double timeMasterFirefox, double timeBetaFirefox, double timeProdFirefox,
+			double timeDevChrome, double timeMasterChrome, double timeBetaChrome,
+			double timeProdChrome, double timeDevIE, double timeMasterIE,
+			double timeBetaIE, double timeProdIE, int numErrorDevFirefox,
+			int numErrorMasterFirefox, int numErrorBetaFirefox,
+			int numErrorProdFirefox, int numErrorDevChrome, int numErrorMasterChrome,
+			int numErrorBetaChrome, int numErrorProdChrome, int numErrorDevIE,
+			int numErrorMasterIE, int numErrorBetaIE, int numErrorProdIE,
+			int numFailureDevFirefox, int numFailureMasterFirefox,
+			int numFailureBetaFirefox, int numFailureProdFirefox,
+			int numFailureDevChrome, int numFailureMasterChrome,
+			int numFailureBetaChrome, int numFailureProdChrome, int numFailureDevIE,
+			int numFailureMasterIE, int numFailureBetaIE, int numFailureProdIE,
+			int numberTests, Timestamp createdDate, Timestamp modifiedDate) {
+		super();
+		this.id = id;
+		this.vmTestCaseId = vmTestCaseId;
+		this.name = name;
+		this.timeDevFirefox = timeDevFirefox;
+		this.timeMasterFirefox = timeMasterFirefox;
+		this.timeBetaFirefox = timeBetaFirefox;
+		this.timeProdFirefox = timeProdFirefox;
+		this.timeDevChrome = timeDevChrome;
+		this.timeMasterChrome = timeMasterChrome;
+		this.timeBetaChrome = timeBetaChrome;
+		this.timeProdChrome = timeProdChrome;
+		this.timeDevIE = timeDevIE;
+		this.timeMasterIE = timeMasterIE;
+		this.timeBetaIE = timeBetaIE;
+		this.timeProdIE = timeProdIE;
+		this.numErrorDevFirefox = numErrorDevFirefox;
+		this.numErrorMasterFirefox = numErrorMasterFirefox;
+		this.numErrorBetaFirefox = numErrorBetaFirefox;
+		this.numErrorProdFirefox = numErrorProdFirefox;
+		this.numErrorDevChrome = numErrorDevChrome;
+		this.numErrorMasterChrome = numErrorMasterChrome;
+		this.numErrorBetaChrome = numErrorBetaChrome;
+		this.numErrorProdChrome = numErrorProdChrome;
+		this.numErrorDevIE = numErrorDevIE;
+		this.numErrorMasterIE = numErrorMasterIE;
+		this.numErrorBetaIE = numErrorBetaIE;
+		this.numErrorProdIE = numErrorProdIE;
+		this.numFailureDevFirefox = numFailureDevFirefox;
+		this.numFailureMasterFirefox = numFailureMasterFirefox;
+		this.numFailureBetaFirefox = numFailureBetaFirefox;
+		this.numFailureProdFirefox = numFailureProdFirefox;
+		this.numFailureDevChrome = numFailureDevChrome;
+		this.numFailureMasterChrome = numFailureMasterChrome;
+		this.numFailureBetaChrome = numFailureBetaChrome;
+		this.numFailureProdChrome = numFailureProdChrome;
+		this.numFailureDevIE = numFailureDevIE;
+		this.numFailureMasterIE = numFailureMasterIE;
+		this.numFailureBetaIE = numFailureBetaIE;
+		this.numFailureProdIE = numFailureProdIE;
+		this.numberTests = numberTests;
+		this.createdDate = createdDate;
+		this.modifiedDate = modifiedDate;
+	}
+
+
 
 	/**
 	 * @return the id
@@ -634,28 +742,28 @@ public class SubTest {
 	/**
 	 * @return the createdDate
 	 */
-	public Date getCreatedDate() {
+	public Timestamp getCreatedDate() {
 		return createdDate;
 	}
 
 	/**
 	 * @param createdDate the createdDate to set
 	 */
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(Timestamp createdDate) {
 		this.createdDate = createdDate;
 	}
 
 	/**
 	 * @return the modifiedDate
 	 */
-	public Date getModifiedDate() {
+	public Timestamp getModifiedDate() {
 		return modifiedDate;
 	}
 
 	/**
 	 * @param modifiedDate the modifiedDate to set
 	 */
-	public void setModifiedDate(Date modifiedDate) {
+	public void setModifiedDate(Timestamp modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
 

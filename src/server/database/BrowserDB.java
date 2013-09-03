@@ -56,7 +56,51 @@ public class BrowserDB {
     }
 		return browserList;
 	}
-
+	
+	public Browser getBrowser(int browserId) {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		Browser browser = null;
+		try {
+			String sql = "SELECT * FROM vm_browsers WHERE id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, browserId);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				String name = rs.getString(2);
+				String version = rs.getString(3);
+				Timestamp createdDate = rs.getTimestamp(4);
+				Timestamp modifiedDate = rs.getTimestamp(5);
+				browser = new Browser(id, name, version, createdDate, modifiedDate);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} 
+		return browser;
+	}
+	
+	/**
+	 * 
+	 * @param VMId
+	 * @param browser
+	 * @return
+	 */
 	public Browser getBrowserVersionById(int VMId, String browser) {
 		assert VMId != 0;
 		assert browser != null;
