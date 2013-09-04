@@ -35,7 +35,6 @@ public class BrowserDB {
     	rs = stmt.executeQuery();
     	while (rs.next()) {
     		int id = rs.getInt(1);
-    		System.out.println(id + "HERE FUGLY");
     		String name = rs.getString(2);
     		String version = rs.getString(3);
     		Timestamp createdDate = rs.getTimestamp(4);
