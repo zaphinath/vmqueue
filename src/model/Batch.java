@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 public class Batch {
 	private int id;
 	private int numberJobs;
+	private int numberTests;
 	private String email;
 	private double timeEstimate;
 	private double timeActual;
@@ -69,6 +70,20 @@ public class Batch {
 	 */
 	public void setNumberJobs(int numberJobs) {
 		this.numberJobs = numberJobs;
+	}
+
+	/**
+	 * @return the numberTests
+	 */
+	public int getNumberTests() {
+		return numberTests;
+	}
+
+	/**
+	 * @param numberTests the numberTests to set
+	 */
+	public void setNumberTests(int numberTests) {
+		this.numberTests = numberTests;
 	}
 
 	/**

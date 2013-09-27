@@ -46,6 +46,14 @@ public class BatchDB {
 				
 				batch = new Batch(bid, numJobs, email, timeEst, timeAct, completed, createdDate, modifiedDate);
 			}
+			sql = "SELECT sum(num_tests) FROM log_queue WHERE id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				int numberTests = rs.getInt(1);
+				batch.setNumberTests(numberTests);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
