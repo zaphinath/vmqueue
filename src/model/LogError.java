@@ -21,6 +21,7 @@ public class LogError {
 	private String errorType;
 	private String errorMessage;
 	
+	private boolean accurate;
 	private Timestamp createdDate;
 	
 	/**
@@ -28,6 +29,8 @@ public class LogError {
 	 */
 	public LogError() {
 	}
+
+	
 
 	/**
 	 * @param id
@@ -37,11 +40,12 @@ public class LogError {
 	 * @param time
 	 * @param errorType
 	 * @param errorMessage
-	 * @param stamp
+	 * @param accurate
+	 * @param createdDate
 	 */
 	public LogError(int id, int logQueueId, String testClassname,
 			String testName, double time, String errorType, String errorMessage,
-			Timestamp stamp) {
+			boolean accurate, Timestamp createdDate) {
 		super();
 		this.id = id;
 		this.logQueueId = logQueueId;
@@ -50,8 +54,11 @@ public class LogError {
 		this.time = time;
 		this.errorType = errorType;
 		this.errorMessage = errorMessage;
-		this.createdDate = stamp;
+		this.accurate = accurate;
+		this.createdDate = createdDate;
 	}
+
+
 
 	/**
 	 * @return the id
@@ -152,6 +159,20 @@ public class LogError {
 	}
 
 	/**
+	 * @return the accurate
+	 */
+	public boolean isAccurate() {
+		return accurate;
+	}
+
+	/**
+	 * @param accurate the accurate to set
+	 */
+	public void setAccurate(boolean accurate) {
+		this.accurate = accurate;
+	}
+
+	/**
 	 * @return the createdDate
 	 */
 	public Timestamp getCreatedDate() {
@@ -165,6 +186,7 @@ public class LogError {
 		this.createdDate = createdDate;
 	}
 
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -173,7 +195,9 @@ public class LogError {
 		return "LogError [id=" + id + ", logQueueId=" + logQueueId
 				+ ", testClassname=" + testClassname + ", testName=" + testName
 				+ ", time=" + time + ", errorType=" + errorType + ", errorMessage="
-				+ errorMessage + ", createdDate=" + createdDate + "]";
+				+ errorMessage + ", accurate=" + accurate + ", createdDate="
+				+ createdDate + "]";
 	}
+
 
 }

@@ -44,9 +44,10 @@ public class LogErrorDB {
 				double time = rs.getDouble(5);
 				String type = rs.getString(6);
 				String message = rs.getString(7);
-				Timestamp stamp = rs.getTimestamp(8);
+				boolean accurate = rs.getBoolean(8);
+				Timestamp stamp = rs.getTimestamp(9);
 				
-				LogError error = new LogError(id, queueId, classname, name, time, type, message, stamp);
+				LogError error = new LogError(id, queueId, classname, name, time, type, message, accurate, stamp);
 				logErrors.add(error);
 			}
 		} catch (SQLException e) {
