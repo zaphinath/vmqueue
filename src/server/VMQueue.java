@@ -72,7 +72,7 @@ public class VMQueue {
   		if (vm.isAvailable()) {
   			//System.out.println("Available");
   			Job job = jobs.get(i).remove();
-  			System.out.println(job.getMessage());
+  			System.out.println("HOST: " + job.getHostIP()+ "  MESSAGE: " +job.getMessage());
         sendSocketStream(job);
   		}
   	}
