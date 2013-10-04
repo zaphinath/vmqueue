@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import model.Browser;
@@ -24,6 +25,10 @@ public class BrowserDB {
 		this.db = db;
 	}
 
+	/**
+	 * Returns a list of browsers.
+	 * @return
+	 */
 	public List<Browser> getAllBrowsers() {
 		ArrayList<Browser> browserList = new ArrayList<Browser>();
 		PreparedStatement stmt = null;
@@ -55,7 +60,43 @@ public class BrowserDB {
     }
 		return browserList;
 	}
+	public HashMap<Integer, Browser> getBrowsersMap() {
+		HashMap<Integer, Browser> browserList = new HashMap<Integer, Browser>();
+		PreparedStatement stmt = null;
+    ResultSet rs = null;
+    try {
+    	String sql = "SELECT * FROM vm_browsers";
+    	stmt = db.getConnection().prepareStatement(sql);
+    	
+    	rs = stmt.executeQuery();
+    	while (rs.next()) {
+    		int id = rs.getInt(1);
+    		String name = rs.getString(2);
+    		String version = rs.getString(3);
+    		Timestamp createdDate = rs.getTimestamp(4);
+    		Timestamp modifiedDate = rs.getTimestamp(5);
+    		Browser browser = new Browser(id, name, version, createdDate, modifiedDate);
+    		
+    		browserList.put(id, browser);
+    	}
+    } catch (SQLException e) {
+    	
+    } finally {
+				try {
+					if (rs != null) rs.close();
+					if (stmt != null) stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+    }
+		return browserList;
+	}
 	
+	/**
+	 * 
+	 * @param browserId
+	 * @return
+	 */
 	public Browser getBrowser(int browserId) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;

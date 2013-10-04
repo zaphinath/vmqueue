@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import model.LogQueue;
 
@@ -177,10 +177,10 @@ public class LogQueueDB {
 	 * @param batchId
 	 * @return
 	 */
-	public ArrayList<LogQueue> getListByBatch(int batchId) {
+	public HashMap<Integer, LogQueue> getListByBatch(int batchId) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		ArrayList<LogQueue> queue = new ArrayList<LogQueue>();
+		HashMap<Integer, LogQueue> queue = new HashMap<Integer, LogQueue>();
 		try {
 			String sql = "SELECT * FROM log_queue WHERE vm_batch_id = ?";
 			stmt = db.getConnection().prepareStatement(sql);
@@ -209,7 +209,7 @@ public class LogQueueDB {
 				
 				LogQueue log = new LogQueue(id, vmBatchId, jobId, testCaseId, subtestId, cloud, browser, os, hostname, numTests, 
 						numFailures, numErrors, username, url, env, gitBranch, gitVersion, time, stamp);
-				queue.add(log);
+				queue.put(id,log);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
