@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.logging.Logger;
 
 import server.database.Database;
 
@@ -36,6 +37,12 @@ public class VMQueue {
 	
 	private int jobNumber;
 	private static int PORT = 4445;
+	
+	private static Logger logger;
+	
+	static {
+		logger = Logger.getLogger(VMQueue.class.getName());
+	}
 
   public VMQueue(int port, String database) {
   	PORT = port;
@@ -72,7 +79,7 @@ public class VMQueue {
   		if (vm.isAvailable()) {
   			//System.out.println("Available");
   			Job job = jobs.get(i).remove();
-  			System.out.println("HOST: " + job.getHostIP()+ "  MESSAGE: " +job.getMessage());
+  			logger.info("HOST: " + job.getHostIP()+ "  MESSAGE: " +job.getMessage());
         sendSocketStream(job);
   		}
   	}

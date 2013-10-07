@@ -67,7 +67,7 @@ public class QueueMain {
 		  				NamedPipeStream stream = new NamedPipeStream(line);
 		  				Job job = queue.buildJob(stream);
 		  				int queueNum = queue.addToQueue(job);
-		  				logger.info(queueNum + "NUMBER");
+		  				//logger.info(queueNum + "NUMBER");
 		  			}
 		  			in.close();
 		  			fPipe.delete();
