@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import server.database.Database;
@@ -56,6 +57,7 @@ public class VMQueue {
 			db.endTransaction(true);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
   	jobs = Collections.synchronizedList(new ArrayList<Queue<Job>>());
   	for (int i = 1; i < vms.size()+1; i++) {
@@ -224,6 +226,7 @@ public class VMQueue {
 		} finally {
 			try {socket.close();} catch (IOException e) {
 				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getMessage(), e);
 			}
 		}
 	}

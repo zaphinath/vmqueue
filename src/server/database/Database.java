@@ -6,6 +6,7 @@ package server.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -70,6 +71,7 @@ public class Database {
 			Class.forName(driver);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 		logger.exiting("server.database.Database", "initialize");
 	}
@@ -168,6 +170,7 @@ public class Database {
 			connection.setAutoCommit(false);
   	} catch(SQLException e) {
   		e.printStackTrace();
+  		logger.log(Level.SEVERE, e.getMessage(), e);
   	}
   }
   
@@ -185,12 +188,15 @@ public class Database {
 			}
 		} 
 		catch (SQLException e) { e.printStackTrace(); }
-		finally { try {
+		finally {	 
+			try {
 			connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getMessage(), e);
+			}
+		}
 		
 		connection = null;
   }
