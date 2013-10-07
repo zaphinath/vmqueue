@@ -1,4 +1,4 @@
-<project name="vmqueue" default="compile" basedir="." >
+<project name="vmqueue" default="server" basedir="." >
   <!--Properties-->
   <property name="src" location="src" />
   <property name="test" location="test" />

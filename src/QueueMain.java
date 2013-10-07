@@ -37,7 +37,7 @@ public class QueueMain {
 			consoleHandler.setFormatter(new SimpleFormatter());
 			logger.addHandler(consoleHandler);
 
-			FileHandler fileHandler = new FileHandler("log.txt", false);
+			FileHandler fileHandler = new FileHandler("log.txt", true);
 			fileHandler.setLevel(logLevel);
 			fileHandler.setFormatter(new SimpleFormatter());
 			logger.addHandler(fileHandler);
