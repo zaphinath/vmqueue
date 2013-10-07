@@ -192,7 +192,6 @@ public class Database {
 			try {
 			connection.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				logger.log(Level.SEVERE, e.getMessage(), e);
 			}
