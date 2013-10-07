@@ -41,6 +41,7 @@ public class QueueMain {
 			fileHandler.setLevel(logLevel);
 			fileHandler.setFormatter(new SimpleFormatter());
 			logger.addHandler(fileHandler);
+			
 		} catch (IOException e) {
 			System.out.println("Could not initialize log: " + e.getMessage());
 		}
@@ -61,12 +62,12 @@ public class QueueMain {
 		  			isLocked = true;
 		  			String line;
 		  			BufferedReader in = new BufferedReader(new FileReader(fPipe));
-		  			System.out.println("READING FILE");
+		  			logger.info("READING FILE");
             while((line = in.readLine()) != null) {
 		  				NamedPipeStream stream = new NamedPipeStream(line);
 		  				Job job = queue.buildJob(stream);
 		  				int queueNum = queue.addToQueue(job);
-		  				System.out.println(queueNum + "NUMBER");
+		  				logger.info(queueNum + "NUMBER");
 		  			}
 		  			in.close();
 		  			fPipe.delete();
