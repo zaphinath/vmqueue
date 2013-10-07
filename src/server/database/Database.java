@@ -6,6 +6,7 @@ package server.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 
 /**
@@ -13,7 +14,9 @@ import java.sql.SQLException;
  *
  */
 public class Database {
-
+	
+	private static Logger logger;
+	
 	private BrowserDB browser;
 	private JobDB job;
 	private VirtualMachineDB virtualMachine;
@@ -33,6 +36,10 @@ public class Database {
   private String serverName;
   private String databaseName;
 	private static String driver = "com.mysql.jdbc.Driver";
+	
+	static {
+		logger = Logger.getLogger(Database.class.getName());
+	}
 	
 	public Database(String env) {
 		this.browser = new BrowserDB(this);
@@ -58,11 +65,13 @@ public class Database {
 	}
 	
 	public static void initialize() {
+		logger.entering("server.database.Database", "initialize");
 		try {
 			Class.forName(driver);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		logger.exiting("server.database.Database", "initialize");
 	}
 	
   /**
