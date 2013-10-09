@@ -302,7 +302,7 @@ public class VirtualMachineDB {
 	  }
   }
 	
-	public void setAvailable(int id) {
+	public void setUnavailable(int id) {
 		PreparedStatement stmt = null;
 		try {
 			String sql = "UPDATE vm_cloud SET available=0 WHERE id = ?";

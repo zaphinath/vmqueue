@@ -110,6 +110,7 @@ public class VMQueue {
   						job.setHostIP(vms.get(i).getIP());
   						logger.info("HOST: " + job.getHostIP()+ "  MESSAGE: " +job.getMessage());
   						sendSocketStream(job);
+  						break;
   					} 
   				// Have browser and version 
   				} else if (!jobs.get(j).getBrowser().equalsIgnoreCase("any") && !jobs.get(j).getBrowserVersion().equalsIgnoreCase("any")){
@@ -120,6 +121,7 @@ public class VMQueue {
   						job.setHostIP(vms.get(i).getIP());
   						logger.info("HOST: " + job.getHostIP()+ "  MESSAGE: " +job.getMessage());
   						sendSocketStream(job);
+  						break;
   					} 
   				}
   			}
@@ -255,14 +257,14 @@ public class VMQueue {
 		db.getJobDB().updateJob(job);
 		db.endTransaction(true);
 		
-		//TODO: update vm_clould available to 0;
+		//TODO: update vm_cloud available to 0;
 		Socket socket = null;
 		BufferedWriter bufOut = null;
 		//System.out.println(job.toString());
 		try {
 			db.startTransaction();
 			//System.out.println(job.getQueue());
-			db.getVirtualMachineDB().setAvailable(job.getQueue());
+			db.getVirtualMachineDB().setUnavailable(job.getQueue());
 			db.endTransaction(true);
 			
 			socket = new Socket(job.getHostIP(), PORT);
