@@ -108,7 +108,6 @@ public class VMQueue {
   						job.setQueue(vms.get(i).getId());
   						job.getMessage().setQueueNumber(vms.get(i).getId());
   						job.setHostIP(vms.get(i).getIP());
-  						logger.info("HOST: " + job.getHostIP()+ "  MESSAGE: " +job.getMessage());
   						sendSocketStream(job);
   						break;
   					} 
@@ -119,7 +118,7 @@ public class VMQueue {
   						job.setQueue(vms.get(i).getId());
   						job.getMessage().setQueueNumber(vms.get(i).getId());
   						job.setHostIP(vms.get(i).getIP());
-  						logger.info("HOST: " + job.getHostIP()+ "  MESSAGE: " +job.getMessage());
+  						
   						sendSocketStream(job);
   						break;
   					} 
@@ -221,7 +220,7 @@ public class VMQueue {
   		//OperatingSystem os = db.getOSDB().getOSById(vm.getOsId());
   		//db.endTransaction(true);
   		
-  		socketString.setOs("os");
+  		//socketString.setOs("os");
   		//System.out.println(os.toString());
   		socketString.setBrowser(stream.getBrowser());
   		socketString.setBrowserVersion(stream.getBrowserVersion());
@@ -248,10 +247,16 @@ public class VMQueue {
 
 	
 	private void sendSocketStream(Job job) {
+		db.startTransaction();
+		OperatingSystem os = db.getOSDB().getOSById(vms.get(job.getQueue()).getOsId());
+		db.endTransaction(true);
+		
 		//TODO: Need to add Job ID to socket message and possibily update db?
 		SocketString tmp = job.getMessage();
 		tmp.setJobId(job.getId());
+		tmp.setOs(os.getName());
 		job.setMessage(tmp);
+		logger.info("HOST: " + job.getHostIP()+ "  MESSAGE: " +job.getMessage());
 		
 		db.startTransaction();
 		db.getJobDB().updateJob(job);
