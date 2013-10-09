@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import model.VirtualMachine;
@@ -28,7 +29,10 @@ public class VirtualMachineDB {
 	public List<VirtualMachine> getAll() throws SQLException{
 		ArrayList<VirtualMachine> VMList = new ArrayList<VirtualMachine>();
 		PreparedStatement stmt = null;
+		PreparedStatement stmt2 = null;
     ResultSet rs = null;
+    ResultSet rs2 = null;
+    
     try {
     	String sql = "SELECT * FROM vm_cloud";
     	stmt = db.getConnection().prepareStatement(sql);
@@ -46,6 +50,20 @@ public class VirtualMachineDB {
     		Timestamp createdDate = rs.getTimestamp(9);
     		Timestamp modifiedDate = rs.getTimestamp(10);
     		VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue, qTime, numJobs, modifiedDate, createdDate);
+    		
+    		HashMap<String, String> browsers = new HashMap<String,String>(); 
+    		String sql2 = "SELECT a.name, a.version FROM vm_browsers a INNER JOIN vm_cloud2browser b " +
+    				"ON a.id = b.vm_browser_id WHERE b.vm_cloud_id = ?";
+    		stmt2 = db.getConnection().prepareStatement(sql2);
+    		stmt2.setInt(1, id);
+    		rs2 = stmt2.executeQuery();
+    		
+    		while (rs2.next()) {
+    			String browser = rs2.getString(1);
+    			String version = rs2.getString(2);
+    			browsers.put(browser, version);
+    		}
+    		vm.setBrowsers(browsers);
     		VMList.add(vm);
     	}
     } catch (SQLException e) {
@@ -259,10 +277,17 @@ public class VirtualMachineDB {
 		  }
 	}
 	
+	/**
+	 * We want to be able to initialize all vm's in queue in case of weird stops, and 
+	 * remove from the queue of available if they are offline for any reason.
+	 */
 	public void updateAvailable() {
 		PreparedStatement stmt = null;
 		try {
 			String sql = "UPDATE vm_cloud SET available=1, time=0.00, num_jobs=0 WHERE inQueue=1";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.executeUpdate(); 
+			sql = "UPDATE vm_cloud SET available=0, time=0.00, num_jobs=0 WHERE inQueue=0";
 			stmt = db.getConnection().prepareStatement(sql);
 			stmt.executeUpdate(); 
 		} catch (SQLException e) {

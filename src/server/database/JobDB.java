@@ -48,10 +48,13 @@ public class JobDB {
     		int queueNum = rs.getInt(5);
     		String ipAddress = rs.getString(6);
     		boolean completed = rs.getBoolean(7);
-    		Timestamp createdDate = rs.getTimestamp(8);
-    		Timestamp modifiedDate = rs.getTimestamp(9);
+    		String browser = rs.getString(8);
+    		String browserVersion = rs.getString(9);
+    		Timestamp createdDate = rs.getTimestamp(10);
+    		Timestamp modifiedDate = rs.getTimestamp(11);
     		
-    		Job job = new Job(jobId, vmBatchId, socketString, time,queueNum,ipAddress, completed, createdDate, modifiedDate);
+    		Job job = new Job(jobId, vmBatchId, socketString, time,queueNum,ipAddress, completed,
+    				browser, browserVersion, createdDate, modifiedDate);
     		list.add(job);
 			}
 		} catch (SQLException e) {
@@ -87,10 +90,13 @@ public class JobDB {
     		int queueNum = rs.getInt(5);
     		String ipAddress = rs.getString(6);
     		boolean completed = rs.getBoolean(7);
-    		Timestamp createdDate = rs.getTimestamp(8);
-    		Timestamp modifiedDate = rs.getTimestamp(9);
+    		String browser = rs.getString(8);
+    		String browserVersion = rs.getString(9);
+    		Timestamp createdDate = rs.getTimestamp(10);
+    		Timestamp modifiedDate = rs.getTimestamp(11);
     		
-    		job = new Job(jid, vmBatchId, socketString, time,queueNum,ipAddress, completed, createdDate, modifiedDate);
+    		job = new Job(jid, vmBatchId, socketString, time,queueNum,ipAddress, completed, 
+    				browser, browserVersion, createdDate, modifiedDate);
     	}
     } catch (SQLException e) {
     	
@@ -105,15 +111,16 @@ public class JobDB {
 		Gson gson = new Gson();
 		int id = 0;
 		try {
-			String sql = "INSERT INTO vm_job(vm_batch_id, message, time, queue_number, ip_address, modified_date)" +
-						"VALUES(?, ?, ?, ?, ?, now())";
+			String sql = "INSERT INTO vm_job(vm_batch_id, message, time, queue_number, ip_address, browser, browser_version, modified_date)" +
+						"VALUES(?, ?, ?, ?, ?, ?, ?, now())";
 			stmt = db.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, job.getBatchId());
 			stmt.setString(2, gson.toJson(job.getMessage()));
 			stmt.setDouble(3, job.getTime());
 			stmt.setInt(4, job.getQueue());
 			stmt.setString(5, job.getHostIP());
-			
+			stmt.setString(6, job.getBrowser());
+			stmt.setString(7, job.getBrowserVersion());
 			stmt.executeUpdate();
 			rs = stmt.getGeneratedKeys();
 			if (rs.next()) {
@@ -159,14 +166,16 @@ public class JobDB {
 		Gson gson = new Gson();
 		try {
 			String sql = "UPDATE vm_job SET message = ?, time = ?, queue_number = ?, ip_address = ?, " +
-									 "completed = ?, modified_date = now() WHERE id = ?";
+									 "completed = ?, browser = ?, browser_version =?, modified_date = now() WHERE id = ?";
 			stmt = db.getConnection().prepareStatement(sql);
 			stmt.setString(1, gson.toJson(job.getMessage()));
 			stmt.setDouble(2, job.getTime());
 			stmt.setInt(3, job.getQueue());
 			stmt.setString(4, job.getHostIP());
 			stmt.setBoolean(5, job.isCompleted());
-			stmt.setInt(6, job.getId());
+			stmt.setString(6, job.getBrowser());
+			stmt.setString(7, job.getBrowserVersion());
+			stmt.setInt(8, job.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -31,8 +31,9 @@ import model.VirtualMachine;
 
 public class VMQueue {
 	
-	private List<Queue<Job>> jobs;
+	//private List<Queue<Job>> jobs;
 	private ArrayList<VirtualMachine> vms;
+	private List<Job> jobs;
 	
 	private Database db;
 	
@@ -59,30 +60,69 @@ public class VMQueue {
 			e.printStackTrace();
 			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
-  	jobs = Collections.synchronizedList(new ArrayList<Queue<Job>>());
-  	for (int i = 1; i < vms.size()+1; i++) {
-  		jobs.add(new LinkedList<Job>());
-  	}
+  	jobs = new LinkedList<Job>();
+  	//jobs = Collections.synchronizedList(new ArrayList<Queue<Job>>());
+  	//for (int i = 1; i < vms.size()+1; i++) {
+  	//	jobs.add(new LinkedList<Job>());
+  	//}
   }
 
   
   public void processQueue() throws SQLException {
-  	for (int i = 0; i < jobs.size(); i++){
-  		Job peekJob = jobs.get(i).peek();
-  		//System.out.println("Queue: "+i + " Size: " +jobs.get(i).size());
-  		VirtualMachine vm;
-  		if (peekJob != null) {
-  			db.startTransaction();
-  			vm = db.getVirtualMachineDB().getVirtualMachine(peekJob.getQueue());
-  			db.endTransaction(true);
-  		} else {
-  			continue;
-  		}
-  		if (vm.isAvailable()) {
-  			//System.out.println("Available");
-  			Job job = jobs.get(i).remove();
-  			logger.info("HOST: " + job.getHostIP()+ "  MESSAGE: " +job.getMessage());
-        sendSocketStream(job);
+//  	for (int i = 0; i < jobs.size(); i++){
+//  		Job peekJob = jobs.get(i).peek();
+//  		//System.out.println("Queue: "+i + " Size: " +jobs.get(i).size());
+//  		VirtualMachine vm;
+//  		if (peekJob != null) {
+//  			db.startTransaction();
+//  			vm = db.getVirtualMachineDB().getVirtualMachine(peekJob.getQueue());
+//  			db.endTransaction(true);
+//  		} else {
+//  			continue;
+//  		}
+//  		if (vm.isAvailable()) {
+//  			//System.out.println("Available");
+//  			Job job = jobs.get(i).remove();
+//  			logger.info("HOST: " + job.getHostIP()+ "  MESSAGE: " +job.getMessage());
+//        sendSocketStream(job);
+//  		}
+//  	}
+  	// Query list of vm's 
+  	// Loop through all - if available then check if it contains browser/requested run
+  	// if not then we loop through the queue starting at the head until we find a match
+  	// then repeat
+  	// Set job.queue to the id of the vm it's being sent to and update db. - happens in sendsocket method
+		db.startTransaction();
+		vms = (ArrayList<VirtualMachine>) db.getVirtualMachineDB().getAll();
+		db.endTransaction(true);
+		
+  	for (int i = 0; i < vms.size(); i++) {
+  		if (vms.get(i).isAvailable()) {
+  			for (int j = 0; j < jobs.size(); j++) {
+  				//Check if available vm has the right browser and version
+  				//Any Browser would have been randomly determined earlier
+  				//Have browser, don't care version
+  				if (!jobs.get(j).getBrowser().equalsIgnoreCase("any") && jobs.get(j).getBrowserVersion().equalsIgnoreCase("any")) {
+  					if (vms.get(i).getBrowsers().containsKey(jobs.get(j).getBrowser())) {
+  						Job job = jobs.remove(j);
+  						job.setQueue(vms.get(i).getId());
+  						job.getMessage().setQueueNumber(vms.get(i).getId());
+  						job.setHostIP(vms.get(i).getIP());
+  						logger.info("HOST: " + job.getHostIP()+ "  MESSAGE: " +job.getMessage());
+  						sendSocketStream(job);
+  					} 
+  				// Have browser and version 
+  				} else if (!jobs.get(j).getBrowser().equalsIgnoreCase("any") && !jobs.get(j).getBrowserVersion().equalsIgnoreCase("any")){
+  					if (vms.get(i).getBrowsers().containsKey(jobs.get(j).getBrowser()) && vms.get(i).getBrowsers().containsValue(jobs.get(j).getBrowserVersion())) {
+  						Job job = jobs.remove(j);
+  						job.setQueue(vms.get(i).getId());
+  						job.getMessage().setQueueNumber(vms.get(i).getId());
+  						job.setHostIP(vms.get(i).getIP());
+  						logger.info("HOST: " + job.getHostIP()+ "  MESSAGE: " +job.getMessage());
+  						sendSocketStream(job);
+  					} 
+  				}
+  			}
   		}
   	}
   }
@@ -108,22 +148,28 @@ public class VMQueue {
    * @return
    */
   public int addToQueue(Job job) {
-  	int queue = job.getQueue() -1;
-
-  	//TODO: Need to update vm_queue_time as these add
+//  	int queue = job.getQueue() -1;
+//
+//  	//TODO: Need to update vm_queue_time as these add
+//  	db.startTransaction();
+//  	
+//  	VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(job.getQueue());
+//  	vm.setCurrentQueueTime(vm.getCurrentQueueTime() + job.getTime());
+//  	vm.setHeight(jobs.get(queue).size() + 1);
+//  	db.getVirtualMachineDB().updateVM(vm);
+//  	int jobId = db.getJobDB().insertJob(job);
+//  	job.setId(jobId);
+//  	
+//  	db.endTransaction(true);
+//  	
+//  	jobs.get(queue).add(job);
+//  	return jobs.get(queue).size();
   	db.startTransaction();
-  	
-  	VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(job.getQueue());
-  	vm.setCurrentQueueTime(vm.getCurrentQueueTime() + job.getTime());
-  	vm.setHeight(jobs.get(queue).size() + 1);
-  	db.getVirtualMachineDB().updateVM(vm);
   	int jobId = db.getJobDB().insertJob(job);
-  	job.setId(jobId);
-  	
   	db.endTransaction(true);
-  	
-  	jobs.get(queue).add(job);
-  	return jobs.get(queue).size();
+  	job.setId(jobId);  	
+  	jobs.add(job);
+  	return jobs.size();
   }
 
   /**
@@ -140,17 +186,20 @@ public class VMQueue {
   	// Build Socket String
   	// Build and return job
   
-  	int queueNumber = determineQueue(stream.getBrowser(), stream.getBrowserVersion());
-  	db.startTransaction();
-  	VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(queueNumber);
-  	db.endTransaction(true);
+  	//int queueNumber = determineQueue(stream.getBrowser(), stream.getBrowserVersion());
+  	int queueNumber = -1;
+  	String ip = "null";
+//  	db.startTransaction();
+//  	VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(queueNumber);
+//  	db.endTransaction(true);
   	//TODO: Need to get a new time based on the browser time estimates?
   	SocketString socketString = buildSocketString(queueNumber, stream);
   	
   	socketString.setAntCommand(socketString.buildAntCommand(stream.getTestPackage(), stream.getTestClass()));
   	//TODO: need to update to reflect batch changes
   	Timestamp now = new Timestamp(new java.util.Date().getTime());
-  	Job job = new Job(jobNumber++, stream.getBatchId(), socketString, stream.getTime(), queueNumber, vm.getIP(), false, now, now);
+  	Job job = new Job(jobNumber++, stream.getBatchId(), socketString, stream.getTime(), queueNumber, ip,
+  			false, stream.getBrowser(), stream.getBrowserVersion(), now, now);
   	return job;
   }
 
@@ -240,31 +289,31 @@ public class VMQueue {
 	 * @return integer of vm_cloud id 
 	 * @throws SQLException 
 	 */
-	private int determineQueue(String browser, String browserVersion) throws SQLException {
-		assert !browser.equalsIgnoreCase("any");
-		assert browser != null && browserVersion != null;
-		List<VirtualMachine> limitedVms = null;
-		if (!browser.equalsIgnoreCase("any") && browserVersion.equalsIgnoreCase("any")) {
-			// BUILD LIST OF ONLY MACHINES THIS WILL RUN ON
-			db.startTransaction();
-      limitedVms = db.getVirtualMachineDB().getByBrowser(browser, true);
-			db.endTransaction(true);
-		} else {
-			db.startTransaction();
-			limitedVms = db.getVirtualMachineDB().getByBrowserAndVersion(browser, browserVersion, true);
-			db.endTransaction(true);
-		}
-		assert limitedVms != null && limitedVms.size() > 0;
-		// This filters the lowest of the queue to be the one the job gets submited too
-		double shortestTime = limitedVms.get(0).getCurrentQueueTime();
-		int vmId = limitedVms.get(0).getId();
-		for (int i = 0; i < limitedVms.size(); i++) {
-			if (limitedVms.get(i).getCurrentQueueTime() < shortestTime) {
-				shortestTime = limitedVms.get(i).getCurrentQueueTime();
-				vmId = limitedVms.get(i).getId();
-			}
-		}
-		assert vmId > 0;
-		return vmId;
-	}
+//	private int determineQueue(String browser, String browserVersion) throws SQLException {
+//		assert !browser.equalsIgnoreCase("any");
+//		assert browser != null && browserVersion != null;
+//		List<VirtualMachine> limitedVms = null;
+//		if (!browser.equalsIgnoreCase("any") && browserVersion.equalsIgnoreCase("any")) {
+//			// BUILD LIST OF ONLY MACHINES THIS WILL RUN ON
+//			db.startTransaction();
+//      limitedVms = db.getVirtualMachineDB().getByBrowser(browser, true);
+//			db.endTransaction(true);
+//		} else {
+//			db.startTransaction();
+//			limitedVms = db.getVirtualMachineDB().getByBrowserAndVersion(browser, browserVersion, true);
+//			db.endTransaction(true);
+//		}
+//		assert limitedVms != null && limitedVms.size() > 0;
+//		// This filters the lowest of the queue to be the one the job gets submited too
+//		double shortestTime = limitedVms.get(0).getCurrentQueueTime();
+//		int vmId = limitedVms.get(0).getId();
+//		for (int i = 0; i < limitedVms.size(); i++) {
+//			if (limitedVms.get(i).getCurrentQueueTime() < shortestTime) {
+//				shortestTime = limitedVms.get(i).getCurrentQueueTime();
+//				vmId = limitedVms.get(i).getId();
+//			}
+//		}
+//		assert vmId > 0;
+//		return vmId;
+//	}
 }

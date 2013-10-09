@@ -19,6 +19,8 @@ public class Job {
 	private int queue;
 	private String hostIP;
 	private boolean completed;
+	private String browser;
+	private String browserVersion;
 	private Timestamp createdDate;
 	private Timestamp modifiedDate;
 	
@@ -32,7 +34,6 @@ public class Job {
 		this.queue = -1;
 		this.hostIP = null;
 	}
-	
 
 	/**
 	 * @param id
@@ -42,12 +43,14 @@ public class Job {
 	 * @param queue
 	 * @param hostIP
 	 * @param completed
+	 * @param browser
+	 * @param browserVersion
 	 * @param createdDate
 	 * @param modifiedDate
 	 */
 	public Job(int id, int batchId, SocketString message, double time, int queue,
-			String hostIP, boolean completed, Timestamp createdDate,
-			Timestamp modifiedDate) {
+			String hostIP, boolean completed, String browser, String browserVersion,
+			Timestamp createdDate, Timestamp modifiedDate) {
 		super();
 		this.id = id;
 		this.batchId = batchId;
@@ -56,10 +59,11 @@ public class Job {
 		this.queue = queue;
 		this.hostIP = hostIP;
 		this.completed = completed;
+		this.browser = browser;
+		this.browserVersion = browserVersion;
 		this.createdDate = createdDate;
 		this.modifiedDate = modifiedDate;
 	}
-
 
 	/**
 	 * @return the batchId
@@ -160,6 +164,33 @@ public class Job {
 		this.completed = completed;
 	}
 
+	/**
+	 * @return the browser
+	 */
+	public String getBrowser() {
+		return browser;
+	}
+
+	/**
+	 * @param browser the browser to set
+	 */
+	public void setBrowser(String browser) {
+		this.browser = browser;
+	}
+
+	/**
+	 * @return the browserVersion
+	 */
+	public String getBrowserVersion() {
+		return browserVersion;
+	}
+
+	/**
+	 * @param browserVersion the browserVersion to set
+	 */
+	public void setBrowserVersion(String browserVersion) {
+		this.browserVersion = browserVersion;
+	}
 
 	/**
 	 * @return the createdDate

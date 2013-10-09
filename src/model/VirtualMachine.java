@@ -4,6 +4,7 @@
 package model;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 
 /**
  * @author Derek Carr
@@ -20,6 +21,7 @@ public class VirtualMachine {
 	private boolean inQueue;
 	private double currentQueueTime;
 	private int numberQueueJobs;
+	private HashMap<String, String> browsers;
 	private Timestamp modifiedDate;
 	private Timestamp createdDate;
 	
@@ -36,6 +38,7 @@ public class VirtualMachine {
 		this.inQueue = false;
 		this.currentQueueTime = 0;
 		this.numberQueueJobs = 0;
+		this.browsers = null;
 		this.modifiedDate = null;
 		this.createdDate = null;
 	}
@@ -65,6 +68,40 @@ public class VirtualMachine {
 		this.createdDate = createdDate;
 	}
 	
+	
+	/**
+	 * @param id
+	 * @param hostname
+	 * @param osId
+	 * @param iP
+	 * @param height
+	 * @param available
+	 * @param inQueue
+	 * @param currentQueueTime
+	 * @param numberQueueJobs
+	 * @param browsers
+	 * @param modifiedDate
+	 * @param createdDate
+	 */
+	public VirtualMachine(int id, String hostname, int osId, String iP,
+			int height, boolean available, boolean inQueue, double currentQueueTime,
+			int numberQueueJobs, HashMap<String, String> browsers,
+			Timestamp modifiedDate, Timestamp createdDate) {
+		super();
+		this.id = id;
+		this.hostname = hostname;
+		this.osId = osId;
+		IP = iP;
+		this.height = height;
+		this.available = available;
+		this.inQueue = inQueue;
+		this.currentQueueTime = currentQueueTime;
+		this.numberQueueJobs = numberQueueJobs;
+		this.browsers = browsers;
+		this.modifiedDate = modifiedDate;
+		this.createdDate = createdDate;
+	}
+
 	/**
 	 * @return the modifiedDate
 	 */
@@ -231,6 +268,20 @@ public class VirtualMachine {
 	 */
 	public void setNumberQueueJobs(int numberQueueJobs) {
 		this.numberQueueJobs = numberQueueJobs;
+	}
+
+	/**
+	 * @return the browsers
+	 */
+	public HashMap<String, String> getBrowsers() {
+		return browsers;
+	}
+
+	/**
+	 * @param browsers the browsers to set
+	 */
+	public void setBrowsers(HashMap<String, String> browsers) {
+		this.browsers = browsers;
 	}
 
 	/* (non-Javadoc)
