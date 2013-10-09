@@ -213,16 +213,16 @@ public class VMQueue {
 		SocketString socketString = new SocketString();
 		//System.out.println("Queue: " + queueNumber + stream.toString());
   	try {  		
-  		db.startTransaction();
-  		Browser browser = db.getBrowserDB().getBrowserVersionById(queueNumber, stream.getBrowser());
+  		//db.startTransaction();
+  		//Browser browser = db.getBrowserDB().getBrowserVersionById(queueNumber, stream.getBrowser());
   		//VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(queueNumber);
   		//OperatingSystem os = db.getOSDB().getOSById(vm.getOsId());
-  		db.endTransaction(true);
+  		//db.endTransaction(true);
   		
   		socketString.setOs("os");
   		//System.out.println(os.toString());
-  		socketString.setBrowser(browser.getBrowserName());
-  		socketString.setBrowserVersion(browser.getBrowserVersion());
+  		socketString.setBrowser(stream.getBrowser());
+  		socketString.setBrowserVersion(stream.getBrowserVersion());
 			socketString.setUrl(new URL(stream.getUrl()));
 			socketString.setLmpUser(stream.getLmpUsername());
 			socketString.setLmpPass(stream.getLmpPassword());
