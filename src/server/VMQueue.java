@@ -107,7 +107,7 @@ public class VMQueue {
   						Job job = jobs.remove(j);
   						job.setQueue(vms.get(i).getId());
   						job.getMessage().setQueueNumber(vms.get(i).getId());
-  						System.out.println(jobs.get(j).toString());
+  						System.out.println(jobs.get(j).getBrowser());
   						job.getMessage().setBrowserVersion(vms.get(i).getBrowsers().get(jobs.get(j).getBrowser()));
   						//System.out.println(vms.get(i).getBrowsers().toString());
   						job.setHostIP(vms.get(i).getIP());
