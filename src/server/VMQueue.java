@@ -107,6 +107,7 @@ public class VMQueue {
   						Job job = jobs.remove(j);
   						job.setQueue(vms.get(i).getId());
   						job.getMessage().setQueueNumber(vms.get(i).getId());
+  						job.getMessage().setBrowserVersion(vms.get(i).getBrowsers().get(jobs.get(j).getBrowser()));
   						job.setHostIP(vms.get(i).getIP());
   						sendSocketStream(job);
   						break;
