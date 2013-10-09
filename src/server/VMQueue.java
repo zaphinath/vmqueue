@@ -94,7 +94,9 @@ public class VMQueue {
   	// Set job.queue to the id of the vm it's being sent to and update db. - happens in sendsocket method
 		db.startTransaction();
 		vms = (ArrayList<VirtualMachine>) db.getVirtualMachineDB().getAll();
-		db.getVirtualMachineDB().updateAvailable();
+		// Don't want to update to available until the test comes back - if we add
+		// new vm's then we need to also set the available and inqueue fields
+		//db.getVirtualMachineDB().updateAvailable();
 		db.endTransaction(true);
 		
   	for (int i = 0; i < vms.size(); i++) {
