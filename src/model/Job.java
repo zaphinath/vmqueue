@@ -223,15 +223,16 @@ public class Job {
 		this.modifiedDate = modifiedDate;
 	}
 
-
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Job [id=" + id + ", message=" + message.toString() + ", time=" + time
-				+ ", queue=" + queue + ", hostIP=" + hostIP + "]";
+		return "Job [id=" + id + ", batchId=" + batchId + ", message=" + message
+				+ ", time=" + time + ", queue=" + queue + ", hostIP=" + hostIP
+				+ ", completed=" + completed + ", browser=" + browser
+				+ ", browserVersion=" + browserVersion + ", createdDate=" + createdDate
+				+ ", modifiedDate=" + modifiedDate + "]";
 	}
-	
-	
+
 }
