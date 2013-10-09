@@ -204,6 +204,7 @@ public class VMQueue {
   }
 
 	/**
+	 * Need to set OS, IP, QUEUE NUMBER later
 	 * @param queueNumber
 	 * @param stream
 	 * @return
@@ -214,11 +215,11 @@ public class VMQueue {
   	try {  		
   		db.startTransaction();
   		Browser browser = db.getBrowserDB().getBrowserVersionById(queueNumber, stream.getBrowser());
-  		VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(queueNumber);
-  		OperatingSystem os = db.getOSDB().getOSById(vm.getOsId());
+  		//VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(queueNumber);
+  		//OperatingSystem os = db.getOSDB().getOSById(vm.getOsId());
   		db.endTransaction(true);
   		
-  		socketString.setOs(os.getName());
+  		socketString.setOs("os");
   		//System.out.println(os.toString());
   		socketString.setBrowser(browser.getBrowserName());
   		socketString.setBrowserVersion(browser.getBrowserVersion());
