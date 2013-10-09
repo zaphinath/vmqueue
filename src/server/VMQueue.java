@@ -94,6 +94,7 @@ public class VMQueue {
   	// Set job.queue to the id of the vm it's being sent to and update db. - happens in sendsocket method
 		db.startTransaction();
 		vms = (ArrayList<VirtualMachine>) db.getVirtualMachineDB().getAll();
+		db.getVirtualMachineDB().updateAvailable();
 		db.endTransaction(true);
 		
   	for (int i = 0; i < vms.size(); i++) {
@@ -107,7 +108,6 @@ public class VMQueue {
   						Job job = jobs.remove(j);
   						job.setQueue(vms.get(i).getId());
   						job.getMessage().setQueueNumber(vms.get(i).getId());
-  						System.out.println(job.getBrowser());
   						job.getMessage().setBrowserVersion(vms.get(i).getBrowsers().get(job.getBrowser()));
   						//System.out.println(vms.get(i).getBrowsers().toString());
   						job.setHostIP(vms.get(i).getIP());
