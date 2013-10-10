@@ -88,6 +88,49 @@ public class LogQueue {
 		this.date = date;
 	}
 
+	/**
+	 * @param vmBatchId
+	 * @param vmJobId
+	 * @param testCaseId
+	 * @param subTestId
+	 * @param vmCloudId
+	 * @param browserId
+	 * @param osId
+	 * @param hostname
+	 * @param numTests
+	 * @param numFailures
+	 * @param numErrors
+	 * @param username
+	 * @param url
+	 * @param environment
+	 * @param gitBranch
+	 * @param gitCommitVersion
+	 * @param time
+	 */
+	public LogQueue(int vmBatchId, int vmJobId, int testCaseId, int subTestId,
+			int vmCloudId, int browserId, int osId, String hostname, int numTests,
+			int numFailures, int numErrors, String username, String url,
+			String environment, String gitBranch, String gitCommitVersion, double time) {
+		super();
+		this.vmBatchId = vmBatchId;
+		this.vmJobId = vmJobId;
+		this.testCaseId = testCaseId;
+		this.subTestId = subTestId;
+		this.vmCloudId = vmCloudId;
+		this.browserId = browserId;
+		this.osId = osId;
+		this.hostname = hostname;
+		this.numTests = numTests;
+		this.numFailures = numFailures;
+		this.numErrors = numErrors;
+		this.username = username;
+		this.url = url;
+		this.environment = environment;
+		this.gitBranch = gitBranch;
+		this.gitCommitVersion = gitCommitVersion;
+		this.time = time;
+	}
+
 
 	/**
 	 * @return the id
