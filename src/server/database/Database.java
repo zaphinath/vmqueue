@@ -28,6 +28,7 @@ public class Database {
 	private LogErrorDB logError;
 	private TestCaseDB testCase;
 	private SubTestDB subTest;
+	private LogTestsDB logTest;
 	
 	private Connection connection;
 	
@@ -53,6 +54,7 @@ public class Database {
 		this.logError = new LogErrorDB(this);
 		this.testCase = new TestCaseDB(this);
 		this.subTest = new SubTestDB(this);
+		this.logTest = new LogTestsDB(this);
 		
 		this.serverName = "qa.test.lan";
 		if (env.equalsIgnoreCase("dev")) {
@@ -159,6 +161,9 @@ public class Database {
   
   public SubTestDB getSubTestDB() {
   	return this.subTest;
+  }
+  public LogTestsDB getLogTestsDB() {
+  	return this.logTest;
   }
   /**
    * 

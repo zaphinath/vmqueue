@@ -78,7 +78,7 @@ public class BatchDB {
 	public void setBatchCompleted(int batchId) {
 		PreparedStatement stmt = null;
 		try {
-			String sql = "UPDATE vm_batch SET completed = 1 WHERE id = ?";
+			String sql = "UPDATE vm_batch, modified_date SET completed = 1, modified_date = now() WHERE id = ?";
 			stmt = db.getConnection().prepareStatement(sql);
 			stmt.setInt(1, batchId);
 			stmt.executeUpdate();

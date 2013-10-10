@@ -6,7 +6,7 @@ package model;
 import java.sql.Timestamp;
 
 /**
- * @author Bryce
+ * @author Derek Carr
  *
  */
 public class LogQueue {

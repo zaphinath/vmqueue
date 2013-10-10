@@ -3,24 +3,19 @@ package server;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import server.database.Database;
 
-import model.Browser;
 import model.Job;
 import model.NamedPipeStream;
 import model.OperatingSystem;
@@ -99,6 +94,8 @@ public class VMQueue {
 		//db.getVirtualMachineDB().updateAvailable();
 		db.endTransaction(true);
 		
+		
+		//TODO: May want to update queue information to just see how long job expected to be is.
   	for (int i = 0; i < vms.size(); i++) {
   		if (vms.get(i).isAvailable()) {
   			for (int j = 0; j < jobs.size(); j++) {
