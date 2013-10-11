@@ -35,7 +35,8 @@ public class LogQueueDB {
 		ResultSet rs = null;
 		int id = 0;
 		try {
-			String sql = "INSERT INTO log_queue(testcase_id, subtest_id, " +
+			String sql = "INSERT INTO log_queue(vm_batch_id, vm_job_id, "+
+					"testcase_id, subtest_id, " +
           "cloud_id, browser_id, os_id, " +
           "hostname, num_tests, " +
           "num_errors, num_failures, "+
@@ -43,21 +44,23 @@ public class LogQueueDB {
           "time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
 			stmt = db.getConnection().prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 			
-			stmt.setInt(1, logQueue.getTestCaseId());
-			stmt.setInt(2, logQueue.getSubTestId());
-			stmt.setInt(3, logQueue.getVmCloudId());
-			stmt.setInt(4, logQueue.getBrowserId());
-			stmt.setInt(5, logQueue.getOsId());
-			stmt.setString(6, logQueue.getHostname());
-			stmt.setInt(7, logQueue.getNumTests());
-			stmt.setInt(8, logQueue.getNumErrors());
-			stmt.setInt(9, logQueue.getNumFailures());
-			stmt.setString(10, logQueue.getUsername());
-			stmt.setString(11, logQueue.getUrl());
-			stmt.setString(12, logQueue.getEnvironment());
-			stmt.setString(13, logQueue.getGitBranch());
-			stmt.setString(14, logQueue.getGitCommitVersion());
-			stmt.setDouble(15, logQueue.getTime());
+			stmt.setInt(1, logQueue.getVmBatchId());
+			stmt.setInt(2, logQueue.getVmJobId());
+			stmt.setInt(3, logQueue.getTestCaseId());
+			stmt.setInt(4, logQueue.getSubTestId());
+			stmt.setInt(5, logQueue.getVmCloudId());
+			stmt.setInt(6, logQueue.getBrowserId());
+			stmt.setInt(7, logQueue.getOsId());
+			stmt.setString(8, logQueue.getHostname());
+			stmt.setInt(9, logQueue.getNumTests());
+			stmt.setInt(10, logQueue.getNumErrors());
+			stmt.setInt(11, logQueue.getNumFailures());
+			stmt.setString(12, logQueue.getUsername());
+			stmt.setString(13, logQueue.getUrl());
+			stmt.setString(14, logQueue.getEnvironment());
+			stmt.setString(15, logQueue.getGitBranch());
+			stmt.setString(16, logQueue.getGitCommitVersion());
+			stmt.setDouble(17, logQueue.getTime());
 			
 			int rowCount = stmt.executeUpdate();
 			 if (rowCount == 0) {
