@@ -32,7 +32,6 @@ public class LogQueueDB {
 	 */
 	public int insertLogQueue(LogQueue logQueue) {
 		PreparedStatement stmt = null;
-		Statement keyStmt = null;
 		ResultSet rs = null;
 		int id = 0;
 		try {
@@ -40,9 +39,10 @@ public class LogQueueDB {
           "cloud_id, browser_id, os_id, " +
           "hostname, num_tests, " +
           "num_errors, num_failures, "+
-          "username, url, environment, git_commit_version,"+
+          "username, url, environment, git_branch, git_commit_version,"+
           "time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
-			stmt = db.getConnection().prepareStatement(sql);
+			stmt = db.getConnection().prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+			
 			stmt.setInt(1, logQueue.getTestCaseId());
 			stmt.setInt(2, logQueue.getSubTestId());
 			stmt.setInt(3, logQueue.getVmCloudId());
@@ -58,10 +58,13 @@ public class LogQueueDB {
 			stmt.setString(13, logQueue.getGitBranch());
 			stmt.setString(14, logQueue.getGitCommitVersion());
 			stmt.setDouble(15, logQueue.getTime());
-			if (stmt.executeUpdate() == 1) {
-				keyStmt = db.getConnection().createStatement();
-				rs = keyStmt.executeQuery("select last_insert_rowid()");
-				rs.next();
+			
+			int rowCount = stmt.executeUpdate();
+			 if (rowCount == 0) {
+         throw new SQLException("Creating user failed, no rows affected.");
+			}
+			rs = stmt.getGeneratedKeys();
+			if (rs.next()) {
 				id = rs.getInt(1); 
 			} else {
 				System.out.println("ERROR GETTING ID");
@@ -80,13 +83,6 @@ public class LogQueueDB {
 			if (rs != null) {
 				try {
 					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (keyStmt != null) {
-				try {
-					keyStmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
