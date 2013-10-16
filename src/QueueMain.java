@@ -26,7 +26,7 @@ public class QueueMain {
 	
 	static {
 		try {
-			Level logLevel = Level.SEVERE;
+			Level logLevel = Level.ALL;
 			
 			logger = Logger.getLogger("vmqueue"); 
 			logger.setLevel(logLevel);
