@@ -41,7 +41,7 @@ public class LogQueueDB {
           "hostname, num_tests, " +
           "num_errors, num_failures, "+
           "username, url, environment, git_branch, git_commit_version,"+
-          "time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
+          "time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
 			stmt = db.getConnection().prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 			
 			stmt.setInt(1, logQueue.getVmBatchId());

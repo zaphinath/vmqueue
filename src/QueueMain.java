@@ -48,6 +48,7 @@ public class QueueMain {
 	}
 	
   public static void main(String[] args) throws InterruptedException, IOException, SQLException {
+  	logger.info("Starting VM Cloud Server");
   	int port = Integer.parseInt(args[0]);
   	String database = args[1];
   	VMQueue queue = new VMQueue(port, database);
