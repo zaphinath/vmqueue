@@ -66,6 +66,7 @@ public class LogFailureDB {
 					stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 			if (rs != null) {
