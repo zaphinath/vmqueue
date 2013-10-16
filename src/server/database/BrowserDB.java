@@ -10,6 +10,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import server.VMQueue;
 
 import model.Browser;
 
@@ -20,6 +24,11 @@ import model.Browser;
 public class BrowserDB {
 	
 	private Database db;
+	private static Logger logger;
+	
+	static {
+		logger = Logger.getLogger(VMQueue.class.getName());
+	}
 	
 	public BrowserDB(Database db) {
 		this.db = db;
@@ -56,6 +65,7 @@ public class BrowserDB {
 					if (stmt != null) stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
     }
 		return browserList;
@@ -87,6 +97,7 @@ public class BrowserDB {
 					if (stmt != null) stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
     }
 		return browserList;
@@ -116,12 +127,14 @@ public class BrowserDB {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 			if (rs != null) {
@@ -129,6 +142,7 @@ public class BrowserDB {
 					rs.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 		} 
@@ -166,13 +180,13 @@ public class BrowserDB {
 	  		returnBrowser = new Browser(id, name, version, createdDate, modifiedDate);
 	   	}
 	  } catch (SQLException e) {
-	  	
+	  	logger.log(Level.SEVERE, e.getMessage(), e);
 	  } finally {
 			try {
 				if (rs != null) rs.close();
 				if (stmt != null) stmt.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getMessage(), e);
 			}
 		}
 		return returnBrowser;
@@ -196,12 +210,14 @@ public class BrowserDB {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 			if (rs != null) {
@@ -209,6 +225,7 @@ public class BrowserDB {
 					rs.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 		}

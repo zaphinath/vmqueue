@@ -10,6 +10,10 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import server.VMQueue;
 
 import com.google.gson.Gson;
 
@@ -22,6 +26,12 @@ import model.SocketString;
  */
 public class JobDB {
 	private Database db;
+	private static Logger logger;
+	
+	static {
+		logger = Logger.getLogger(VMQueue.class.getName());
+	}
+	
 	/**
 	 * @param database
 	 */
@@ -59,8 +69,24 @@ public class JobDB {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
-			
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					logger.log(Level.SEVERE, e.getMessage(), e);
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					logger.log(Level.SEVERE, e.getMessage(), e);
+					e.printStackTrace();
+				}
+			}
 		}
 		return list;
 	}
@@ -99,7 +125,24 @@ public class JobDB {
     				browser, browserVersion, createdDate, modifiedDate);
     	}
     } catch (SQLException e) {
-    	
+    	logger.log(Level.SEVERE, e.getMessage(), e);
+    } finally {
+    	if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					logger.log(Level.SEVERE, e.getMessage(), e);
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					logger.log(Level.SEVERE, e.getMessage(), e);
+					e.printStackTrace();
+				}
+			}
     }
     return job;
 	}
@@ -130,18 +173,21 @@ public class JobDB {
 			}
 		} catch(SQLException e) { 
 			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 			if (keyStmt != null) {
 				try {
 					keyStmt.close();
 				} catch (SQLException e) {
+					logger.log(Level.SEVERE, e.getMessage(), e);
 					e.printStackTrace();
 				}
 			}
@@ -150,6 +196,7 @@ public class JobDB {
 					rs.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 		}
@@ -179,12 +226,14 @@ public class JobDB {
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 	    if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 		 	}
 		}
@@ -206,12 +255,14 @@ public class JobDB {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			} 
 			if (rs != null) {
@@ -219,6 +270,7 @@ public class JobDB {
 					rs.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 		}
@@ -234,12 +286,14 @@ public class JobDB {
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 		}
@@ -260,7 +314,7 @@ public class JobDB {
 				}
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			logger.log(Level.SEVERE, e.getMessage(), e);
 			e.printStackTrace();
 		} finally {
 			if (stmt != null) {
@@ -268,6 +322,7 @@ public class JobDB {
 					stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 			if (rs != null) {
@@ -275,6 +330,7 @@ public class JobDB {
 					rs.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 		}
