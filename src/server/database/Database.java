@@ -171,7 +171,7 @@ public class Database {
    */
   public void startTransaction() {
   	try {
-	    connection = DriverManager.getConnection(connectionURL, dbUser, dbPass);
+      connection = DriverManager.getConnection(connectionURL, dbUser, dbPass);
 			connection.setAutoCommit(false);
   	} catch(SQLException e) {
   		e.printStackTrace();
