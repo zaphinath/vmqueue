@@ -2,6 +2,7 @@ package server;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.Socket;
@@ -220,16 +221,20 @@ public class VMQueue {
 		
 		//TODO: update vm_cloud available to 0;
 		Socket socket = null;
-		BufferedWriter bufOut = null;
+		//BufferedWriter bufOut = null;
 		try {
 			db.startTransaction();
 			db.getVirtualMachineDB().setUnavailable(job.getQueue());
 			db.endTransaction(true);
 			
 			socket = new Socket(job.getHostIP(), PORT);
-			bufOut = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-			bufOut.write(job.getMessage().toString());
-			bufOut.flush();
+			//bufOut = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+//			bufOut.write(job.getMessage());
+//			bufOut.flush();
+			out.writeObject(job.getMessage());
+			out.flush();
+			out.close();
 		} catch (Exception e) {
 			
 		} finally {

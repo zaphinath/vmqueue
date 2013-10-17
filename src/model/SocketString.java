@@ -9,7 +9,8 @@ import java.net.URL;
  * @author Derek Carr
  *
  */
-public class SocketString {
+@SuppressWarnings("serial")
+public class SocketString implements java.io.Serializable {
 
 	private String handlerKey = "KEY";
 	private String antCommand;
