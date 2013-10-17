@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import server.VMQueue;
-
 import model.Browser;
 
 /**
@@ -27,7 +25,7 @@ public class BrowserDB {
 	private static Logger logger;
 	
 	static {
-		logger = Logger.getLogger(VMQueue.class.getName());
+		logger = Logger.getLogger(BrowserDB.class.getName());
 	}
 	
 	public BrowserDB(Database db) {

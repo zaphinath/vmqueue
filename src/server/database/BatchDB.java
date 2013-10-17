@@ -10,8 +10,6 @@ import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import server.VMQueue;
-
 import model.Batch;
 
 /**
@@ -23,7 +21,7 @@ public class BatchDB {
 	private static Logger logger;
 	
 	static {
-		logger = Logger.getLogger(VMQueue.class.getName());
+		logger = Logger.getLogger(BatchDB.class.getName());
 	}
 	
 	/**

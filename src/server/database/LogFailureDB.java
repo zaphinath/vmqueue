@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import server.VMQueue;
-
 import model.LogFailure;
 
 /**
@@ -24,7 +22,7 @@ public class LogFailureDB {
 	private static Logger logger;
 	
 	static {
-		logger = Logger.getLogger(VMQueue.class.getName());
+		logger = Logger.getLogger(LogFailureDB.class.getName());
 	}
 	
 	/**

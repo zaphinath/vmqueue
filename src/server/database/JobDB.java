@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import server.VMQueue;
-
 import com.google.gson.Gson;
 
 import model.Job;
@@ -29,7 +27,7 @@ public class JobDB {
 	private static Logger logger;
 	
 	static {
-		logger = Logger.getLogger(VMQueue.class.getName());
+		logger = Logger.getLogger(JobDB.class.getName());
 	}
 	
 	/**

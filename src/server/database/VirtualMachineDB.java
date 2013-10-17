@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import server.VMQueue;
-
 import model.VirtualMachine;
 
 /**
@@ -27,7 +25,7 @@ public class VirtualMachineDB {
 	private static Logger logger;
 	
 	static {
-		logger = Logger.getLogger(VMQueue.class.getName());
+		logger = Logger.getLogger(VirtualMachineDB.class.getName());
 	}
 	
 	
@@ -347,6 +345,11 @@ public class VirtualMachineDB {
 	  }
   }
 	
+	
+	/**
+	 * Sets the vm as unavailble for the queue
+	 * @param id
+	 */
 	public void setUnavailable(int id) {
 		PreparedStatement stmt = null;
 		try {

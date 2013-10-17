@@ -45,15 +45,12 @@ public class VMQueue {
   	Database.initialize();
   	jobNumber = 0;
   	db = new Database(database);
-  	try {
-			db.startTransaction();
-			vms = (ArrayList<VirtualMachine>) db.getVirtualMachineDB().getAll();
-			db.getVirtualMachineDB().updateAvailable();
-			db.endTransaction(true);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			logger.log(Level.SEVERE, e.getMessage(), e);
-		}
+
+		db.startTransaction();
+		vms = (ArrayList<VirtualMachine>) db.getVirtualMachineDB().getAll();
+		db.getVirtualMachineDB().updateAvailable();
+		db.endTransaction(true);
+		
   	jobs = new LinkedList<Job>();
   }
 

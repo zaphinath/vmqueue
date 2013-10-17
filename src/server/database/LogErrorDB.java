@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import server.VMQueue;
-
 import model.LogError;
 
 /**
@@ -25,7 +23,7 @@ public class LogErrorDB {
 	private static Logger logger;
 	
 	static {
-		logger = Logger.getLogger(VMQueue.class.getName());
+		logger = Logger.getLogger(LogErrorDB.class.getName());
 	}
 	
 	/**
