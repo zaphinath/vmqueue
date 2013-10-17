@@ -15,6 +15,7 @@ public class VMCloud2Browser {
 	private int browserId;
 	private Date createdDate;
 	private Date modifiedDate;
+	
 	/**
 	 * @return the vmId
 	 */

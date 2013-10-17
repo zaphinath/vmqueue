@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import model.LogError;
 
@@ -18,6 +20,11 @@ import model.LogError;
 public class LogErrorDB {
 
 	private Database db;
+	private static Logger logger;
+	
+	static {
+		logger = Logger.getLogger(LogErrorDB.class.getName());
+	}
 	
 	/**
 	 * 
@@ -52,20 +59,20 @@ public class LogErrorDB {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 			if (rs != null) {
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 		}
@@ -80,7 +87,7 @@ public class LogErrorDB {
 	public void insertLogError(LogError logError) {
 		PreparedStatement stmt = null;
 		try {
-			String sql = "INSERT INTO log_failures(log_queue_id, test_classname, test_name," +
+			String sql = "INSERT INTO log_errors(log_queue_id, test_classname, test_name," +
 									 "test_time, failure_type, failure_message) values(?, ?, ?, ?, ? ,?)";
 			stmt = db.getConnection().prepareStatement(sql);
 			
@@ -93,13 +100,13 @@ public class LogErrorDB {
 			
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 		}

@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import model.Batch;
 
@@ -16,6 +18,11 @@ import model.Batch;
  */
 public class BatchDB {
 	private Database db;
+	private static Logger logger;
+	
+	static {
+		logger = Logger.getLogger(BatchDB.class.getName());
+	}
 	
 	/**
 	 * 
@@ -62,6 +69,7 @@ public class BatchDB {
 					stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 			if (rs != null) {
@@ -69,6 +77,7 @@ public class BatchDB {
 					rs.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 		}
@@ -84,12 +93,14 @@ public class BatchDB {
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 		}
@@ -112,12 +123,14 @@ public class BatchDB {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			} 
 			if (rs != null) {
@@ -125,6 +138,7 @@ public class BatchDB {
 					rs.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 		}

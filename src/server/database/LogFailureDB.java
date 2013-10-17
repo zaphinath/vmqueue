@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import model.LogFailure;
 
@@ -17,6 +19,11 @@ import model.LogFailure;
  */
 public class LogFailureDB {
 	private Database db;
+	private static Logger logger;
+	
+	static {
+		logger = Logger.getLogger(LogFailureDB.class.getName());
+	}
 	
 	/**
 	 * 
@@ -50,12 +57,14 @@ public class LogFailureDB {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
 			if (rs != null) {

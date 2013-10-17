@@ -10,6 +10,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import model.VirtualMachine;
 
@@ -20,13 +22,18 @@ import model.VirtualMachine;
 public class VirtualMachineDB {
 	
 	private Database db;
+	private static Logger logger;
+	
+	static {
+		logger = Logger.getLogger(VirtualMachineDB.class.getName());
+	}
 	
 	
 	public VirtualMachineDB(Database db) {
 		this.db = db;
 	}
 	
-	public List<VirtualMachine> getAll() throws SQLException{
+	public List<VirtualMachine> getAll() {
 		ArrayList<VirtualMachine> VMList = new ArrayList<VirtualMachine>();
 		PreparedStatement stmt = null;
 		PreparedStatement stmt2 = null;
@@ -67,15 +74,27 @@ public class VirtualMachineDB {
     		VMList.add(vm);
     	}
     } catch (SQLException e) {
-    	
+    	logger.log(Level.SEVERE, e.getMessage(), e);
     } finally {
-    	if (rs != null) rs.close();
-    	if (stmt != null) stmt.close();
+    	if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					logger.log(Level.SEVERE, e.getMessage(), e);
+					e.printStackTrace();
+				}
+    	if (stmt != null)
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					logger.log(Level.SEVERE, e.getMessage(), e);
+					e.printStackTrace();
+				}
     }
 		return VMList;
 	}
 	
-	public List<VirtualMachine> getByBrowser(String browser, boolean isInQueue) throws SQLException {
+	public List<VirtualMachine> getByBrowser(String browser, boolean isInQueue) {
 		assert browser != null;
 		ArrayList<VirtualMachine> VMList = new ArrayList<VirtualMachine>();
 		PreparedStatement stmt = null;
@@ -114,13 +133,25 @@ public class VirtualMachineDB {
     } catch (SQLException e) {
     	
     } finally {
-    	if (rs != null) rs.close();
-    	if (stmt != null) stmt.close();
+    	if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					logger.log(Level.SEVERE, e.getMessage(), e);
+					e.printStackTrace();
+				}
+    	if (stmt != null)
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					logger.log(Level.SEVERE, e.getMessage(), e);
+					e.printStackTrace();
+				}
     }
 		return VMList;
 	}
 	
-	public List<VirtualMachine> getByBrowserAndVersion(String browser, String version, boolean isInQueue) throws SQLException {
+	public List<VirtualMachine> getByBrowserAndVersion(String browser, String version, boolean isInQueue) {
 		assert browser!=null && version!=null;
     ArrayList<VirtualMachine> VMList = new ArrayList<VirtualMachine>();
 		PreparedStatement stmt = null;
@@ -160,8 +191,20 @@ public class VirtualMachineDB {
     } catch (SQLException e) {
     	
     } finally {
-    	if (rs != null) rs.close();
-    	if (stmt != null) stmt.close();
+    	if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					logger.log(Level.SEVERE, e.getMessage(), e);
+					e.printStackTrace();
+				}
+    	if (stmt != null)
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					logger.log(Level.SEVERE, e.getMessage(), e);
+					e.printStackTrace();
+				}
     }
 		return VMList;
 	}
@@ -302,6 +345,11 @@ public class VirtualMachineDB {
 	  }
   }
 	
+	
+	/**
+	 * Sets the vm as unavailble for the queue
+	 * @param id
+	 */
 	public void setUnavailable(int id) {
 		PreparedStatement stmt = null;
 		try {
