@@ -234,7 +234,7 @@ public class VMQueue {
 //			bufOut.flush();
 			out.writeObject(job.getMessage());
 			out.flush();
-			out.close();
+			//out.close();
 		} catch (Exception e) {
 			
 		} finally {
