@@ -232,7 +232,7 @@ public class VMQueue {
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 //			bufOut.write(job.getMessage());
 //			bufOut.flush();
-			out.writeObject(job.getMessage());
+			out.writeUnshared(job.getMessage());
 			out.flush();
 			//out.close();
 		} catch (Exception e) {
