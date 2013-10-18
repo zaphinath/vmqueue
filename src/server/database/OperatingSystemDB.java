@@ -66,6 +66,7 @@ public class OperatingSystemDB {
 	}
 	
 	/**
+	 * Select the operating system by operating system id.
 	 * 
 	 * @param id
 	 * @return

@@ -205,6 +205,7 @@ public class VMQueue {
 	
 	private void sendSocketStream(Job job) {
 		db.startTransaction();
+		System.out.println(job.toString());
 		OperatingSystem os = db.getOSDB().getOSById(vms.get(job.getQueue()).getOsId());
 		db.endTransaction(true);
 		
