@@ -205,8 +205,7 @@ public class VMQueue {
 	
 	private void sendSocketStream(Job job) {
 		db.startTransaction();
-		System.out.println(job.toString());
-		OperatingSystem os = db.getOSDB().getOSById(vms.get(job.getQueue()).getOsId());
+		OperatingSystem os = db.getOSDB().getOSById(vms.get(job.getQueue()-2).getOsId());
 		db.endTransaction(true);
 		
 		//TODO: Need to add Job ID to socket message and possibily update db?
