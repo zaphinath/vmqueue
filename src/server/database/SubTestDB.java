@@ -187,4 +187,89 @@ public class SubTestDB {
 		}
 	}
 
+	/**
+	 * This is meant to update vm_subtests
+	 * @param sTestID
+	 * @param browserName
+	 * @param time
+	 * @param sError
+	 * @param sFail
+	 * @param env
+	 */
+  public void updateSubtest(int sTestID, String browserName, String time, String sError, String sFail, String env) {
+  	PreparedStatement stmt = null;
+  	String browser = browserName.toLowerCase();
+    String field1 = "";
+    String field2 = "";
+    String field3 = "";
+    if (browser.contains("google") || browser.contains("chrome")) {
+      if(env.equalsIgnoreCase("test")) {
+        field1 = "time_t_chrome";
+        field2 = "error_t_chrome";
+        field3 = "failure_t_chrome";
+      } else if (env.equalsIgnoreCase("beta")) {
+        field1 = "time_b_chrome";
+        field2 = "error_b_chrome";
+        field3 = "failure_b_chrome";
+      } else if (env.equalsIgnoreCase("prod")) {
+        field1 = "time_p_chrome";
+        field2 = "error_p_chrome";
+        field3 = "failure_p_chrome";
+      }
+    } else if (browser.contains("fire")) {
+      if(env.equalsIgnoreCase("test")) {
+        field1 = "time_t_firefox";
+        field2 = "error_t_firefox";
+        field3 = "failure_t_firefox";
+      } else if(env.equalsIgnoreCase("beta")) {
+        field1 = "time_b_firefox";
+        field2 = "error_b_firefox";
+        field3 = "failure_b_firefox";
+      } else if(env.equalsIgnoreCase("prod")) {
+        field1 = "time_p_firefox";
+        field2 = "error_p_firefox";
+        field3 = "failure_p_firefox";
+      }
+    } else if (browser.contains("ie") || browser.contains("explore")) {
+      if(env.equalsIgnoreCase("test")) {
+        field1 = "time_t_ie";
+        field2 = "error_t_ie";
+        field3 = "failure_t_ie";
+      } else if (env.equalsIgnoreCase("beta")) {
+        field1 = "time_b_ie";
+        field2 = "error_b_ie";
+        field3 = "failure_b_ie";
+      } else if (env.equalsIgnoreCase("prod")) {
+        field1 = "time_p_ie";
+        field2 = "error_p_ie";
+        field3 = "failure_p_ie";
+      }
+    }
+    try {
+      //String query = "UPDATE vm_subtests SET "+field1+" = "+time+", "+field2+" = "+sError+", "+field3+"="+sFail+" WHERE id = "+sTestID;
+    	String sql = "UPDATE vm_subtests SET ? = ?, ? = ?, ? = ? WHERE id = ?";
+    	stmt = db.getConnection().prepareStatement(sql);
+    	
+    	stmt.setString(1, field1);
+    	stmt.setString(2, time);
+    	stmt.setString(3, field2);
+    	stmt.setString(4, sError);
+    	stmt.setString(5, field3);
+    	stmt.setString(6, sFail);
+    	stmt.setInt(7, sTestID);
+    	
+    	stmt.executeUpdate();
+    } catch (SQLException mye) {
+      mye.printStackTrace(); 
+    } finally {
+    	if (stmt != null) {
+    		try {
+					stmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    	}
+    }
+  }
 }

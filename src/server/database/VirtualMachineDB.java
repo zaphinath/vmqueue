@@ -444,15 +444,69 @@ public class VirtualMachineDB {
 			e.printStackTrace();
 			logger.log(Level.SEVERE, e.getMessage(), e);
 	  } finally {
-    	if (stmt != null)
+    	if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
+    	}
 	  }
   }
 
 
+	/**
+	 * Adds time to queue run, increments number jobs ran
+	 * @param time
+	 * @param queueNumber
+	 */
+	public void incrementQueue(double time, int queueNumber) {
+		PreparedStatement stmt = null;
+		try {
+			String sql = "UPDATE vm_cloud SET TIME = time + ?, num_jobs = num_jobs + 1  WHERE id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setDouble(1, time);
+			stmt.setInt(2, queueNumber);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
+				}
+    	}
+		}
+	}
+	
+	/**
+	 * Sets a vm to available and ready to take another job
+	 * @param queueNumber
+	 */
+	public void setAvailable(int queueNumber) {
+		PreparedStatement stmt = null;
+		try {
+			String sql = "UPDATE vm_cloud SET available = 1 WHERE id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, queueNumber);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
+				}
+    	}
+		}
+	}
 }
