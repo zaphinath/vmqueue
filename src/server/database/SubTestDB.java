@@ -188,6 +188,7 @@ public class SubTestDB {
 	}
 
 	/**
+	 * TODO This is really dirty and needs to be rethought
 	 * This is meant to update vm_subtests
 	 * @param sTestID
 	 * @param browserName
@@ -247,16 +248,13 @@ public class SubTestDB {
     }
     try {
       //String query = "UPDATE vm_subtests SET "+field1+" = "+time+", "+field2+" = "+sError+", "+field3+"="+sFail+" WHERE id = "+sTestID;
-    	String sql = "UPDATE vm_subtests SET ? = ?, ? = ?, ? = ? WHERE id = ?";
+    	String sql = "UPDATE vm_subtests SET "+field1+" = ?, "+field2+" = ?,"+field3+" = ? WHERE id = ?";
     	stmt = db.getConnection().prepareStatement(sql);
     	
-    	stmt.setString(1, field1);
-    	stmt.setString(2, time);
-    	stmt.setString(3, field2);
-    	stmt.setString(4, sError);
-    	stmt.setString(5, field3);
-    	stmt.setString(6, sFail);
-    	stmt.setInt(7, sTestID);
+    	stmt.setString(1, time);
+    	stmt.setString(2, sError);
+    	stmt.setString(3, sFail);
+    	stmt.setInt(4, sTestID);
     	
     	stmt.executeUpdate();
     } catch (SQLException mye) {
