@@ -10,6 +10,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -27,7 +28,8 @@ import model.VirtualMachine;
 
 public class VMQueue {
 	
-	private ArrayList<VirtualMachine> vms;
+	//private ArrayList<VirtualMachine> vms;
+	private HashMap<Integer, VirtualMachine> vms;
 	private List<Job> jobs;
 	
 	private Database db;
@@ -48,7 +50,8 @@ public class VMQueue {
   	db = new Database(database);
 
 		db.startTransaction();
-		vms = (ArrayList<VirtualMachine>) db.getVirtualMachineDB().getAll();
+		//vms = (ArrayList<VirtualMachine>) db.getVirtualMachineDB().getAll();
+		vms = db.getVirtualMachineDB().getMap();
 		db.getVirtualMachineDB().updateAvailable();
 		db.endTransaction(true);
 		
@@ -59,7 +62,8 @@ public class VMQueue {
   public void processQueue() throws SQLException {
 
 		db.startTransaction();
-		vms = (ArrayList<VirtualMachine>) db.getVirtualMachineDB().getAll();
+		//vms = (ArrayList<VirtualMachine>) db.getVirtualMachineDB().getAll();
+		vms = db.getVirtualMachineDB().getMap();
 		// Don't want to update to available until the test comes back - if we add
 		// new vm's then we need to also set the available and inqueue fields
 		//db.getVirtualMachineDB().updateAvailable();
@@ -67,8 +71,9 @@ public class VMQueue {
 		
 		
 		//TODO: May want to update queue information to just see how long job expected to be is.
-  	for (int i = 0; i < vms.size(); i++) {
-  		if (vms.get(i).isAvailable()) {
+  	//for (int i = 0; i < vms.size(); i++) {
+  	for (Integer i : vms.keySet()) {
+			if (vms.get(i).isAvailable()) {
   			for (int j = 0; j < jobs.size(); j++) {
   				//Check if available vm has the right browser and version
   				//Any Browser would have been randomly determined earlier
@@ -205,7 +210,8 @@ public class VMQueue {
 	
 	private void sendSocketStream(Job job) {
 		db.startTransaction();
-		OperatingSystem os = db.getOSDB().getOSById(vms.get(job.getQueue()-2).getOsId());
+		//OperatingSystem os = db.getOSDB().getOSById(vms.get(job.getQueue()-2).getOsId());
+		OperatingSystem os = db.getOSDB().getOSById(vms.get(job.getQueue()).getOsId());
 		db.endTransaction(true);
 		
 		//TODO: Need to add Job ID to socket message and possibily update db?
