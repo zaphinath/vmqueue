@@ -1,15 +1,12 @@
 package server;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -76,7 +73,7 @@ public class VMQueue {
 			if (vms.get(i).isAvailable()) {
   			for (int j = 0; j < jobs.size(); j++) {
   				//Check if available vm has the right browser and version
-  				//Any Browser would have been randomly determined earlier
+  				//Any Browser would have been randomly determined earlier by lbhandler
   				//Have browser, don't care version
   				if (!jobs.get(j).getBrowser().equalsIgnoreCase("any") && jobs.get(j).getBrowserVersion().equalsIgnoreCase("any")) {
   					if (vms.get(i).getBrowsers().containsKey(jobs.get(j).getBrowser())) {
@@ -200,7 +197,7 @@ public class VMQueue {
 			socketString.setJobId(stream.getBatchId());
 			
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			logger.log(Level.SEVERE, e.getMessage(), e);
 			e.printStackTrace();
 		}
 
@@ -210,7 +207,6 @@ public class VMQueue {
 	
 	private void sendSocketStream(Job job) {
 		db.startTransaction();
-		//OperatingSystem os = db.getOSDB().getOSById(vms.get(job.getQueue()-2).getOsId());
 		OperatingSystem os = db.getOSDB().getOSById(vms.get(job.getQueue()).getOsId());
 		db.endTransaction(true);
 		
@@ -225,22 +221,17 @@ public class VMQueue {
 		db.getJobDB().updateJob(job);
 		db.endTransaction(true);
 		
-		//TODO: update vm_cloud available to 0;
 		Socket socket = null;
-		//BufferedWriter bufOut = null;
 		try {
 			db.startTransaction();
 			db.getVirtualMachineDB().setUnavailable(job.getQueue());
 			db.endTransaction(true);
 			
 			socket = new Socket(job.getHostIP(), PORT);
-			//bufOut = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-//			bufOut.write(job.getMessage());
-//			bufOut.flush();
+
 			out.writeUnshared(job.getMessage());
 			out.flush();
-			//out.close();
 		} catch (Exception e) {
 			
 		} finally {
