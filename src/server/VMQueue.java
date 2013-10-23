@@ -21,19 +21,14 @@ import model.OperatingSystem;
 import model.SocketString;
 import model.VirtualMachine;
 
-
-
 public class VMQueue {
 	
 	//private ArrayList<VirtualMachine> vms;
 	private HashMap<Integer, VirtualMachine> vms;
 	private List<Job> jobs;
-	
 	private Database db;
-	
 	private int jobNumber;
 	private static int PORT = 4445;
-	
 	private static Logger logger;
 	
 	static {

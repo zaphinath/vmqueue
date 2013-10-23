@@ -34,7 +34,7 @@ insert into vm_subtests (vm_testcase_id, name) values (@v1,'ManageProducts');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'ManageZones');
 /* ***** personalSettings ***** */
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'Email');
-insert into vm_subtests (vm_testcase_id, name) values (@v1,'SetEmployeeRequiredFields');
+--insert into vm_subtests (vm_testcase_id, name) values (@v1,'SetEmployeeRequiredFields');
 /* ***** sitesettings ***** */
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'ManageCountries');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'ManageCustomFields');
