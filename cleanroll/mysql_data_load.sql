@@ -5,10 +5,11 @@ truncate log_errors;
 truncate log_failures;
 truncate log_tests;
 truncate vm_batch;
+truncate vm_job;
 
-truncate selenium_failures
-truncate sel_fail2os
-truncate sel_fail2browser
+truncate selenium_failures;
+truncate sel_fail2os;
+truncate sel_fail2browser;
 
 
 /* vm_testcases lmp */
@@ -74,7 +75,7 @@ insert into vm_subtests (vm_testcase_id, name) values (@v1,'SubTasks');
 /* Console */
 insert into vm_testcases (name, platform) values ('Console', 'lmp');
 set @v1 := (select last_insert_id());
-insert into vm_subtests (vm_testcase_id, name) values (@v1,'LMPAdminLinks');
+/* insert into vm_subtests (vm_testcase_id, name) values (@v1,'LMPAdminLinks'); */
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'LMPLogin');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'LMPTabs');
 /* -------------------------------------------------------------------------------- */
@@ -119,6 +120,11 @@ insert into vm_testcases (name, platform) values ('Files', 'lmp');
 set @v1 := (select last_insert_id());
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'FileHandler');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'FolderHandler');
+/* -------------------------------------------------------------------------------- */
+/* JabberDogs */
+insert into vm_testcases (name, platform) values ('JabberDog', 'lmp');
+set @v1 := (select last_insert_id());
+insert into vm_subtests (vm_testcase_id, name) values (@v1, 'JabberDogTest');
 /* -------------------------------------------------------------------------------- */
 /* Leads */
 insert into vm_testcases (name, platform) values ('Leads', 'lmp');
