@@ -64,7 +64,7 @@ public class Database {
 		} else if (env.equalsIgnoreCase("omega")) {
       this.databaseName = "insidesales";
 		} 
-		this.connectionURL = "jdbc:mysql://"+serverName+"/"+databaseName;
+		this.connectionURL = "jdbc:mysql://"+serverName+"/"+databaseName + "?useUnicode=true&characterEncoding=utf8";
 	}
 	
 	public static void initialize() {

@@ -136,7 +136,8 @@ public class SocketString implements java.io.Serializable {
 		if (this.browser.toLowerCase().contains("explore")) {
 			tmpBrowser = "iexplore";
 		}
-		return "ant -DBROWSER="+tmpBrowser.toLowerCase()+" -f build"+testPackage+".xml "+testPackage.toLowerCase()+"."+testClass;
+		//return "ant -DBROWSER="+tmpBrowser.toLowerCase()+" -f build"+testPackage+".xml "+testPackage.toLowerCase()+"."+testClass;
+		return "ant -DBROWSER="+tmpBrowser.toLowerCase()+ " " + testPackage.toLowerCase()+"."+testClass;
 	}
 
 	/**
