@@ -25,6 +25,12 @@ insert into vm_subtests (vm_testcase_id, name) values (@v1,'MassUpdates');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'Modifications');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'SubTasks');
 /* -------------------------------------------------------------------------------- */
+/* Accounts */
+insert into vm_testcases (name, platform) values ('AreaCodeGroups', 'lmp');
+set @v1 := (select last_insert_id());
+/* Accounts Classes */
+insert into vm_subtests (vm_testcase_id, name) values (@v1,'AccountCodeGroups');
+/* -------------------------------------------------------------------------------- */
 /* Admin */
 insert into vm_testcases (name, platform) values ('Admin', 'lmp');
 set @v1 := (select last_insert_id());
@@ -89,6 +95,11 @@ insert into vm_subtests (vm_testcase_id, name) values (@v1,'FullContact');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'MassUpdates');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'Modifications');
 /* -------------------------------------------------------------------------------- */
+/* DataView */
+insert into vm_testcases (name, platform) values ('DataView', 'lmp');
+set @v1 := (select last_insert_id());
+insert into vm_subtests (vm_testcase_id, name) values (@v1,'DataView');
+/* -------------------------------------------------------------------------------- */
 /* Deals */
 insert into vm_testcases (name, platform) values ('Deals', 'lmp');
 set @v1 := (select last_insert_id());
@@ -141,6 +152,11 @@ set @v1 := (select last_insert_id());
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'BasicOperations');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'CreatorViews');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'TaskViews');
+/* -------------------------------------------------------------------------------- */
+/* TimeLogHistory */
+insert into vm_testcases (name, platform) values ('TimeLogHistory', 'lmp');
+set @v1 := (select last_insert_id());
+insert into vm_subtests (vm_testcase_id, name) values (@v1,'TimeLogHistory');
 /* -------------------------------------------------------------------------------- */
 /* vm_testcases sf */
 /* AdditionalSettings */ 
