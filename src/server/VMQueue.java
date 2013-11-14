@@ -203,6 +203,7 @@ public class VMQueue {
 	private void sendSocketStream(Job job) {
 		db.startTransaction();
 		OperatingSystem os = db.getOSDB().getOSById(vms.get(job.getQueue()).getOsId());
+		VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(job.getQueue());
 		db.endTransaction(true);
 		
 		//TODO: Need to add Job ID to socket message and possibily update db?
@@ -210,10 +211,12 @@ public class VMQueue {
 		tmp.setJobId(job.getId());
 		tmp.setOs(os.getName());
 		job.setMessage(tmp);
+		vm.setCurrentJob(job.getMessage().getAntCommand());
 		logger.info("HOST: " + job.getHostIP()+ "  MESSAGE: " +job.getMessage());
 		
 		db.startTransaction();
 		db.getJobDB().updateJob(job);
+		db.getVirtualMachineDB().updateVM(vm);
 		db.endTransaction(true);
 		
 		Socket socket = null;
