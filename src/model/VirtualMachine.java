@@ -21,6 +21,7 @@ public class VirtualMachine {
 	private boolean inQueue;
 	private double currentQueueTime;
 	private int numberQueueJobs;
+	private String currentJob;
 	private HashMap<String, String> browsers;
 	private Timestamp modifiedDate;
 	private Timestamp createdDate;
@@ -41,6 +42,7 @@ public class VirtualMachine {
 		this.browsers = null;
 		this.modifiedDate = null;
 		this.createdDate = null;
+		this.currentJob = null;
 	}
 	
 	/**
@@ -54,7 +56,7 @@ public class VirtualMachine {
 	 * @param inQueue
 	 */
 	public VirtualMachine(int id, String hostname, String IP, int osId, boolean available, boolean inQueue,
-			double curTime, int numJobs, Timestamp modifiedDate, Timestamp createdDate) {
+			double curTime, int numJobs, String currentJob, Timestamp modifiedDate, Timestamp createdDate) {
 		this.id = id;
 		this.hostname = hostname;
 		this.osId = osId;
@@ -64,11 +66,12 @@ public class VirtualMachine {
 		this.inQueue = inQueue;
 		this.currentQueueTime = curTime;
 		this.numberQueueJobs = numJobs;
+		this.currentJob = currentJob;
 		this.modifiedDate = modifiedDate;
 		this.createdDate = createdDate;
 	}
 	
-	
+
 	/**
 	 * @param id
 	 * @param hostname
@@ -79,14 +82,16 @@ public class VirtualMachine {
 	 * @param inQueue
 	 * @param currentQueueTime
 	 * @param numberQueueJobs
+	 * @param currentJob
 	 * @param browsers
 	 * @param modifiedDate
 	 * @param createdDate
 	 */
 	public VirtualMachine(int id, String hostname, int osId, String iP,
-			int height, boolean available, boolean inQueue, double currentQueueTime,
-			int numberQueueJobs, HashMap<String, String> browsers,
-			Timestamp modifiedDate, Timestamp createdDate) {
+			int height, boolean available, boolean inQueue,
+			double currentQueueTime, int numberQueueJobs, String currentJob,
+			HashMap<String, String> browsers, Timestamp modifiedDate,
+			Timestamp createdDate) {
 		super();
 		this.id = id;
 		this.hostname = hostname;
@@ -97,6 +102,7 @@ public class VirtualMachine {
 		this.inQueue = inQueue;
 		this.currentQueueTime = currentQueueTime;
 		this.numberQueueJobs = numberQueueJobs;
+		this.currentJob = currentJob;
 		this.browsers = browsers;
 		this.modifiedDate = modifiedDate;
 		this.createdDate = createdDate;
@@ -284,17 +290,32 @@ public class VirtualMachine {
 		this.browsers = browsers;
 	}
 
+	/**
+	 * @return the currentJob
+	 */
+	public String getCurrentJob() {
+		return currentJob;
+	}
+
+	/**
+	 * @param currentJob the currentJob to set
+	 */
+	public void setCurrentJob(String currentJob) {
+		this.currentJob = currentJob;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "VirtualMachine [id=" + id + ", hostname=" + hostname + ", osId="
-				+ osId + ", IP=" + IP + ", height=" + height + ", available="
-				+ available + ", inQueue=" + inQueue + ", currentQueueTime="
-				+ currentQueueTime + ", numberQueueJobs=" + numberQueueJobs
-				+ ", modifiedDate=" + modifiedDate + ", createdDate=" + createdDate
-				+ "]";
+		return "VirtualMachine [id=" + id + ", hostname=" + hostname
+				+ ", osId=" + osId + ", IP=" + IP + ", height=" + height
+				+ ", available=" + available + ", inQueue=" + inQueue
+				+ ", currentQueueTime=" + currentQueueTime
+				+ ", numberQueueJobs=" + numberQueueJobs + ", currentJob="
+				+ currentJob + ", browsers=" + browsers + ", modifiedDate="
+				+ modifiedDate + ", createdDate=" + createdDate + "]";
 	}
 
 	

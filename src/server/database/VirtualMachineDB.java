@@ -20,14 +20,14 @@ import model.VirtualMachine;
  *
  */
 public class VirtualMachineDB {
-	
+
 	private Database db;
 	private static Logger logger;
-	
+
 	static {
 		logger = Logger.getLogger(VirtualMachineDB.class.getName());
 	}
-	
+
 	/**
 	 * Class Constructor
 	 * @param db
@@ -35,7 +35,7 @@ public class VirtualMachineDB {
 	public VirtualMachineDB(Database db) {
 		this.db = db;
 	}
-	
+
 	/**
 	 * Returns a complete list of all VM's 
 	 * @return
@@ -44,64 +44,65 @@ public class VirtualMachineDB {
 		ArrayList<VirtualMachine> VMList = new ArrayList<VirtualMachine>();
 		PreparedStatement stmt = null;
 		PreparedStatement stmt2 = null;
-    ResultSet rs = null;
-    ResultSet rs2 = null;
-    
-    try {
-    	String sql = "SELECT * FROM vm_cloud";
-    	stmt = db.getConnection().prepareStatement(sql);
-    	
-    	rs = stmt.executeQuery();
-    	while (rs.next()) {
-    		int id = rs.getInt(1);
-    		String hostname = rs.getString(2);
-    		String ip = rs.getString(3);
-    		int osId = rs.getInt(4);
-    		boolean available = rs.getBoolean(5);
-    		boolean inQueue = rs.getBoolean(6);
-    		double qTime = rs.getDouble(7);
-    		int numJobs = rs.getInt(8);
-    		Timestamp createdDate = rs.getTimestamp(9);
-    		Timestamp modifiedDate = rs.getTimestamp(10);
-    		VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue, qTime, numJobs, modifiedDate, createdDate);
-    		
-    		HashMap<String, String> browsers = new HashMap<String,String>(); 
-    		String sql2 = "SELECT a.name, a.version FROM vm_browsers a INNER JOIN vm_cloud2browser b " +
-    				"ON a.id = b.vm_browser_id WHERE b.vm_cloud_id = ?";
-    		stmt2 = db.getConnection().prepareStatement(sql2);
-    		stmt2.setInt(1, id);
-    		rs2 = stmt2.executeQuery();
-    		
-    		while (rs2.next()) {
-    			String browser = rs2.getString(1);
-    			String version = rs2.getString(2);
-    			browsers.put(browser, version);
-    		}
-    		vm.setBrowsers(browsers);
-    		VMList.add(vm);
-    	}
-    } catch (SQLException e) {
-    	logger.log(Level.SEVERE, e.getMessage(), e);
-    } finally {
-    	if (rs != null)
+		ResultSet rs = null;
+		ResultSet rs2 = null;
+
+		try {
+			String sql = "SELECT * FROM vm_cloud";
+			stmt = db.getConnection().prepareStatement(sql);
+
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				String hostname = rs.getString(2);
+				String ip = rs.getString(3);
+				int osId = rs.getInt(4);
+				boolean available = rs.getBoolean(5);
+				boolean inQueue = rs.getBoolean(6);
+				double qTime = rs.getDouble(7);
+				int numJobs = rs.getInt(8);
+				String currentJob = rs.getString(9);
+				Timestamp createdDate = rs.getTimestamp(10);
+				Timestamp modifiedDate = rs.getTimestamp(11);
+				VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue, qTime, numJobs, currentJob, modifiedDate, createdDate);
+
+				HashMap<String, String> browsers = new HashMap<String,String>(); 
+				String sql2 = "SELECT a.name, a.version FROM vm_browsers a INNER JOIN vm_cloud2browser b " +
+						"ON a.id = b.vm_browser_id WHERE b.vm_cloud_id = ?";
+				stmt2 = db.getConnection().prepareStatement(sql2);
+				stmt2.setInt(1, id);
+				rs2 = stmt2.executeQuery();
+
+				while (rs2.next()) {
+					String browser = rs2.getString(1);
+					String version = rs2.getString(2);
+					browsers.put(browser, version);
+				}
+				vm.setBrowsers(browsers);
+				VMList.add(vm);
+			}
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
 					logger.log(Level.SEVERE, e.getMessage(), e);
 					e.printStackTrace();
 				}
-    	if (stmt != null)
+			if (stmt != null)
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					logger.log(Level.SEVERE, e.getMessage(), e);
 					e.printStackTrace();
 				}
-    }
+		}
 		return VMList;
 	}
-	
-	
+
+
 	/**
 	 * Returns a map <VM id, VM Object>
 	 * @return
@@ -110,63 +111,64 @@ public class VirtualMachineDB {
 		HashMap<Integer, VirtualMachine> VMMap = new HashMap<Integer, VirtualMachine>();
 		PreparedStatement stmt = null;
 		PreparedStatement stmt2 = null;
-    ResultSet rs = null;
-    ResultSet rs2 = null;
-    
-    try {
-    	String sql = "SELECT * FROM vm_cloud";
-    	stmt = db.getConnection().prepareStatement(sql);
-    	
-    	rs = stmt.executeQuery();
-    	while (rs.next()) {
-    		int id = rs.getInt(1);
-    		String hostname = rs.getString(2);
-    		String ip = rs.getString(3);
-    		int osId = rs.getInt(4);
-    		boolean available = rs.getBoolean(5);
-    		boolean inQueue = rs.getBoolean(6);
-    		double qTime = rs.getDouble(7);
-    		int numJobs = rs.getInt(8);
-    		Timestamp createdDate = rs.getTimestamp(9);
-    		Timestamp modifiedDate = rs.getTimestamp(10);
-    		VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue, qTime, numJobs, modifiedDate, createdDate);
-    		
-    		HashMap<String, String> browsers = new HashMap<String,String>(); 
-    		String sql2 = "SELECT a.name, a.version FROM vm_browsers a INNER JOIN vm_cloud2browser b " +
-    				"ON a.id = b.vm_browser_id WHERE b.vm_cloud_id = ?";
-    		stmt2 = db.getConnection().prepareStatement(sql2);
-    		stmt2.setInt(1, id);
-    		rs2 = stmt2.executeQuery();
-    		
-    		while (rs2.next()) {
-    			String browser = rs2.getString(1);
-    			String version = rs2.getString(2);
-    			browsers.put(browser, version);
-    		}
-    		vm.setBrowsers(browsers);
-    		VMMap.put(id, vm);
-    	}
-    } catch (SQLException e) {
-    	logger.log(Level.SEVERE, e.getMessage(), e);
-    } finally {
-    	if (rs != null)
+		ResultSet rs = null;
+		ResultSet rs2 = null;
+
+		try {
+			String sql = "SELECT * FROM vm_cloud";
+			stmt = db.getConnection().prepareStatement(sql);
+
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				String hostname = rs.getString(2);
+				String ip = rs.getString(3);
+				int osId = rs.getInt(4);
+				boolean available = rs.getBoolean(5);
+				boolean inQueue = rs.getBoolean(6);
+				double qTime = rs.getDouble(7);
+				int numJobs = rs.getInt(8);
+				String currentJob = rs.getString(9);
+				Timestamp createdDate = rs.getTimestamp(10);
+				Timestamp modifiedDate = rs.getTimestamp(11);
+				VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue, qTime, numJobs, currentJob, modifiedDate, createdDate);
+
+				HashMap<String, String> browsers = new HashMap<String,String>(); 
+				String sql2 = "SELECT a.name, a.version FROM vm_browsers a INNER JOIN vm_cloud2browser b " +
+						"ON a.id = b.vm_browser_id WHERE b.vm_cloud_id = ?";
+				stmt2 = db.getConnection().prepareStatement(sql2);
+				stmt2.setInt(1, id);
+				rs2 = stmt2.executeQuery();
+
+				while (rs2.next()) {
+					String browser = rs2.getString(1);
+					String version = rs2.getString(2);
+					browsers.put(browser, version);
+				}
+				vm.setBrowsers(browsers);
+				VMMap.put(id, vm);
+			}
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
 					logger.log(Level.SEVERE, e.getMessage(), e);
 					e.printStackTrace();
 				}
-    	if (stmt != null)
+			if (stmt != null)
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					logger.log(Level.SEVERE, e.getMessage(), e);
 					e.printStackTrace();
 				}
-    }
+		}
 		return VMMap;
 	}
-	
+
 	/**
 	 * Gets ArrayList of all VM's with a certain browser and in queue
 	 * @param browser
@@ -177,196 +179,199 @@ public class VirtualMachineDB {
 		assert browser != null;
 		ArrayList<VirtualMachine> VMList = new ArrayList<VirtualMachine>();
 		PreparedStatement stmt = null;
-    ResultSet rs = null;
-    try {
-    	String sql = "SELECT * FROM vm_cloud a " +
-    							 "INNER JOIN vm_cloud2browser b ON b.vm_cloud_id = a.id " +
-    							 "INNER JOIN vm_browsers c ON b.vm_browser_id = c.id " +
-    							 "WHERE c.name = ?";
-    	stmt = db.getConnection().prepareStatement(sql);
-    	stmt.setString(1, browser);
+		ResultSet rs = null;
+		try {
+			String sql = "SELECT * FROM vm_cloud a " +
+					"INNER JOIN vm_cloud2browser b ON b.vm_cloud_id = a.id " +
+					"INNER JOIN vm_browsers c ON b.vm_browser_id = c.id " +
+					"WHERE c.name = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setString(1, browser);
 
-    	rs = stmt.executeQuery();
-    	while (rs.next()) {
-    		int id = rs.getInt(1);
-    		String hostname = rs.getString(2);
-    		String ip = rs.getString(3);
-    		int osId = rs.getInt(4);
-    		boolean available = rs.getBoolean(5);
-    		boolean inQueue = rs.getBoolean(6);
-    		double qTime = rs.getDouble(7);
-    		int numJobs = rs.getInt(8);
-    		Timestamp createdDate = rs.getTimestamp(9);
-    		Timestamp modifiedDate = rs.getTimestamp(10);
-    		
-    		VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue,
-    				qTime, numJobs, modifiedDate, createdDate);
-    		if (isInQueue) {
-    			if (inQueue) {
-        		VMList.add(vm);
-    			}
-    		} else {
-      		VMList.add(vm);
-    		}
-    	}
-    } catch (SQLException e) {
-    	logger.log(Level.SEVERE, e.getMessage(), e);
-    } finally {
-    	if (rs != null)
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				String hostname = rs.getString(2);
+				String ip = rs.getString(3);
+				int osId = rs.getInt(4);
+				boolean available = rs.getBoolean(5);
+				boolean inQueue = rs.getBoolean(6);
+				double qTime = rs.getDouble(7);
+				int numJobs = rs.getInt(8);
+				String currentJob = rs.getString(9);
+				Timestamp createdDate = rs.getTimestamp(10);
+				Timestamp modifiedDate = rs.getTimestamp(11);
+
+				VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue,
+						qTime, numJobs, currentJob, modifiedDate, createdDate);
+				if (isInQueue) {
+					if (inQueue) {
+						VMList.add(vm);
+					}
+				} else {
+					VMList.add(vm);
+				}
+			}
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
 					logger.log(Level.SEVERE, e.getMessage(), e);
 					e.printStackTrace();
 				}
-    	if (stmt != null)
+			if (stmt != null)
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					logger.log(Level.SEVERE, e.getMessage(), e);
 					e.printStackTrace();
 				}
-    }
+		}
 		return VMList;
 	}
-	
+
 	public List<VirtualMachine> getByBrowserAndVersion(String browser, String version, boolean isInQueue) {
 		assert browser!=null && version!=null;
-    ArrayList<VirtualMachine> VMList = new ArrayList<VirtualMachine>();
+		ArrayList<VirtualMachine> VMList = new ArrayList<VirtualMachine>();
 		PreparedStatement stmt = null;
-    ResultSet rs = null;
-    try {
-    	String sql = "SELECT * FROM vm_cloud a " +
-    							 "INNER JOIN vm_cloud2browser b ON b.vm_cloud_id = a.id " +
-    							 "INNER JOIN vm_browsers c ON b.vm_browser_id = c.id " +
-    							 "WHERE c.name = ? and c.version = ?";
-    	stmt = db.getConnection().prepareStatement(sql);
-    	stmt.setString(1, browser);
-    	stmt.setString(2, version);
-    	
-    	rs = stmt.executeQuery();
-    	while (rs.next()) {
-    		int id = rs.getInt(1);
-    		String hostname = rs.getString(2);
-    		String ip = rs.getString(3);
-    		int osId = rs.getInt(4);
-    		boolean available = rs.getBoolean(5);
-    		boolean inQueue = rs.getBoolean(6);
-    		double qTime = rs.getDouble(7);
-    		int numJobs = rs.getInt(8);
-    		Timestamp createdDate = rs.getTimestamp(9);
-    		Timestamp modifiedDate = rs.getTimestamp(10);
-    		
-    		VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue, 
-    				qTime, numJobs, modifiedDate, createdDate);
-    		if (isInQueue) {
-    			if (inQueue) {
-        		VMList.add(vm);
-    			}
-    		} else {
-      		VMList.add(vm);
-    		}
-    	}
-    } catch (SQLException e) {
-    	logger.log(Level.SEVERE, e.getMessage(), e);
-    } finally {
-    	if (rs != null)
+		ResultSet rs = null;
+		try {
+			String sql = "SELECT * FROM vm_cloud a " +
+					"INNER JOIN vm_cloud2browser b ON b.vm_cloud_id = a.id " +
+					"INNER JOIN vm_browsers c ON b.vm_browser_id = c.id " +
+					"WHERE c.name = ? and c.version = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setString(1, browser);
+			stmt.setString(2, version);
+
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				String hostname = rs.getString(2);
+				String ip = rs.getString(3);
+				int osId = rs.getInt(4);
+				boolean available = rs.getBoolean(5);
+				boolean inQueue = rs.getBoolean(6);
+				double qTime = rs.getDouble(7);
+				int numJobs = rs.getInt(8);
+				String currentJob = rs.getString(9);
+				Timestamp createdDate = rs.getTimestamp(10);
+				Timestamp modifiedDate = rs.getTimestamp(11);
+
+				VirtualMachine vm = new VirtualMachine(id, hostname, ip, osId, available, inQueue, 
+						qTime, numJobs, currentJob, modifiedDate, createdDate);
+				if (isInQueue) {
+					if (inQueue) {
+						VMList.add(vm);
+					}
+				} else {
+					VMList.add(vm);
+				}
+			}
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
 					logger.log(Level.SEVERE, e.getMessage(), e);
 					e.printStackTrace();
 				}
-    	if (stmt != null)
+			if (stmt != null)
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					logger.log(Level.SEVERE, e.getMessage(), e);
 					e.printStackTrace();
 				}
-    }
+		}
 		return VMList;
 	}
-	
+
 	public VirtualMachine getVirtualMachine(int id) {
 		PreparedStatement stmt = null;
-    ResultSet rs = null;
-    VirtualMachine vm = null;
-    try {
-    	String sql = "SELECT * FROM vm_cloud where id = ?";
-    	stmt = db.getConnection().prepareStatement(sql);
-    	stmt.setInt(1, id);
-    	rs = stmt.executeQuery();
-    	while (rs.next()) {
-    		int vid = rs.getInt(1);
-    		String hostname = rs.getString(2);
-    		String ip = rs.getString(3);
-    		int osId = rs.getInt(4);
-    		boolean available = rs.getBoolean(5);
-    		boolean inQueue = rs.getBoolean(6);
-    		double qTime = rs.getDouble(7);
-    		int numJobs = rs.getInt(8);
-    		Timestamp createdDate = rs.getTimestamp(9);
-    		Timestamp modifiedDate = rs.getTimestamp(10);
-    		
-    		vm = new VirtualMachine(vid, hostname, ip, osId, available, inQueue, 
-    				qTime, numJobs, modifiedDate, createdDate);
-    	}
-    } catch (SQLException e) {
-    	logger.log(Level.SEVERE, e.getMessage(), e);
-    } finally {
+		ResultSet rs = null;
+		VirtualMachine vm = null;
+		try {
+			String sql = "SELECT * FROM vm_cloud where id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				int vid = rs.getInt(1);
+				String hostname = rs.getString(2);
+				String ip = rs.getString(3);
+				int osId = rs.getInt(4);
+				boolean available = rs.getBoolean(5);
+				boolean inQueue = rs.getBoolean(6);
+				double qTime = rs.getDouble(7);
+				int numJobs = rs.getInt(8);
+				String currentJob = rs.getString(9);
+				Timestamp createdDate = rs.getTimestamp(10);
+				Timestamp modifiedDate = rs.getTimestamp(11);
+
+				vm = new VirtualMachine(vid, hostname, ip, osId, available, inQueue, 
+						qTime, numJobs, currentJob, modifiedDate, createdDate);
+			}
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
 			try {
 				if (rs != null) rs.close();
 				if (stmt != null) stmt.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-    }
-    return vm;
+		}
+		return vm;
 	}
-	
+
 	public boolean getVMAvailable(int id) throws SQLException {
 		PreparedStatement stmt = null;
-    ResultSet rs = null;
-    boolean available = false;
-    try {
-    	String sql = "SELECT * FROM vm_cloud where id = ?";
-    	stmt = db.getConnection().prepareStatement(sql);
-    	stmt.setInt(1, id);
-    	rs = stmt.executeQuery();
-    	while (rs.next())	{
-    		available = rs.getBoolean(5);
-    	}
-    } catch (SQLException e) {
-    	logger.log(Level.SEVERE, e.getMessage(), e);
-    } finally {
-    	if (rs != null) rs.close();
-    	if (stmt != null) stmt.close();
-    }
-    return available;
+		ResultSet rs = null;
+		boolean available = false;
+		try {
+			String sql = "SELECT * FROM vm_cloud where id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			while (rs.next())	{
+				available = rs.getBoolean(5);
+			}
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			if (rs != null) rs.close();
+			if (stmt != null) stmt.close();
+		}
+		return available;
 	}
-	
+
 	public boolean getInQueue(int id) throws SQLException {
 		PreparedStatement stmt = null;
-    ResultSet rs = null;
-    boolean inQueue = false;
-    try {
-    	String sql = "SELECT * FROM vm_cloud where id = ?";
-    	stmt = db.getConnection().prepareStatement(sql);
-    	stmt.setInt(1, id);
-    	rs = stmt.executeQuery();
-    	while (rs.next())	{
-    		inQueue = rs.getBoolean(6);
-    	}
-    } catch (SQLException e) {
-    	logger.log(Level.SEVERE, e.getMessage(), e);
-    } finally {
-    	if (rs != null) rs.close();
-    	if (stmt != null) stmt.close();
-    }
-    return inQueue;
+		ResultSet rs = null;
+		boolean inQueue = false;
+		try {
+			String sql = "SELECT * FROM vm_cloud where id = ?";
+			stmt = db.getConnection().prepareStatement(sql);
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			while (rs.next())	{
+				inQueue = rs.getBoolean(6);
+			}
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			if (rs != null) rs.close();
+			if (stmt != null) stmt.close();
+		}
+		return inQueue;
 	}
-	
+
 	/**
 	 * 
 	 * @param id
@@ -375,8 +380,8 @@ public class VirtualMachineDB {
 		PreparedStatement stmt = null;
 		try {
 			String sql = "UPDATE vm_cloud SET hostname = ?, ip_address = ?, vm_os_id = ?, " +
-									 "available = ?, inQueue = ?, time = ?, num_jobs = ?, modified_date = now() " +
-									 "WHERE id = ?";
+					"available = ?, inQueue = ?, time = ?, num_jobs = ?, modified_date = now() " +
+					"WHERE id = ?";
 			stmt = db.getConnection().prepareStatement(sql);
 			stmt.setString(1, vm.getHostname());
 			stmt.setString(2, vm.getIP());
@@ -390,17 +395,17 @@ public class VirtualMachineDB {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.log(Level.SEVERE, e.getMessage(), e);
-		 } finally {
-	    	if (stmt != null)
-					try {
-						stmt.close();
-					} catch (SQLException e) {
-						e.printStackTrace();
-						logger.log(Level.SEVERE, e.getMessage(), e);
-					}
-		  }
+		} finally {
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
+				}
+		}
 	}
-	
+
 	/**
 	 * We want to be able to initialize all vm's in queue in case of weird stops, and 
 	 * remove from the queue of available if they are offline for any reason.
@@ -417,18 +422,18 @@ public class VirtualMachineDB {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.log(Level.SEVERE, e.getMessage(), e);
-	  } finally {
-    	if (stmt != null)
+		} finally {
+			if (stmt != null)
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
-	  }
-  }
-	
-	
+		}
+	}
+
+
 	/**
 	 * Sets the vm as unavailble for the queue
 	 * @param id
@@ -443,17 +448,17 @@ public class VirtualMachineDB {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.log(Level.SEVERE, e.getMessage(), e);
-	  } finally {
-    	if (stmt != null) {
+		} finally {
+			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
-    	}
-	  }
-  }
+			}
+		}
+	}
 
 
 	/**
@@ -480,10 +485,10 @@ public class VirtualMachineDB {
 					e.printStackTrace();
 					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
-    	}
+			}
 		}
 	}
-	
+
 	/**
 	 * Sets a vm to available and ready to take another job
 	 * @param queueNumber
@@ -506,7 +511,7 @@ public class VirtualMachineDB {
 					e.printStackTrace();
 					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
-    	}
+			}
 		}
 	}
 }
