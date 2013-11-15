@@ -203,6 +203,8 @@ public class VMQueue {
 	private void sendSocketStream(Job job) {
 		db.startTransaction();
 		db.getVirtualMachineDB().incrementQueue(job.getMessage().getTime(), job.getQueue());
+		db.endTransaction(true);
+		db.startTransaction();
 		OperatingSystem os = db.getOSDB().getOSById(vms.get(job.getQueue()).getOsId());
 		VirtualMachine vm = db.getVirtualMachineDB().getVirtualMachine(job.getQueue());
 		db.endTransaction(true);
