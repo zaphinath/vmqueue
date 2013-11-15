@@ -389,7 +389,7 @@ public class VirtualMachineDB {
 			stmt.setBoolean(4, vm.isAvailable());
 			stmt.setBoolean(5, vm.isInQueue());
 			stmt.setDouble(6, vm.getCurrentQueueTime());
-			stmt.setInt(7, vm.getHeight());
+			stmt.setInt(7, vm.getNumberQueueJobs());
 			stmt.setString(8, vm.getCurrentJob());
 			stmt.setInt(9, vm.getId());
 			stmt.executeUpdate();

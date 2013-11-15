@@ -214,7 +214,7 @@ public class VMQueue {
 		job.setMessage(tmp);
 		vm.setCurrentJob(job.getMessage().getAntCommand());
 		vm.setCurrentQueueTime(vm.getCurrentQueueTime() + job.getMessage().getTime());
-		vm.setHeight(vm.getHeight() + 1);
+		vm.setNumberQueueJobs(vm.getNumberQueueJobs() + 1);
 		logger.info("HOST: " + job.getHostIP()+ "  MESSAGE: " +job.getMessage());
 		
 		db.startTransaction();

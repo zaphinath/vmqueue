@@ -16,7 +16,6 @@ public class VirtualMachine {
 	private String hostname;
 	private int osId;
 	private String IP;
-	private int height;
 	private boolean available;
 	private boolean inQueue;
 	private double currentQueueTime;
@@ -34,7 +33,6 @@ public class VirtualMachine {
 		this.hostname = null;
 		this.osId = -1;
 		this.IP = null;
-		this.height = -1;
 		this.available = false;
 		this.inQueue = false;
 		this.currentQueueTime = 0;
@@ -51,7 +49,6 @@ public class VirtualMachine {
 	 * @param hostname
 	 * @param os
 	 * @param IP
-	 * @param height
 	 * @param availabe
 	 * @param inQueue
 	 */
@@ -61,7 +58,6 @@ public class VirtualMachine {
 		this.hostname = hostname;
 		this.osId = osId;
 		this.IP = IP;
-		this.height = 0;
 		this.available = available;
 		this.inQueue = inQueue;
 		this.currentQueueTime = curTime;
@@ -77,7 +73,6 @@ public class VirtualMachine {
 	 * @param hostname
 	 * @param osId
 	 * @param iP
-	 * @param height
 	 * @param available
 	 * @param inQueue
 	 * @param currentQueueTime
@@ -88,7 +83,7 @@ public class VirtualMachine {
 	 * @param createdDate
 	 */
 	public VirtualMachine(int id, String hostname, int osId, String iP,
-			int height, boolean available, boolean inQueue,
+			boolean available, boolean inQueue,
 			double currentQueueTime, int numberQueueJobs, String currentJob,
 			HashMap<String, String> browsers, Timestamp modifiedDate,
 			Timestamp createdDate) {
@@ -97,7 +92,6 @@ public class VirtualMachine {
 		this.hostname = hostname;
 		this.osId = osId;
 		IP = iP;
-		this.height = height;
 		this.available = available;
 		this.inQueue = inQueue;
 		this.currentQueueTime = currentQueueTime;
@@ -190,20 +184,6 @@ public class VirtualMachine {
 	 */
 	public void setIP(String iP) {
 		IP = iP;
-	}
-
-	/**
-	 * @return the height
-	 */
-	public int getHeight() {
-		return height;
-	}
-
-	/**
-	 * @param height the height to set
-	 */
-	public void setHeight(int height) {
-		this.height = height;
 	}
 
 	/**
@@ -310,12 +290,12 @@ public class VirtualMachine {
 	@Override
 	public String toString() {
 		return "VirtualMachine [id=" + id + ", hostname=" + hostname
-				+ ", osId=" + osId + ", IP=" + IP + ", height=" + height
-				+ ", available=" + available + ", inQueue=" + inQueue
-				+ ", currentQueueTime=" + currentQueueTime
-				+ ", numberQueueJobs=" + numberQueueJobs + ", currentJob="
-				+ currentJob + ", browsers=" + browsers + ", modifiedDate="
-				+ modifiedDate + ", createdDate=" + createdDate + "]";
+				+ ", osId=" + osId + ", IP=" + IP + ", available=" + available
+				+ ", inQueue=" + inQueue + ", currentQueueTime="
+				+ currentQueueTime + ", numberQueueJobs=" + numberQueueJobs
+				+ ", currentJob=" + currentJob + ", browsers=" + browsers
+				+ ", modifiedDate=" + modifiedDate + ", createdDate="
+				+ createdDate + "]";
 	}
 
 	
