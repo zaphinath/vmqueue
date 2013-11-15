@@ -32,7 +32,7 @@ public class VMQueue {
 	private static Logger logger;
 	
 	static {
-		logger = Logger.getLogger(VMQueue.class.getName());
+		logger = Logger.getLogger("vmqueue");
 	}
 
   public VMQueue(int port, String database) {
