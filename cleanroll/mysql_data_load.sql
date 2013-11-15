@@ -25,11 +25,11 @@ insert into vm_subtests (vm_testcase_id, name) values (@v1,'MassUpdates');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'Modifications');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'SubTasks');
 /* -------------------------------------------------------------------------------- */
-/* Accounts */
+/* AreaCodeGroups */
 insert into vm_testcases (name, platform) values ('AreaCodeGroups', 'lmp');
 set @v1 := (select last_insert_id());
 /* Accounts Classes */
-insert into vm_subtests (vm_testcase_id, name) values (@v1,'AccountCodeGroups');
+insert into vm_subtests (vm_testcase_id, name) values (@v1,'AreaCodeGroups');
 /* -------------------------------------------------------------------------------- */
 /* Admin */
 insert into vm_testcases (name, platform) values ('Admin', 'lmp');
@@ -41,7 +41,7 @@ insert into vm_subtests (vm_testcase_id, name) values (@v1,'ManageProducts');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'ManageZones');
 /* ***** personalSettings ***** */
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'Email');
---insert into vm_subtests (vm_testcase_id, name) values (@v1,'SetEmployeeRequiredFields');
+/*insert into vm_subtests (vm_testcase_id, name) values (@v1,'SetEmployeeRequiredFields'); */
 /* ***** sitesettings ***** */
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'ManageCountries');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'ManageCustomFields');
@@ -53,7 +53,9 @@ insert into vm_subtests (vm_testcase_id, name) values (@v1,'WebPostTemplates');
 /* ***** tools ***** */
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'EmployeeQuota');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'ImportAccounts');
-insert into vm_subtests (vm_testcase_id, name) values (@v1,'Imports');
+insert into vm_subtests (vm_testcase_id, name) values (@v1,'ImportContacts');
+insert into vm_subtests (vm_testcase_id, name) values (@v1,'ImportDeals');
+insert into vm_subtests (vm_testcase_id, name) values (@v1,'ImportLeads');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'ManageACDs');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'ManageC2CDialerPanels');
 insert into vm_subtests (vm_testcase_id, name) values (@v1,'ManageIVRs');
@@ -135,7 +137,7 @@ insert into vm_subtests (vm_testcase_id, name) values (@v1,'FolderHandler');
 /* JabberDogs */
 insert into vm_testcases (name, platform) values ('JabberDog', 'lmp');
 set @v1 := (select last_insert_id());
-insert into vm_subtests (vm_testcase_id, name) values (@v1, 'JabberDogTest');
+insert into vm_subtests (vm_testcase_id, name) values (@v1, 'JabberDog');
 /* -------------------------------------------------------------------------------- */
 /* Leads */
 insert into vm_testcases (name, platform) values ('Leads', 'lmp');
