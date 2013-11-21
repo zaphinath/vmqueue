@@ -44,7 +44,7 @@ public class VMQueue {
 		db.startTransaction();
 		//vms = (ArrayList<VirtualMachine>) db.getVirtualMachineDB().getAll();
 		vms = db.getVirtualMachineDB().getMap();
-		db.getVirtualMachineDB().updateAvailable();
+		//db.getVirtualMachineDB().updateAvailable();
 		db.endTransaction(true);
 		
   	jobs = new LinkedList<Job>();
